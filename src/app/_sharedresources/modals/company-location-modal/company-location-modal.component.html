@@ -1,0 +1,179 @@
+<!-- Trigger Button -->
+
+<!-- Modal -->
+<div id="company-location-modal" class="modal fade" tabindex="-1" aria-labelledby="companyLocationModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-scrollable modal-xl modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="companyLocationModalLabel">Client Company Location</h5>
+          <button type="button" class="btn-close custom-close" data-bs-dismiss="modal" aria-label="Close"></button>
+  
+        </div>
+        <div class="modal-body">
+          <div class="card-body">
+            <div class="container">
+                <div class="container">
+                    <form #form="ngForm" (ngSubmit)="form.form.valid && onSubmit(form)">
+    
+    
+                        <div class="row gy-4 gx-3 mb-3">
+                            <!-- Organization ID -->
+                            <div *ngIf="currentUserRole === 'SuperAdmin'" class="col-12 col-md-6">
+                                <label for="OrganizationSelect" class="form-label">Select Company</label>
+                                <ng-select id="OrganizationSelect" [(ngModel)]="selectedOrganization" [items]="organizationArray"
+                                  bindLabel="name" placeholder="Select Company" name="organizationSelect" class="dark-mode-select"
+                                  [multiple]="false" required (change)="onOrganizationChange(selectedOrganization.id)"></ng-select>
+                                <div *ngIf="form.submitted && !selectedOrganization" class="text-danger mt-2">
+                                  {{ requiredText }}
+                                </div>
+                              </div>
+                             
+                  
+                         <!-- Client Company -->
+                        <div *ngIf="companyArray && companyArray.length" class="col-12 col-md-6">
+                            <label for="CompanySelect" class="form-label">Select Client Company</label>
+                            <ng-select id="CompanySelect" [(ngModel)]="selectedCompany" [items]="companyArray" bindLabel="name"
+                            placeholder="Select Client Company" name="CompanySelect" class="dark-mode-select" [multiple]="false"
+                           ></ng-select>
+                        </div>
+                     
+        
+                            <!-- Name -->
+                            <div class="col-12 col-md-6">
+                                <label for="name" class="form-label text-muted">Name</label>
+                                <input type="text" class="form-control" id="name" [(ngModel)]="model.Name" name="Name"
+                                    #name="ngModel" required placeholder="Enter name" />
+                                <div *ngIf="form.submitted && name.invalid" class="text-danger mt-1">
+                                    <small *ngIf="name.errors?.['required']">{{requiredText}}</small>
+                                </div>
+                            </div>
+        
+                     
+                            <!-- Address -->
+                            <div class="col-12 col-md-6">
+                                <label for="address" class="form-label text-muted">Address</label>
+                                <input type="text" class="form-control" id="address" required #address="ngModel"
+                                    [(ngModel)]="model.Address" name="Address" placeholder="Enter address" />
+                                <div *ngIf="form.submitted && address.invalid" class="text-danger mt-1">
+                                    <small *ngIf="address.errors?.['required']">{{requiredText}}</small>
+                                </div>
+                            </div>
+                            
+        
+        
+                            <!-- country -->
+        
+        
+                            <div class="col-12 col-md-6">
+                                <label for="countrySelect" class="form-label">Select Country</label>
+                                <ng-select id="countrySelect" [(ngModel)]="selectedCountry" [items]="countryArray"
+                                    (change)="onCountryChange()" bindLabel="name" placeholder="Select a country"
+                                    name="countrySelect" class="dark-mode-select" [multiple]="false" required>
+                                </ng-select>
+                                <div *ngIf="form.submitted && !selectedCountry" class="text-danger mt-2">
+                                    {{requiredText}}
+                                </div>
+                            </div>
+        
+        
+                            <!-- State -->
+                            <div class="col-12 col-md-6">
+                                <label for="stateSelect" class="form-label">Select State</label>
+                                <ng-select id="stateSelect" [(ngModel)]="selectedState" [items]="stateArray"
+                                    (change)="onStateChange()" bindLabel="name" placeholder="Select a State" name="stateSelect"
+                                    class="dark-mode-select" [multiple]="false">
+                                </ng-select>
+                                <!-- <div *ngIf="form.submitted && !selectedState" class="text-danger mt-2">
+                                    {{requiredText}}
+                                </div> -->
+                            </div>
+        
+                              <!-- City -->
+                              <div class="col-12 col-md-6">
+                                <label for="citySelect" class="form-label">Select City</label>
+                                <ng-select id="citySelect" [(ngModel)]="selectedCity" [items]="cityArray" bindLabel="name"
+                                    placeholder="Select a city" name="citySelect" class="dark-mode-select" [multiple]="false"
+                                    >
+                                </ng-select>
+                                <!-- <div *ngIf="form.submitted && !selectedCity" class="text-danger mt-2">
+                                    {{requiredText}}
+                                </div> -->
+                            </div>
+        
+                           
+        
+                            <!-- Phone -->
+                            <div class="col-12 col-md-6">
+                                <label for="phone" class="form-label text-muted">Phone</label>
+                                <input type="tel" (keydown)="onlyDecimalNumberKey($event)" class="form-control" id="phone" [(ngModel)]="model.Phone" name="Phone"
+                                    #phone="ngModel" placeholder="Enter phone number" />
+                                <!-- <div *ngIf="form.submitted && phone.invalid" class="text-danger mt-1">
+                                    <small *ngIf="phone.errors?.['required']">{{requiredText}}</small>
+                                </div> -->
+                            </div>
+        
+        
+                          
+        
+                            <!-- Zip -->
+                            <div class="col-12 col-md-6">
+                                <label for="zip" class="form-label text-muted">Zip</label>
+                                <input type="text" class="form-control"  #zip="ngModel" id="zip" [(ngModel)]="model.Zip"
+                                    name="Zip" placeholder="Enter zip code" />
+                                <!-- <div *ngIf="form.submitted && zip.invalid" class="text-danger mt-1">
+                                    <small *ngIf="zip.errors?.['required']">{{requiredText}}</small>
+                                </div> -->
+                            </div>
+        
+        
+                            <div class="col-12 col-md-6">
+                                <label for="timeZoneSelect" class="form-label">Select Timezone</label>
+                                <ng-select id="timeZoneSelect" [(ngModel)]="selectedTimezone" [items]="timezoneArray"
+                                    (change)="onCountryChange()" bindLabel="name" placeholder="Select timeZone"
+                                    name="timeZoneSelect" required class="dark-mode-select" [multiple]="false">
+                                </ng-select>
+                                <div *ngIf="form.submitted && !selectedTimezone" class="text-danger mt-2">
+                                    {{requiredText}}
+                                </div>
+                            </div>
+        
+                            <!-- Notes -->
+                            <div class="col-12">
+                                <label for="notes" class="form-label text-muted">Notes</label>
+                                <textarea class="form-control" id="notes" [(ngModel)]="model.Notes" name="Notes"
+                                    placeholder="Enter notes" rows="3"></textarea>
+                            </div>
+        
+        
+                        </div>
+        
+        
+        
+                        <div class="rounded-3 mt-2 float-end">
+                            <div class="card-body d-flex mb-4">
+                                <button  type="submit" class="btn btn-primary fw-semibold px-4 py-2 me-2 btn-fill">
+                                    Save
+                                </button>
+                                <button type="button" class="btn btn-secondary fw-semibold me-3 px-4 py-2 btn-transparent"
+                                data-bs-dismiss="modal">
+                                    Cancel
+                                </button>
+                                <button type="button" class="btn btn-warning fw-semibold me-3 px-4 py-2 btn-transparent" (click)="onClear()">
+                                    Clear
+                                </button>
+                                
+                          
+                            </div>
+                        </div>
+                    </form>
+                    
+                </div>
+
+            </div>
+          </div>
+        </div>
+
+      </div>
+  
+    </div>
+  </div>

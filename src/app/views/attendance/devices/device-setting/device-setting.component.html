@@ -1,0 +1,251 @@
+<div class="employee-screen-container p-4"
+  [ngClass]="{'bcg-light': utils.themeStatus === 'light', 'bg-dark': utils.themeStatus === 'dark'}">
+  <!-- Your content here -->
+
+  <!-- Header Card -->
+  <div class="card rounded-3 shadow-sm mb-5">
+    <div class="card-body">
+      <h5 [ngClass]="utils.themeStatus === 'dark' ? 'text-white' : 'text-dark'"
+        class="mb-0 text-dark">Device Settings</h5>
+     
+    </div>
+  </div>
+
+  <!-- Form Card -->
+  <div class="card rounded-3 shadow-sm mb-5">
+    <div class="card-body">
+      
+      <form #form="ngForm" (ngSubmit)="onSubmit(form)" class="container">
+        <!-- <h5 class="mb-5">Settings</h5> -->
+      
+        <!-- <div class="row mb-3 align-items-center mb-5">
+          <div class="col-md-2">
+            <label for="fontSize" class="form-label">Font Size</label>
+          </div>
+          <div class="col-md-5">
+           <ng-select id="fontFamilySelect" [(ngModel)]="selectedFontSize" [items]="fontSizesArray" bindLabel="name"
+            placeholder="Select Font Size" name="fontSizeSelect"  class="dark-mode-select"
+            [multiple]="false"></ng-select>
+          </div>
+          <div class="col-md-5 ">
+            <p class="font-preview" [style.fontSize]="selectedFontSize"> AaBbCc</p>
+          </div>
+        </div> -->
+
+        <!-- <div class="row gy-4 gx-3 mb-5">
+       
+          <div *ngIf="currentUserRole === 'SuperAdmin'" class="col-12 col-md-5">
+              <label for="OrganizationSelect" class="form-label">Select Company</label>
+              <ng-select id="OrganizationSelect" [(ngModel)]="selectedOrganization"
+                  [items]="organizationArray" bindLabel="name" placeholder="Select Company"
+                  name="organizationSelect" class="dark-mode-select" [multiple]="false"
+                  (change)="onOrganizationChange(selectedOrganization?.id)"></ng-select>
+          </div>
+        </div> -->
+
+
+        <div  *ngIf="currentUserRole === 'SuperAdmin'" class="row align-items-center gx-3 mb-5 mt-5">
+          <div class="col-md-2">
+            <label for="OrganizationSelect" class="form-label">Select Company</label>
+          </div>
+          <div class="col-md-4">
+            <ng-select id="OrganizationSelect" [(ngModel)]="selectedOrganization"
+                [items]="organizationArray" bindLabel="name" placeholder="Select Company"
+                name="organizationSelect" class="dark-mode-select flex-grow-1"
+                [multiple]="false" (change)="onOrganizationChange(selectedOrganization?.id)">
+            </ng-select>
+
+          </div>
+        </div>
+        
+
+        <div class="row mb-3 align-items-center mb-5 mt-5">
+          <div class="col-md-2">
+            <label for="timeFontSize" class="form-label">Time Font Size</label>
+          </div>
+          <div class="col-md-4">
+            <ng-select id="timeFontSize" [(ngModel)]="selectedTimeFontSize" [items]="fontSizesArray" bindLabel="name"
+              placeholder="Select Time Font Size" name="timeFontSizeSelect" class="dark-mode-select" [multiple]="false">
+            </ng-select>
+          </div>
+          <div class="col-md-6 ">
+            <p class="font-preview" [style.fontSize]="selectedTimeFontSize?.sizeValue"> 12:30 PM</p>
+          </div>
+        </div>
+
+        <!-- <div class="row mb-3 align-items-center mb-5 mt-5">
+          <div class="col-md-2">
+            <label for="timeFontSize" class="form-label">Time Font Size</label>
+          </div>
+          <div [class.col-md-4]="selectedTimeFontSize?.name === 'Large' || selectedTimeFontSize?.name === 'Extra Large'"
+               [class.col-md-5]="selectedTimeFontSize?.name !== 'Large' && selectedTimeFontSize?.name !== 'Extra Large'">
+            <ng-select id="timeFontSize" [(ngModel)]="selectedTimeFontSize" [items]="fontSizesArray" bindLabel="name"
+                       placeholder="Select Time Font Size" name="timeFontSizeSelect" class="dark-mode-select" [multiple]="false">
+            </ng-select>
+          </div>
+          <div [class.col-md-6]="selectedTimeFontSize?.name === 'Large' || selectedTimeFontSize?.name === 'Extra Large'"
+               [class.col-md-5]="selectedTimeFontSize?.name !== 'Large' && selectedTimeFontSize?.name !== 'Extra Large'" 
+               class="">
+            <p class="font-preview timeFont" [style.fontSize]="selectedTimeFontSize?.sizeValue" 
+               [ngStyle]="{ 'height': selectedTimeFontSize?.name === 'Large' || selectedTimeFontSize?.name === 'Extra Large' ? '120px' : '90px' }">
+              Time: 12:30 PM
+            </p>
+          </div>
+        </div> -->
+        
+        
+        
+        <div class="row mb-3 align-items-center mb-5">
+          <div class="col-md-2">
+            <label for="dateFontSize" class="form-label">Date Font Size</label>
+          </div>
+          <div   class="col-md-4">
+            <ng-select id="dateFontSize" [(ngModel)]="selectedDateFontSize" [items]="fontSizesArrayAll" bindLabel="name"
+              placeholder="Select Date Font Size" name="dateFontSizeSelect" class="dark-mode-select" [multiple]="false">
+            </ng-select>
+          </div>
+          <div class="col-md-6 ">
+            <p class="font-preview" [style.fontSize]="selectedDateFontSize?.sizeValue">01 Jan 2025</p>
+          </div>
+        </div>
+        
+        <div class="row mb-3 align-items-center mb-5">
+          <div class="col-md-2">
+            <label for="addressFontSize" class="form-label">Address Font Size</label>
+          </div>
+          <div class="col-md-4">
+            <ng-select id="addressFontSize" [(ngModel)]="selectedAddressFontSize" [items]="fontSizesArrayAll" bindLabel="name"
+              placeholder="Select Address Font Size" name="addressFontSizeSelect" class="dark-mode-select" [multiple]="false">
+            </ng-select>
+          </div>
+          <div class="col-md-6 ">
+            <p class="font-preview" [style.fontSize]="selectedAddressFontSize?.sizeValue"> 123 Main St</p>
+          </div>
+        </div>
+        
+        <div class="row mb-3 align-items-center mb-5">
+          <div class="col-md-2">
+            <label for="displayFontSize" class="form-label">Display Font Size</label>
+          </div>
+          <div class="col-md-4">
+            <ng-select id="displayFontSize" [(ngModel)]="selectedDisplayFontSize" [items]="fontSizesArrayAll" bindLabel="name"
+              placeholder="Select Display Font Size" name="displayFontSizeSelect" class="dark-mode-select" [multiple]="false">
+            </ng-select>
+          </div>
+          <div class="col-md-5 ">
+            <p class="font-preview" [style.fontSize]="selectedDisplayFontSize?.sizeValue"> Welcome!</p>
+          </div>
+        </div>
+
+        <div class="row mb-3 align-items-center mb-5">
+          <div class="col-md-2">
+            <label for="displayTextFontSize" class="form-label">Display Text Font Size</label>
+          </div>
+          <div class="col-md-4">
+            <ng-select id="displayTextFontSizeSelect" [(ngModel)]="selectedDisplayTextFontSize"
+              [items]="fontSizesArrayAll" bindLabel="name"
+              placeholder="Select Display Text Font Size" name="displayTextFontSizeSelect"
+              class="dark-mode-select" [multiple]="false">
+            </ng-select>
+          </div>
+          <div class="col-md-6 ">
+            <p class="font-preview" [style.fontSize]="selectedDisplayTextFontSize?.sizeValue"> AaBbCc</p>
+          </div>
+        </div>
+        
+        
+      
+        <div class="row mb-3 align-items-center mb-5">
+          <div class="col-md-2">
+            <label for="fontFamily" class="form-label">Font Family</label>
+          </div>
+          <div class="col-md-4">
+            <ng-select id="fontFamilySelect" [(ngModel)]="selectedFontFamily"
+            [items]="fontFamiliesArray" bindLabel="name"
+            placeholder="Select Font Family" name="fontSelect"
+            class="dark-mode-select" [multiple]="false">
+          </ng-select>
+          </div>
+          <div class="col-md-6 ">
+            <p class="font-preview" [style.fontFamily]="selectedFontFamily"> AaBbCc</p>
+          </div>
+        </div>
+
+
+        <div class="row mb-3 align-items-center mb-5">
+          <div class="col-md-2">
+            <label for="fontFamily" class="form-label">Orientation</label>
+          </div>
+          <div class="col-md-4">
+            <ng-select id="fontFamilySelect" [(ngModel)]="selectedOrientation"
+            [items]="orientationArray" bindLabel="name" 
+            placeholder="Select Orientation" name="orientation"
+            class="dark-mode-select" [multiple]="false">
+          </ng-select>
+          </div>
+          <!-- <div class="col-md-6 ">
+            <p class="font-preview" [style.fontFamily]="selectedOrientation"> AaBbCc</p>
+          </div> -->
+        </div>
+      
+        <div class="row mb-3 align-items-center mb-5">
+          <div class="col-md-2">
+              <label for="brightnessLevel" class="form-label">Brightness Level</label>
+          </div>
+          <div class="col-md-4">
+              <input type="range" id="brightnessLevel" name="brightnessLevel"
+                     min="10" max="100" step="10" 
+                     [(ngModel)]="selectedBrightnessLevel" 
+                     class="form-range custom-range">
+          </div>
+          <div class="col-md-6">
+              <p class="brightness-preview">Selected Brightness: {{ selectedBrightnessLevel }}%</p>
+          </div>
+      </div>
+
+        <div class="row mb-3 align-items-center mb-5">
+          <div class="col-md-2">
+            <label for="theme" class="form-label">Theme</label>
+          </div>
+          <div class="col-md-4">
+            <ng-select id="CompanySelect" [(ngModel)]="selectedTheme" [items]="themesArray" bindLabel="name"
+            placeholder="Select Theme" name="themeSelect"  class="dark-mode-select"
+            [multiple]="false"></ng-select>
+          </div>
+          <!-- <div class="col-md-5 ">
+            <div class="theme-preview" [ngClass]="selectedTheme?.valueOf">Theme Preview</div>
+          </div> -->
+        </div>
+      
+        <div class="row mb-5 mt-5 align-items-center">
+          <div class="col-md-2">
+            <label for="logoUpload" class="form-label">Upload Logo</label>
+          </div>
+          <div class="col-md-4">
+            <input type="file" id="logoUpload" class="form-control" (change)="onLogoUpload($event)" accept="image/*">
+            <p class="mb-2 ms-1 image-msg">Add transparent image for better view</p>
+          </div>
+          <div class="col-md-6 " *ngIf="logoPreview">
+            <img [src]="logoPreview" alt="Logo Preview" class="img-thumbnail" style="max-width: 250px;">
+          </div>
+        </div>
+      
+        <div class="rounded-3 mt-5">
+          <div class="card-body d-flex">
+            <button type="submit" class="btn btn-primary fw-semibold px-4 py-2 me-2 btn-fill">
+              Update
+            </button>
+            <button type="button" class="btn btn-secondary fw-semibold me-3 px-4 py-2 btn-transparent"
+              routerLink="/main/attendance/device">
+              Cancel
+            </button>
+      
+          </div>
+        </div>
+      </form>
+      
+
+    </div>
+  </div>
+
+</div>

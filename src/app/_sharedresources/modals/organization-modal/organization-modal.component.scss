@@ -1,0 +1,30 @@
+#organization-modal{
+    max-height: 95vh;
+}
+
+/* Custom styles for the close button */
+.custom-close {
+    background: none; /* Remove background from the button */
+    border: none; /* Remove borders */
+    cursor: pointer;
+    color: red; /* Set custom text color */
+    font-size: 1.2rem; /* Adjust size of the custom cross */
+    position: relative; /* Ensure the pseudo-element is positioned relative to the button */
+  }
+  
+  /* Remove the default black cross */
+  .custom-close::before {
+    content: ''; /* Clear default content */
+  }
+  
+  /* Add a custom red cross */
+  .custom-close::after {
+    content: '✖'; /* Add custom cross icon */
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%); /* Center the cross */
+    color: red; /* Apply the desired color */
+    font-size: 1.2rem;
+  }
+  

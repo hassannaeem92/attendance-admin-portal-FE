@@ -1,0 +1,35 @@
+.profile-image-wrapper {
+    width: 120px;
+    height: 120px;
+    position: relative;
+  }
+  
+  .profile-image {
+    width: 120%;
+    height: 120%;
+    object-fit: cover;
+    border: 3px solid #ddd;
+  }
+  
+  .upload-icon {
+    width: 30px;
+    height: 30px;
+    bottom: 5px;
+    right: -19px;
+    top: 100px;
+    cursor: pointer;
+  }
+  
+  .mat-dark-theme .mat-form-field {
+    background-color: #333;
+    color: white;
+  }
+  
+  .mat-light-theme .mat-form-field {
+    background-color: white;
+    color: black;
+  }
+
+  // Ng Select dark node changes 
+
+  

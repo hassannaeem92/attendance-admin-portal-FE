@@ -1,0 +1,27 @@
+.form-banner {
+    background-color: #070707; /* A pleasant blue color */
+    color: white; /* Text color for contrast */
+    padding: 10px 15px; /* Padding for spacing */
+    // text-align: center; /* Center the heading text */
+    border-radius: 8px; /* Rounded corners */
+    font-size: 1.5rem; /* Font size for the heading */
+    font-family: Arial, sans-serif; /* Font family for a clean look */
+    margin-bottom: 20px; /* Space below the banner */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Subtle shadow for a modern look */
+  }
+  
+
+  .dark-mode-select .ng-option {
+    padding-left: 6px !important; /* Add padding between the checkbox and the label */
+  }
+  
+  .dark-mode-select input[type="checkbox"] {
+    margin-right: 10px !important; /* Add space between checkbox and label */
+  }
+  
+
+  .dark-mode-select input[type="checkbox"] {
+    transform: scale(1.2); /* Scale the checkbox to 1.5 times its normal size */
+    margin-right: 10px; /* Optional: space between checkbox and label */
+    cursor: pointer;
+  }

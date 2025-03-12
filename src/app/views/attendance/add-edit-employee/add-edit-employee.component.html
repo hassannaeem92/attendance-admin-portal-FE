@@ -1,0 +1,95 @@
+<div class="employee-screen-container p-4" [ngClass]="{'bcg-light': utils.themeStatus === 'light', 'bg-dark': utils.themeStatus === 'dark'}">
+    <!-- Your content here -->
+  
+    <!-- Header Card -->
+    <div class="card rounded-3 shadow-sm mb-4">
+      <div class="card-body">
+        <h5  [ngClass]="utils.themeStatus === 'dark' ? 'text-white' : 'text-dark'" class="mb-0 text-dark">Add Department</h5>
+      </div>
+    </div>
+  
+    <!-- Form Card -->
+    <div class="card rounded-3 shadow-sm mb-4">
+      <div class="card-body">
+        <form #employeeForm="ngForm" (ngSubmit)="onSubmit(employeeForm)">
+          <div class="row mb-4">
+            <!-- Employee Name -->
+            <div class="col-12 col-md-6">
+              <label for="employeeName" class="form-label text-muted">Employee Name</label>
+              <input type="text" class="form-control" id="employeeName" [(ngModel)]="model.name" name="employeeName" #employeeName="ngModel" required placeholder="Enter employee name">
+              <div *ngIf="employeeName.touched && employeeName.invalid" class="text-danger mt-1">
+                <small *ngIf="employeeName.errors?.['required']">Employee Name is required.</small>
+              </div>
+            </div>
+  
+            <!-- Employee Email -->
+            <div class="col-12 col-md-6">
+              <label for="employeeEmail" class="form-label text-muted">Email</label>
+              <input type="email" class="form-control" id="employeeEmail" [(ngModel)]="model.email" name="employeeEmail" #employeeEmail="ngModel" required email placeholder="Enter email">
+              <div *ngIf="employeeEmail.touched && employeeEmail.invalid" class="text-danger mt-1">
+                <small *ngIf="employeeEmail.errors?.['required']">Email is required.</small>
+                <small *ngIf="employeeEmail.errors?.['email']">Please enter a valid email.</small>
+              </div>
+            </div>
+          </div>
+  
+          <div class="row mb-4">
+            <!-- Employee Phone -->
+            <div class="col-12 col-md-6">
+              <label for="employeePhone" class="form-label text-muted">Phone Number</label>
+              <input type="tel" class="form-control" id="employeePhone" [(ngModel)]="model.phone" name="employeePhone" #employeePhone="ngModel" required placeholder="Enter phone number">
+              <div *ngIf="employeePhone.touched && employeePhone.invalid" class="text-danger mt-1">
+                <small *ngIf="employeePhone.errors?.['required']">Phone Number is required.</small>
+              </div>
+            </div>
+  
+            <!-- Employee Position -->
+            <div class="col-12 col-md-6">
+              <label for="employeePosition" class="form-label text-muted">Position</label>
+              <input type="text" class="form-control" id="employeePosition" [(ngModel)]="model.position" name="employeePosition" #employeePosition="ngModel" required placeholder="Enter position">
+              <div *ngIf="employeePosition.touched && employeePosition.invalid" class="text-danger mt-1">
+                <small *ngIf="employeePosition.errors?.['required']">Position is required.</small>
+              </div>
+            </div>
+          </div>
+          <div class="row mb-4">
+            <div class="col-12 col-md-6">
+              <label for="startingDate" class="form-label text-muted">Starting Date</label>
+              <span class="">
+                <mat-form-field appearance="outline" class="w-100" [ngClass]="{'mat-dark-theme': utils.themeStatus === 'dark', 'mat-light-theme': utils.themeStatus === 'light'}">
+                  <input
+                    matInput
+                    [matDatepicker]="picker1"
+                    placeholder="Select a date"
+                    name="startingDate"
+                    id="startingDate"
+                    [(ngModel)]="startingDate"
+                    required
+                    readonly
+                    #startingDateField="ngModel"
+                  />
+                  <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
+                  <mat-datepicker #picker1></mat-datepicker>
+                </mat-form-field>
+              </span>
+              <div *ngIf="startingDateField.touched && startingDateField.invalid" class="text-danger mt-1">
+                <small *ngIf="startingDateField.errors?.['required']">Starting Date is required.</small>
+              </div>
+            </div>
+          </div>
+          
+        </form>
+      </div>
+    </div>
+  
+    <!-- Footer Card with Buttons -->
+    <div class="card rounded-3 shadow-sm mt-3">
+      <div class="card-body d-flex justify-content-end">
+        <button class="btn btn-outline-secondary fw-semibold me-3 px-4 py-2" [routerLink]="['/main/attendance/all-Departments']" routerLinkActive="router-link-active">Cancel</button>
+        <button class="btn btn-outline-warning fw-semibold me-3 px-4 py-2" (click)="onClear()">Clear</button>
+        <button class="btn btn-primary fw-semibold px-4 py-2" [disabled]="employeeForm.invalid" (click)="onSave()">Save</button>
+      </div>
+    </div>
+  
+  </div>
+  

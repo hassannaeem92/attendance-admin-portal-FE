@@ -1,0 +1,819 @@
+<div class="employee-screen-container p-4"
+    [ngClass]="{'bcg-light': utils.themeStatus === 'light', 'bg-dark': utils.themeStatus === 'dark'}">
+    <!-- Your content here -->
+
+    <!-- Header Card -->
+    <div class="card rounded-3 shadow-sm mb-4">
+        <div class="card-body">
+            <h5 *ngIf="mode === 'create'" [ngClass]="utils.themeStatus === 'dark' ? 'text-white' : 'text-dark'"
+                class="mb-0 text-dark">Add Device</h5>
+            <h5 *ngIf="mode === 'edit'" [ngClass]="utils.themeStatus === 'dark' ? 'text-white' : 'text-dark'"
+                class="mb-0 text-dark">Edit Device</h5>
+        </div>
+    </div>
+
+
+    <!-- For Add Device -->
+
+    <div *ngIf="mode === 'empty'" class="card rounded-3 shadow-sm mb-4">
+        <div class="card-body">
+
+            <form #form="ngForm" (ngSubmit)="form.form.valid && onSubmit()">
+
+
+                <div class="row gy-4 gx-3">
+                    <!-- Organization ID -->
+                    <div *ngIf="currentUserRole === 'SuperAdmin'" class="col-12 col-md-5">
+                        <label for="OrganizationSelect" class="form-label">Select Company</label>
+                        <ng-select id="OrganizationSelect" [(ngModel)]="selectedOrganization"
+                            [items]="organizationArray" bindLabel="name" placeholder="Select Company"
+                            name="organizationSelect" class="dark-mode-select" [multiple]="false"
+                            required="currentUserRole === 'SuperAdmin'"
+                            (change)="onOrganizationChange(selectedOrganization?.id)"></ng-select>
+                        <div *ngIf="form.submitted && !selectedOrganization && currentUserRole === 'SuperAdmin'"
+                            class="text-danger mt-2">
+                            {{ requiredText }}
+                        </div>
+                    </div>
+                    <div *ngIf="currentUserRole === 'SuperAdmin'" class="col-6 col-md-1">
+                        <button type="button" class="btn btn-primary mt-4 btn-fill" (click)="createOrganization()">
+                            Add
+                        </button>
+                    </div>
+
+                    <!-- COmpany Location -->
+                    <div *ngIf="selectedOrganization || currentUserRole != 'SuperAdmin'" class="col-12 col-md-5">
+                        <label for="CompanyLocationSelect" class="form-label">Select Company Location</label>
+                        <ng-select id="CompanyLocationSelect" [(ngModel)]="selectedCompanyLocation"
+                            [items]="companylocationArray" required bindLabel="name"
+                            placeholder="Select Company Location" name="CompanyLocationSelect" class="dark-mode-select"
+                            [multiple]="false">
+                        </ng-select>
+                        <div *ngIf="form.submitted && !selectedCompanyLocation" class="text-danger mt-2">
+                            {{requiredText}}
+                        </div>
+
+                    </div>
+                    <div *ngIf="selectedOrganization || currentUserRole != 'SuperAdmin'" class="col-6 col-md-1">
+                        <button type="button" class="btn btn-primary mt-4 btn-fill" (click)="createOrgLocation()">
+                            Add
+                        </button>
+                    </div>
+
+                    <!-- Client Company -->
+                    <div *ngIf="companyArray && companyArray.length &&  (selectedOrganization || orgIdFromLocalHost)"
+                        class="col-12 col-md-5">
+                        <label for="CompanySelect" class="form-label">Select Client Company</label>
+                        <ng-select id="CompanySelect" [(ngModel)]="selectedCompany" [items]="companyArray"
+                            bindLabel="name" placeholder="Select Client Company" name="CompanySelect"
+                            class="dark-mode-select" [multiple]="false"
+                            (change)="onComnpanyChange(selectedOrganization?.id, selectedCompany?.id)"></ng-select>
+                        <!-- <div *ngIf="form.submitted && !selectedCompany && currentUserRole === 'Admin'" class="text-danger mt-2">
+                    {{ requiredText }}
+                  </div> -->
+                    </div>
+                    <div *ngIf="companyArray && companyArray.length &&  (selectedOrganization || orgIdFromLocalHost)"
+                        class="col-6 col-md-1">
+                        <button type="button" class="btn btn-primary mt-4 btn-fill" (click)="createCompany()">
+                            Add
+                        </button>
+                    </div>
+
+                    <!-- Client Company Location -->
+                    <div *ngIf="selectedCompany" class="col-12 col-md-5">
+                        <label for="ClientComLocationSelect" class="form-label">Select Client Company
+                            Location</label>
+                        <ng-select id="ClientComLocationSelect" [(ngModel)]="selectedClientCompanyLocation"
+                            [items]="clietnCompanyLocationArray" bindLabel="name"
+                            [required]="!selectedClientCompanyLocation && selectedCompany"
+                            placeholder="Select Client Company Location" name="ClientComLocationSelect"
+                            class="dark-mode-select" [multiple]="false">
+                        </ng-select>
+                        <span *ngIf="form.submitted && !selectedClientCompanyLocation && selectedCompany"
+                            class="text-danger mt-2">
+                            {{ requiredText }}
+                        </span>
+                    </div>
+                    <div *ngIf="selectedCompany" class="col-6 col-md-1">
+                        <button type="button" class="btn btn-primary mt-4 btn-fill" (click)="createCompanyLocation()">
+                            Add
+                        </button>
+                    </div>
+
+                    <!-- Name -->
+                    <div class="col-12 col-md-6">
+                        <label for="name" class="form-label text-muted">Name</label>
+                        <input type="text" class="form-control" id="name" [(ngModel)]="model.name" name="Name"
+                            #name="ngModel" required placeholder="Enter name" />
+                        <div *ngIf="form.submitted && name.invalid" class="text-danger mt-1">
+                            <small *ngIf="name.errors?.['required']">{{requiredText}}</small>
+                        </div>
+                    </div>
+
+                    <!-- Description -->
+                    <div class="col-12 col-md-6">
+                        <label for="description" class="form-label text-muted">Description</label>
+                        <input type="text" class="form-control" #description="ngModel" id="description"
+                            [(ngModel)]="model.description" name="description" placeholder="Enter description" />
+                        <!-- <div *ngIf="form.submitted && description.invalid" class="text-danger mt-1">
+                            <small *ngIf="description.errors?.['required']">{{requiredText}}</small>
+                        </div> -->
+                    </div>
+
+                    <div class="col-12 col-md-6">
+                        <label for="attendanceType" class="form-label">Attendance Type</label>
+                        <ng-select id="attendanceType" [(ngModel)]="selectedAttendanceType" [items]="attendanceTypeArray" bindLabel="name"
+                          placeholder="Select Attenfance Type" name="genderSelect" class="dark-mode-select">
+                        </ng-select>
+                    </div>
+          
+
+                    <!-- Public IP Address -->
+                    <div class="col-12 col-md-6">
+                        <label for="publicIPAddress" class="form-label text-muted">Public IP Address</label>
+                        <input type="text" disabled class="form-control" id="publicIPAddress"
+                            [(ngModel)]="model.publicIPAddress" name="publicIPAddress" #publicIPAddress="ngModel"
+                            placeholder="Enter Public IP Address" />
+                        <!-- <div *ngIf="form.submitted && publicIPAddress.invalid" class="text-danger mt-1">
+                            <small *ngIf="publicIPAddress.errors?.['required']">{{ requiredText }}</small>
+                        </div> -->
+                    </div>
+
+                    <!-- Private IP Address -->
+                    <div class="col-12 col-md-6">
+                        <label for="privateIPAddress" class="form-label text-muted">Private IP Address</label>
+                        <input type="text" disabled class="form-control" id="privateIPAddress"
+                            [(ngModel)]="model.privateIPAddress" name="privateIPAddress" #privateIPAddress="ngModel"
+                            placeholder="Enter Private IP Address" />
+                        <!-- <div *ngIf="form.submitted && privateIPAddress.invalid" class="text-danger mt-1">
+                            <small *ngIf="privateIPAddress.errors?.['required']">{{ requiredText }}</small>
+                        </div> -->
+                    </div>
+
+                    <!-- Manufacturer -->
+                    <div class="col-12 col-md-6">
+                        <label for="manufacturer" class="form-label text-muted">Manufacturer</label>
+                        <input type="text" disabled class="form-control" id="manufacturer"
+                            [(ngModel)]="model.manufacturer" name="manufacturer" #manufacturer="ngModel"
+                            placeholder="Enter Manufacturer" />
+                        <!-- <div *ngIf="form.submitted && manufacturer.invalid" class="text-danger mt-1">
+                            <small *ngIf="manufacturer.errors?.['required']">{{ requiredText }}</small>
+                        </div> -->
+                    </div>
+
+                    <!-- MAC Address -->
+                    <div class="col-12 col-md-6">
+                        <label for="macAddress" class="form-label text-muted">MAC Address</label>
+                        <input type="text" disabled class="form-control" id="macAddress" [(ngModel)]="model.macAddress"
+                            name="macAddress" #macAddress="ngModel" placeholder="Enter MAC Address" />
+                        <!-- <div *ngIf="form.submitted && macAddress.invalid" class="text-danger mt-1">
+                            <small *ngIf="macAddress.errors?.['required']">{{ requiredText }}</small>
+                        </div> -->
+                    </div>
+
+
+
+
+
+
+
+                </div>
+
+
+                <div class="rounded-3 mt-5">
+                    <div class="card-body d-flex">
+                        <!-- <button *ngIf="mode === 'create'" type="submit"
+                            class="btn btn-primary fw-semibold px-4 py-2 me-2 btn-fill">
+                            Save
+                        </button> -->
+                        <!-- <button *ngIf="mode === 'edit'" type="submit" class="btn btn-primary fw-semibold px-4 py-2 me-2 btn-fill">
+                            Update
+                        </button> -->
+                        <button type="button" class="btn btn-secondary fw-semibold me-3 px-4 py-2 btn-transparent "
+                            routerLink="/main/attendance/device">
+                            Cancel
+                        </button>
+                        <button type="button" class="btn btn-warning fw-semibold me-3 px-4 py-2 btn-transparent"
+                            (click)="onClear()">
+                            Clear
+                        </button>
+
+                    </div>
+                </div>
+            </form>
+
+
+        </div>
+    </div>
+
+
+    <!-- Edit Device Form  -->
+    <!-- Form Card -->
+    <div class="card rounded-3 shadow-sm mb-4">
+        <div class="card-body">
+
+            <mat-tab-group mat-stretch-tabs="false" animationDuration="0ms" class="custom-tabs mb-5"
+                (selectedTabChange)="onTabChange($event)">
+                <mat-tab label="Device">
+                </mat-tab>
+                <mat-tab label="Theme Settings">
+                </mat-tab>
+                <mat-tab label="Display Settings">
+                </mat-tab>
+            </mat-tab-group>
+
+
+
+            <form *ngIf="selectedTabIndex === 0" #deviceForm="ngForm"
+                (ngSubmit)="deviceForm.form.valid && onSubmit()">
+
+
+                <div class="row gy-4 gx-3">
+                    <!-- Organization ID -->
+                    <div *ngIf="currentUserRole === 'SuperAdmin'" class="col-12 col-md-6">
+                        <label for="OrganizationSelect" class="form-label">Select Company</label>
+                        <ng-select id="OrganizationSelect" [(ngModel)]="selectedOrganization"
+                            [items]="organizationArray" bindLabel="name" placeholder="Select Company"
+                            name="organizationSelect" class="dark-mode-select" [multiple]="false"
+                            required="currentUserRole === 'SuperAdmin'"
+                            (change)="onOrganizationChange(selectedOrganization?.id)" (close)="onDropdownClose()" (open)="onDropdownOpen()"  (search)="onSearch($event, organizationArray, 'name')" (clear)="onDropdownClose()">
+
+                            <ng-template ng-option-tmp let-item="item">
+                                {{ item.name }}
+                              </ng-template>
+                          
+                              <!-- "Add Company" Button When No Match Found  -->
+                              <ng-template *ngIf="showAddButton" ng-footer-tmp>
+                                <div class="d-flex justify-content-between align-items-center p-2">
+                                  <button type="button"
+                                          class="btn btn-primary btn-fill w-23 text-start d-flex justify-content-between align-items-center"
+                                          (click)="createOrganization(); $event.stopPropagation();">
+                                    <span class="material-icons">add</span>
+                                    <span>Add Company</span>
+                                  </button>
+                                </div>
+                              </ng-template>
+
+                        </ng-select>
+                        <div *ngIf="deviceForm.submitted && !selectedOrganization && currentUserRole === 'SuperAdmin'"
+                            class="text-danger mt-2">
+                            {{ requiredText }}
+                        </div>
+                    </div>
+                    <!-- <div *ngIf="currentUserRole === 'SuperAdmin'" class="col-6 col-md-1">
+                        <button type="button" class="btn btn-primary mt-4 btn-fill" (click)="createOrganization()">
+                            Add
+                        </button>
+                    </div> -->
+
+                    <!-- COmpany Location -->
+                    <div *ngIf="selectedOrganization || currentUserRole != 'SuperAdmin'" class="col-12 col-md-6">
+                        <label for="CompanyLocationSelect" class="form-label">Select Company Location</label>
+                        <ng-select id="CompanyLocationSelect" [(ngModel)]="selectedCompanyLocation"
+                            [items]="companylocationArray" required bindLabel="name"
+                            placeholder="Select Company Location" name="CompanyLocationSelect" class="dark-mode-select"
+                            [multiple]="false" (close)="onDropdownClose()" (open)="onDropdownOpen()"  (search)="onSearch($event, companylocationArray, 'name')" (clear)="onDropdownClose()">
+                            <ng-template ng-option-tmp let-item="item">
+                                {{ item.name }}
+                              </ng-template>
+                          
+                              <!-- "Add Client Company" Button When No Match Found -->
+                              <ng-template *ngIf="showAddButton || companylocationArray.length == 0" ng-footer-tmp>
+                                <div class="d-flex justify-content-between align-items-center p-2">
+                                  <button type="button"
+                                          class="btn btn-primary btn-fill w-23 text-start d-flex justify-content-between align-items-center"
+                                          (click)="createOrgLocation(); $event.stopPropagation();">
+                                    <span class="material-icons">add</span>
+                                    <span>Add Location</span>
+                                  </button>
+                                </div>
+                              </ng-template>
+                        </ng-select>
+                        <div *ngIf="deviceForm.submitted && !selectedCompanyLocation" class="text-danger mt-2">
+                            {{requiredText}}
+                        </div>
+
+                    </div>
+                    <!-- <div *ngIf="selectedOrganization || currentUserRole != 'SuperAdmin'" class="col-6 col-md-1">
+                        <button type="button" class="btn btn-primary mt-4 btn-fill" (click)="createOrgLocation()">
+                            Add
+                        </button>
+                    </div> -->
+
+                    <!-- Client Company -->
+                    <div *ngIf="companyArray && companyArray.length &&  (selectedOrganization || orgIdFromLocalHost)"
+                        class="col-12 col-md-6">
+                        <label for="CompanySelect" class="form-label">Select Client Company</label>
+                        <ng-select id="CompanySelect" [(ngModel)]="selectedCompany" [items]="companyArray"
+                            bindLabel="name" placeholder="Select Client Company" name="CompanySelect"
+                            class="dark-mode-select" [multiple]="false"
+                            (change)="onComnpanyChange(selectedOrganization?.id, selectedCompany?.id)" (close)="onDropdownClose()" (open)="onDropdownOpen()"  (search)="onSearch($event, companyArray, 'name')" (clear)="onDropdownClose()">
+                        
+                            <ng-template ng-option-tmp let-item="item">
+                                {{ item.name }}
+                              </ng-template>
+                          
+                              <!-- "Add Client Company" Button When No Match Found -->
+                              <ng-template *ngIf="showAddButton || companyArray.length == 0" ng-footer-tmp>
+                                <div class="d-flex justify-content-between align-items-center p-2">
+                                  <button type="button"
+                                          class="btn btn-primary btn-fill w-23 text-start d-flex justify-content-between align-items-center"
+                                          (click)="createCompany(); $event.stopPropagation();">
+                                    <span class="material-icons">add</span>
+                                    <span>Add Client Company</span>
+                                  </button>
+                                </div>
+                              </ng-template>
+                        </ng-select>
+                        <!-- <div *ngIf="deviceForm.submitted && !selectedCompany && currentUserRole === 'Admin'" class="text-danger mt-2">
+                    {{ requiredText }}
+                  </div> -->
+                    </div>
+                    <!-- <div *ngIf="companyArray && companyArray.length &&  (selectedOrganization || orgIdFromLocalHost)"
+                        class="col-6 col-md-1">
+                        <button type="button" class="btn btn-primary mt-4 btn-fill" (click)="createCompany()">
+                            Add
+                        </button>
+                    </div> -->
+
+                    <!-- Client Company Location -->
+                    <div *ngIf="selectedCompany" class="col-12 col-md-6">
+                        <label for="ClientComLocationSelect" class="form-label">Select Client Company
+                            Location</label>
+                        <ng-select id="ClientComLocationSelect" [(ngModel)]="selectedClientCompanyLocation"
+                            [items]="clietnCompanyLocationArray" bindLabel="name"
+                            [required]="!selectedClientCompanyLocation && selectedCompany"
+                            placeholder="Select Client Company Location" name="ClientComLocationSelect"
+                            class="dark-mode-select" [multiple]="false" (close)="onDropdownClose()" (open)="onDropdownOpen()"  (search)="onSearch($event, clietnCompanyLocationArray, 'name')" (clear)="onDropdownClose()">
+                            <ng-template ng-option-tmp let-item="item">
+                                {{ item.name }}
+                              </ng-template>
+                          
+                              <!-- "Add Client Company" Button When No Match Found -->
+                              <ng-template *ngIf="showAddButton || clietnCompanyLocationArray.length == 0" ng-footer-tmp>
+                                <div class="d-flex justify-content-between align-items-center p-2">
+                                  <button type="button"
+                                          class="btn btn-primary btn-fill w-23 text-start d-flex justify-content-between align-items-center"
+                                          (click)="createCompanyLocation(); $event.stopPropagation();">
+                                    <span class="material-icons">add</span>
+                                    <span>Add Location</span>
+                                  </button>
+                                </div>
+                              </ng-template>
+                        </ng-select>
+                        <span *ngIf="deviceForm.submitted && !selectedClientCompanyLocation && selectedCompany"
+                            class="text-danger mt-2">
+                            {{ requiredText }}
+                        </span>
+                    </div>
+                    <!-- <div *ngIf="selectedCompany" class="col-6 col-md-1">
+                        <button type="button" class="btn btn-primary mt-4 btn-fill" (click)="createCompanyLocation()">
+                            Add
+                        </button>
+                    </div> -->
+
+                    <!-- Name -->
+                    <div class="col-12 col-md-6">
+                        <label for="name" class="form-label text-muted">Name</label>
+                        <input type="text" class="form-control" id="name" [(ngModel)]="model.name" name="Name"
+                            #name="ngModel" required placeholder="Enter name" />
+                        <div *ngIf="deviceForm.submitted && name.invalid" class="text-danger mt-1">
+                            <small *ngIf="name.errors?.['required']">{{requiredText}}</small>
+                        </div>
+                    </div>
+
+                    <!-- Description -->
+                    <div class="col-12 col-md-6">
+                        <label for="description" class="form-label text-muted">Description</label>
+                        <input type="text" class="form-control" #description="ngModel" id="description"
+                            [(ngModel)]="model.description" name="description" placeholder="Enter description" />
+                        <!-- <div *ngIf="deviceForm.submitted && description.invalid" class="text-danger mt-1">
+                            <small *ngIf="description.errors?.['required']">{{requiredText}}</small>
+                        </div> -->
+                    </div>
+
+                    <div class="col-12 col-md-6">
+                        <label for="attendanceType" class="form-label">Attendance Type</label>
+                        <ng-select id="attendanceType" [(ngModel)]="selectedAttendanceType" [items]="attendanceTypeArray" bindLabel="name"
+                          placeholder="Select Gender" name="genderSelect" class="dark-mode-select">
+                        </ng-select>
+                    </div>
+          
+
+                    <!-- Public IP Address -->
+                    <div class="col-12 col-md-6">
+                        <label for="publicIPAddress" class="form-label text-muted">Public IP Address</label>
+                        <input type="text" disabled class="form-control" id="publicIPAddress"
+                            [(ngModel)]="model.publicIPAddress" name="publicIPAddress" #publicIPAddress="ngModel"
+                            placeholder="Enter Public IP Address" />
+                        <!-- <div *ngIf="deviceForm.submitted && publicIPAddress.invalid" class="text-danger mt-1">
+                            <small *ngIf="publicIPAddress.errors?.['required']">{{ requiredText }}</small>
+                        </div> -->
+                    </div>
+
+                    <!-- Private IP Address -->
+                    <div class="col-12 col-md-6">
+                        <label for="privateIPAddress" class="form-label text-muted">Private IP Address</label>
+                        <input type="text" disabled class="form-control" id="privateIPAddress"
+                            [(ngModel)]="model.privateIPAddress" name="privateIPAddress" #privateIPAddress="ngModel"
+                            placeholder="Enter Private IP Address" />
+                        <!-- <div *ngIf="deviceForm.submitted && privateIPAddress.invalid" class="text-danger mt-1">
+                            <small *ngIf="privateIPAddress.errors?.['required']">{{ requiredText }}</small>
+                        </div> -->
+                    </div>
+
+                    <!-- Manufacturer -->
+                    <div class="col-12 col-md-6">
+                        <label for="manufacturer" class="form-label text-muted">Manufacturer</label>
+                        <input type="text" disabled class="form-control" id="manufacturer"
+                            [(ngModel)]="model.manufacturer" name="manufacturer" #manufacturer="ngModel"
+                            placeholder="Enter Manufacturer" />
+                        <!-- <div *ngIf="deviceForm.submitted && manufacturer.invalid" class="text-danger mt-1">
+                            <small *ngIf="manufacturer.errors?.['required']">{{ requiredText }}</small>
+                        </div> -->
+                    </div>
+
+                    <!-- MAC Address -->
+                    <div class="col-12 col-md-6">
+                        <label for="macAddress" class="form-label text-muted">MAC Address</label>
+                        <input type="text" disabled class="form-control" id="macAddress" [(ngModel)]="model.macAddress"
+                            name="macAddress" #macAddress="ngModel" placeholder="Enter MAC Address" />
+                        <!-- <div *ngIf="deviceForm.submitted && macAddress.invalid" class="text-danger mt-1">
+                            <small *ngIf="macAddress.errors?.['required']">{{ requiredText }}</small>
+                        </div> -->
+                    </div>
+
+
+                   
+                    <!-- <div class="checkbox-container">
+                        <div class="col-md-12">
+                            <label for ="attendanceType" class="form-label text-muted">Attendance Type</label>
+                        </div>
+                        
+                        <div class="col-md-2">
+                            <div class="checkbox-fade">
+                                <label>
+                                    <input type="checkbox" name="isFacial" [(ngModel)]="model.isFacial">
+                                    <span>Facial Recognition</span>
+                                </label>
+                            </div>
+                        </div>
+                    
+                        <div class="col-md-2">
+                            <div class="checkbox-fade">
+                                <label>
+                                    <input type="checkbox" name="isBiometric" [(ngModel)]="model.isBiometric">
+                                    <span>Biometric</span>
+                                </label>
+                            </div>
+                        </div>
+                    
+                        <div class="col-md-2">
+                            <div class="checkbox-fade">
+                                <label>
+                                    <input type="checkbox" name="isSSN" [(ngModel)]="model.isSSN">
+                                    <span>SSN</span>
+                                </label>
+                            </div>
+                        </div>
+                    
+                        <div class="col-md-2">
+                            <div class="checkbox-fade">
+                                <label>
+                                    <input type="checkbox" name="isLastName" [(ngModel)]="model.isLastName">
+                                    <span>Last Name</span>
+                                </label>
+                            </div>
+                        </div>
+                        
+                    </div> -->
+
+
+
+
+
+                </div>
+
+
+                <div class="rounded-3 mt-5">
+                    <div class="card-body d-flex">
+                        <button *ngIf="mode === 'create'" type="submit" class="btn btn-primary fw-semibold px-4 py-2 me-2 btn-fill">
+                            Save
+                        </button>
+                        <button *ngIf="mode === 'edit'" type="submit"
+                            class="btn btn-primary fw-semibold px-4 py-2 me-2 btn-fill">
+                            Update
+                        </button>
+                        <button type="button" class="btn btn-secondary fw-semibold me-3 px-4 py-2 btn-transparent "
+                            routerLink="/main/attendance/device">
+                            Cancel
+                        </button>
+                        <button type="button" class="btn btn-warning fw-semibold me-3 px-4 py-2 btn-transparent"
+                            (click)="onClear()">
+                            Clear
+                        </button>
+
+                    </div>
+                </div>
+            </form>
+
+
+            <form *ngIf="selectedTabIndex == 1" #themeForm="ngForm"
+                >
+
+
+
+                <!-- <div class="row mb-3 align-items-center">
+                    <div class="col-md-2">
+                        <label class="form-label">Date Color</label>
+                    </div>
+                    <div class="col-md-4 d-flex align-items-center">
+                        <input type="text" [(ngModel)]="themeModel.dateColor" class="form-control me-2">
+                        <input type="color" [(ngModel)]="themeModel.dateColor" class="form-control form-control-color">
+                    </div>
+                    <div class="col-md-6">
+                        <p class="color-preview" [style.color]="themeModel.dateColor">Sample Text</p>
+                    </div>
+                </div> -->
+
+                <!-- <div class="row mb-3 align-items-center">
+                    <div class="col-md-2">
+                        <label class="form-label">Date Color</label>
+                    </div>
+                    <div class="col-md-4 d-flex align-items-center">
+                        <input type="text" name="dateColor" [(ngModel)]="themeModel.dateColor" (blur)="convertColorToHex('dateColor')" class="form-control me-2">
+                        <input type="color" name="dateColor" [(ngModel)]="themeModel.dateColor" class="form-control form-control-color">
+                    </div>
+                    <div class="col-md-6">
+                        <p class="color-preview" [style.color]="themeModel.dateColor">01 Jan 2025</p>
+                    </div>
+                </div> -->
+
+
+                <div class="row mb-3 align-items-center" *ngFor="let field of colorFields">
+                    <div class="col-md-2">
+                      <label class="form-label">{{ field.label }}</label> <!-- Show formatted label -->
+                    </div>
+                  
+                    <div class="col-md-4 d-flex align-items-center">
+                      <!-- Text field (User enters color name) -->
+                      <input type="text" name="{{field.key}}" [(ngModel)]="displayColors[field.key]" 
+                             (blur)="validateAndConvertColor(field.key)" class="form-control me-2">
+                  
+                      <!-- Color picker (User selects color) -->
+                      <input type="color" name="{{field.key}}Picker" [(ngModel)]="themeModel[field.key]" 
+                             (input)="updateDisplayColor(field.key)" class="form-control form-control-color">
+                    </div>
+                  
+                    <div class="col-md-6">
+                      <!-- <p class="color-preview" [style.color]="themeModel[field.key]">
+                        {{ field.key === 'backgroundColor' ? 'Background' : 'Sample Text' }}
+                      </p> -->
+                    </div>
+                  </div>
+                  
+
+                <!-- <div class="row mb-3 align-items-center" *ngFor="let colorField of ['dateColor', 'addressColor', 'dialpadTextColor', 'dialpadColor', 'backgroundColor', 'timeColor']">
+                    <div class="col-md-2">
+                        <label class="form-label">{{ colorField }}</label>
+                    </div>
+                    <div class="col-md-4 d-flex align-items-center">
+                        <input type="text" name="{{colorField}}" [(ngModel)]="displayColors[colorField]" (blur)="validateAndConvertColor(colorField)" class="form-control me-2">
+                        
+                        <input type="color" name="{{colorField}}Picker" [(ngModel)]="themeModel[colorField]" (input)="updateDisplayColor(colorField)" class="form-control form-control-color">
+                    </div>
+                    <div class="col-md-6">
+                        <p class="color-preview" [style.color]="themeModel[colorField]">{{ colorField === 'backgroundColor' ? 'Background' : 'Sample Text' }}</p>
+                    </div>
+                </div> -->
+                
+                
+
+
+
+                <div class="row mb-3 align-items-center mb-5 mt-5">
+                    <div class="col-md-2">
+                        <label for="theme" class="form-label">Theme</label>
+                    </div>
+                    <div class="col-md-4">
+                        <ng-select id="CompanySelect" [(ngModel)]="selectedTheme" [items]="themesArray" bindLabel="name"
+                            placeholder="Select Theme" name="themeSelect" class="dark-mode-select"
+                            [multiple]="false"></ng-select>
+                    </div>
+                    <!-- <div class="col-md-5 ">
+                    <div class="theme-preview" [ngClass]="selectedTheme?.valueOf">Theme Preview</div>
+                    </div> -->
+                </div>
+
+                <div class="row mb-5 mt-5 align-items-center">
+                    <div class="col-md-2">
+                        <label for="logoUpload" class="form-label">Upload Logo</label>
+                    </div>
+                    <div class="col-md-4">
+                        <input type="file" id="logoUpload" class="form-control" (change)="onLogoUpload($event)"
+                            accept="image/*">
+                        <p class="mb-2 ms-1 image-msg">Add transparent image for better view</p>
+                    </div>
+                    <div class="col-md-6 " *ngIf="logoPreview">
+                        <img [src]="logoPreview" alt="Logo Preview" class="img-thumbnail" style="max-width: 250px;">
+                    </div>
+                </div>
+
+
+                <!-- Warning message OUTSIDE the div -->
+                <!-- <p class="text-warning mt-2">⚠️ These settings override the parent setting.</p> -->
+                <!-- <p class="text-danger mt-2">
+                    <i class="bi bi-exclamation-circle-fill"></i> These settings override the parent setting.
+                </p> -->
+                <!-- <p class="text-danger mt-2">
+                    <i class="bi bi-exclamation-circle"></i> These settings override the parent setting.
+                </p> -->
+                
+                
+                <div class="rounded-3 mt-5">
+                    <div class="card-body d-flex">
+                        <button (click)="onSubmit('themeForm')" *ngIf="mode === 'create'" type="submit" class="btn btn-primary fw-semibold px-4 py-2 me-2 btn-fill">
+                            Save
+                        </button>
+                        <button (click)="onSubmit('themeForm')" *ngIf="mode === 'edit'" type="submit"
+                            class="btn btn-primary fw-semibold px-4 py-2 me-2 btn-fill">
+                            Update
+                        </button>
+                        <button type="button" class="btn btn-secondary fw-semibold me-3 px-4 py-2 btn-transparent"
+                            routerLink="/main/attendance/device">
+                            Cancel
+                        </button>
+                        <button type="button" class="btn btn-warning fw-semibold me-3 px-4 py-2 btn-transparent"
+                            (click)="onClear()">
+                            Clear
+                        </button>
+                    </div>
+                </div>
+            </form>
+
+
+
+            <form *ngIf="selectedTabIndex == 2" #fontForm="ngForm"
+                >
+                <div class="row mb-3 align-items-center mb-5 mt-5">
+                    <div class="col-md-2">
+                        <label for="timeFontSize" class="form-label">Time Font Size</label>
+                    </div>
+                    <div class="col-md-4">
+                        <ng-select id="timeFontSize" [(ngModel)]="selectedTimeFontSize" [items]="fontSizesArray"
+                            bindLabel="name" placeholder="Select Time Font Size" name="timeFontSizeSelect"
+                            class="dark-mode-select" [multiple]="false">
+                        </ng-select>
+                    </div>
+                    <div class="col-md-6 ">
+                        <p class="font-preview" [style.fontSize]="selectedTimeFontSize?.sizeValue"> 12:30 PM</p>
+                    </div>
+                </div>
+
+
+
+
+                <div class="row mb-3 align-items-center mb-5">
+                    <div class="col-md-2">
+                        <label for="dateFontSize" class="form-label">Date Font Size</label>
+                    </div>
+                    <div class="col-md-4">
+                        <ng-select id="dateFontSize" [(ngModel)]="selectedDateFontSize" [items]="fontSizesArrayAll"
+                            bindLabel="name" placeholder="Select Date Font Size" name="dateFontSizeSelect"
+                            class="dark-mode-select" [multiple]="false">
+                        </ng-select>
+                    </div>
+                    <div class="col-md-6 ">
+                        <p class="font-preview" [style.fontSize]="selectedDateFontSize?.sizeValue">01 Jan 2025</p>
+                    </div>
+                </div>
+
+                <div class="row mb-3 align-items-center mb-5">
+                    <div class="col-md-2">
+                        <label for="addressFontSize" class="form-label">Address Font Size</label>
+                    </div>
+                    <div class="col-md-4">
+                        <ng-select id="addressFontSize" [(ngModel)]="selectedAddressFontSize"
+                            [items]="fontSizesArrayAll" bindLabel="name" placeholder="Select Address Font Size"
+                            name="addressFontSizeSelect" class="dark-mode-select" [multiple]="false">
+                        </ng-select>
+                    </div>
+                    <div class="col-md-6 ">
+                        <p class="font-preview" [style.fontSize]="selectedAddressFontSize?.sizeValue"> 123 Main St</p>
+                    </div>
+                </div>
+
+                <div class="row mb-3 align-items-center mb-5">
+                    <div class="col-md-2">
+                        <label for="displayFontSize" class="form-label">Display Font Size</label>
+                    </div>
+                    <div class="col-md-4">
+                        <ng-select id="displayFontSize" [(ngModel)]="selectedDisplayFontSize"
+                            [items]="fontSizesArrayAll" bindLabel="name" placeholder="Select Display Font Size"
+                            name="displayFontSizeSelect" class="dark-mode-select" [multiple]="false">
+                        </ng-select>
+                    </div>
+                    <div class="col-md-5 ">
+                        <p class="font-preview" [style.fontSize]="selectedDisplayFontSize?.sizeValue"> Welcome!</p>
+                    </div>
+                </div>
+
+                <div class="row mb-3 align-items-center mb-5">
+                    <div class="col-md-2">
+                        <label for="displayTextFontSize" class="form-label">Display Text Font Size</label>
+                    </div>
+                    <div class="col-md-4">
+                        <ng-select id="displayTextFontSizeSelect" [(ngModel)]="selectedDisplayTextFontSize"
+                            [items]="fontSizesArrayAll" bindLabel="name" placeholder="Select Display Text Font Size"
+                            name="displayTextFontSizeSelect" class="dark-mode-select" [multiple]="false">
+                        </ng-select>
+                    </div>
+                    <div class="col-md-6 ">
+                        <p class="font-preview" [style.fontSize]="selectedDisplayTextFontSize?.sizeValue"> AaBbCc</p>
+                    </div>
+                </div>
+
+
+
+                <div class="row mb-3 align-items-center mb-5">
+                    <div class="col-md-2">
+                        <label for="fontFamily" class="form-label">Font Family</label>
+                    </div>
+                    <div class="col-md-4">
+                        <ng-select id="fontFamilySelect" [(ngModel)]="selectedFontFamily" [items]="fontFamiliesArray"
+                            bindLabel="name" placeholder="Select Font Family" name="fontSelect" class="dark-mode-select"
+                            [multiple]="false">
+                        </ng-select>
+                    </div>
+                    <div class="col-md-6 ">
+                        <p class="font-preview" [style.fontFamily]="selectedFontFamily"> AaBbCc</p>
+                    </div>
+                </div>
+                <div class="row mb-3 align-items-center mb-5">
+                    <div class="col-md-2">
+                        <label for="brightnessLevel" class="form-label">Brightness Level</label>
+                    </div>
+                    <div class="col-md-4">
+                        <input type="range" id="brightnessLevel" name="brightnessLevel"
+                               min="10" max="100" step="10" 
+                               [(ngModel)]="selectedBrightnessLevel" 
+                               class="form-range custom-range">
+                    </div>
+                    <div class="col-md-6">
+                        <p class="brightness-preview">Selected Brightness: {{ selectedBrightnessLevel }}%</p>
+                    </div>
+                </div>
+                
+
+
+                <div class="row mb-3 align-items-center mb-5">
+                    <div class="col-md-2">
+                        <label for="fontFamily" class="form-label">Orientation</label>
+                    </div>
+                    <div class="col-md-4">
+                        <ng-select id="fontFamilySelect" [(ngModel)]="selectedOrientation" [items]="orientationArray"
+                            bindLabel="name" placeholder="Select Orientation" name="orientation"
+                            class="dark-mode-select" [multiple]="false">
+                        </ng-select>
+                    </div>
+                    <!-- <div class="col-md-6 ">
+                    <p class="font-preview" [style.fontFamily]="selectedOrientation"> AaBbCc</p>
+                    </div> -->
+                </div>
+
+
+                <div class="rounded-3 mt-5">
+                    <div class="card-body d-flex">
+                        <button (click)="onSubmit('fontForm')" *ngIf="mode === 'create'" type="submit" class="btn btn-primary fw-semibold px-4 py-2 me-2 btn-fill">
+                            Save
+                        </button>
+                        <button (click)="onSubmit('fontForm')" *ngIf="mode === 'edit'" type="submit"
+                            class="btn btn-primary fw-semibold px-4 py-2 me-2 btn-fill">
+                            Update
+                        </button>
+                        <button type="button" class="btn btn-secondary fw-semibold me-3 px-4 py-2 btn-transparent"
+                            routerLink="/main/attendance/device">
+                            Cancel
+                        </button>
+                        <button type="button" class="btn btn-warning fw-semibold me-3 px-4 py-2 btn-transparent"
+                            (click)="onClear()">
+                            Clear
+                        </button>
+                    </div>
+                </div>
+            </form>
+
+
+
+
+        </div>
+    </div>
+
+</div>
+
+<app-company-location-modal (isComLocAdded)="isComLocAdded($event)"></app-company-location-modal>
+<app-organization-location-modal (isOrgLocAdded)="isComLocAdded($event, 'org')"></app-organization-location-modal>
+
+<app-organization-modal (isOrgAdded)="isOrgAdded($event)"></app-organization-modal>
+
+<app-company-modal (isComAdded)="isComAdded($event)"></app-company-modal>

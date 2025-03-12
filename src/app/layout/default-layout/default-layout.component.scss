@@ -1,0 +1,141 @@
+:host {
+  .ng-scrollbar {
+    --scrollbar-padding: 1px;
+    --scrollbar-size: 5px;
+    --scrollbar-thumb-color: var(--cui-gray-500, #999);
+    --scrollbar-thumb-hover-color: var(--cui-gray-400, #999);
+    --scrollbar-hover-size: calc(var(--scrollbar-size) * 1.5);
+  }
+}
+
+.sidebar-logo {
+  /* Optional: Add padding, margin, or additional styling */
+  margin-left: 5px;
+
+}
+
+.clickable {
+  cursor: pointer; /* Pointer cursor to indicate clickability */
+}
+
+// ng-scrollbar css variables
+//.cui-scrollbar {
+//  --scrollbar-border-radius: 7px;
+//  --scrollbar-padding: 1px;
+//  --scrollbar-viewport-margin: 0;
+//  --scrollbar-track-color: transparent;
+//  --scrollbar-wrapper-color: transparent;
+//  --scrollbar-thumb-color: rgba(0, 0, 0, 0.2);
+//  --scrollbar-thumb-hover-color: var(--scrollbar-thumb-color);
+//  --scrollbar-size: 5px;
+//  --scrollbar-hover-size: var(--scrollbar-size);
+//  --scrollbar-thumb-transition: height ease-out 150ms, width ease-out 150ms;
+//  --scrollbar-track-transition: height ease-out 150ms, width ease-out 150ms;
+//}
+
+
+// .sidebar-color {
+//   background-color: #0056b3 !important;
+// }
+// // c-sidebar-header{
+// //   background-color: #212631 !important;
+// // }
+
+// ::ng-deep .sidebar-nav .nav-link.active{
+//   background: linear-gradient(90deg, #ffd54f, #ffc107) !important; /* Gradient yellow */
+//   color: #000000 !important; /* Ensure readable text */
+// }
+
+// ::ng-deep .sidebar-nav .nav-link.active .nav-icon {
+//   color: #000000 !important; /* Set active icon color to black */
+// }
+
+// ::ng-deep .sidebar-nav .nav-link{
+//   color: white !important;
+// }
+
+// ::ng-deep .sidebar-nav .nav-link:hover{
+//   background-color: #004494 !important;
+// }
+
+
+// ::ng-deep .c-sidebar-nav .nav-item .nav-icon {
+//   color: #ffffff !important;  /* Set icon color to white */
+// }
+
+
+// ::ng-deep .sidebar-nav .nav-icon {
+//   color: #ffffff !important;  /* Set active icon color to white */
+// }
+
+// ::ng-deep .sidebar-nav .nav-group-toggle::after {
+//   background-color: white !important;
+// }
+
+
+.sidebar {
+  transition: all 0.3s ease-in-out !important; /* Smooth animation */
+}
+
+.sidebar.sidebar-fixed {
+  transform: translateX(0) !important; /* Default position */
+}
+
+.sidebar.sidebar-hidden {
+  transform: translateX(-100%) !important; /* Hide sidebar */
+}
+
+
+/* Style the dropdown popup */
+.popup-menu {
+  position: absolute;
+  top: 0;
+  left: 100%;
+  background-color: #fff;
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+  border: 1px solid #ddd;
+  padding: 10px;
+  width: 200px;
+  display: none; /* Hidden by default */
+  z-index: 100;
+}
+
+/* Show the popup on hover */
+.nav-item:hover .popup-menu {
+  display: block;
+}
+
+/* Optional: Add some animation for smooth transition */
+.popup-menu {
+  transition: opacity 0.3s ease, transform 0.3s ease;
+  opacity: 0;
+  transform: translateX(-10px);
+}
+
+.nav-item:hover .popup-menu {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+.icon-quick-start::before {
+  font-family: 'icomoon' !important;
+  content: '\e900';
+  font-size: 18px; /* Adjust */
+  color: #000; /* Make sure it's visible */
+  display: inline-block;
+  line-height: 1; /* Fix alignment */
+  vertical-align: middle; /* Align with text */
+}
+
+.icon-quick-start::before {
+  opacity: 1 !important;
+  color: #000 !important;
+}
+
+.icon-quick-start {
+  font-family: 'icomoon' !important;
+}
+
+
+
+

@@ -1,0 +1,62 @@
+<div class="employee-screen-container" [ngClass]="{
+    'bg-light': utils.themeStatus === 'light',
+    'bg-dark': utils.themeStatus === 'dark'
+  }">
+
+  <div class="card rounded-3 shadow-sm mb-4">
+    <div class="card-body d-flex justify-content-between align-items-center">
+      <h5 [ngClass]="utils.themeStatus === 'dark' ? 'text-white' : 'text-dark'" class="mb-0">
+        Departments
+      </h5>
+      <button [routerLink]="['/main/attendance/add-department']" class="create-btn" (click)="onCreate()">
+        Create
+      </button>
+    </div>
+  </div>
+
+  <!-- AG Grid Section -->
+
+  <div class="ag-grid-container" [ngClass]="{
+    'bg-light': utils.themeStatus === 'light',
+    'bg-dark': utils.themeStatus === 'dark'
+  }">
+    <div class="row">
+      <div class="col-md-12">
+        <div class="table-responsive styled-table">
+          <ngx-datatable class="bootstrap" [rows]="rows" [columnMode]="'force'" [headerHeight]="50"
+          [footerHeight]="50" [rowHeight]="45" [externalPaging]="true"
+          [messages]="messages" [count]="40" [offset]="page.pageNumber"
+          [limit]="page.size" (page)='setPage($event)' [selected]="selected" 
+          [selectionType]="SelectionType.checkbox" (select)='onSelect($event)' (activate)="edit($event)">                        
+           
+            <ngx-datatable-column [sortable]="false" [canAutoResize]="false" [draggable]="true" [resizeable]="true"
+              [headerCheckboxable]="true" [checkboxable]="true">
+            </ngx-datatable-column>
+
+            <ngx-datatable-column name="Id" prop="idS" [width]="80"></ngx-datatable-column>
+            <ngx-datatable-column name="Department Name" prop="phoneNumber"></ngx-datatable-column>
+            <!-- <ngx-datatable-column name="Religion" prop="religion"></ngx-datatable-column> -->
+            <ngx-datatable-column name="Date" prop="dateOfBirth"></ngx-datatable-column>
+            <!-- <ngx-datatable-column name="Registration Date" prop="registerDate"></ngx-datatable-column>
+            <ngx-datatable-column name="Status" prop="status"></ngx-datatable-column> -->
+            <!-- <ngx-datatable-column name="Gender" prop="gender"></ngx-datatable-column> -->
+          </ngx-datatable>
+        </div>
+
+        <!-- (changePageSizeEvent)="changePageSize($event)" -->
+      </div>
+    </div>
+    <app-table-footer class="footerBottom" [isDeleteShow]="false" [selected]="selected" [page]="page"  >
+    </app-table-footer>
+  </div>
+</div>
+
+
+<!-- <div class="card rounded-3 shadow-sm mb-2">
+  <div class="card-body d-flex justify-content-start">
+    <button class="delete-btn btn btn-danger text-white me-3 px-4 py-2">Delete</button>
+  </div>
+</div> -->
+
+
+<!-- Delete Button Section -->

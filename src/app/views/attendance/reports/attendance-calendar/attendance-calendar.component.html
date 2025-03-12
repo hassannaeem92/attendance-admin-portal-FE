@@ -1,0 +1,104 @@
+<!-- <div class="calendar-container">
+    <full-calendar [options]="calendarOptions"></full-calendar>
+  </div> -->
+
+  <div class="employee-screen-container p-4" [ngClass]="{
+    'bcg-light': utils.themeStatus === 'light',
+    'bg-dark': utils.themeStatus === 'dark'
+  }">
+
+    <h5 [ngClass]="utils.themeStatus === 'dark' ? 'text-white' : 'text-dark'" class="mb-1">
+        Attendance Calendar View
+    </h5>
+    <div class="card rounded-3 shadow-sm mb-4">
+      <div class="card-body">
+        <div class="row gy-4 gx-3">
+      
+          <div class="row gy-4 gx-3">
+            <!-- Organization ID -->
+            <div *ngIf="currentUserRole === 'SuperAdmin'" class="col-12 col-md-6">
+              <label for="OrganizationSelect" class="form-label">Select Company</label>
+              <ng-select id="OrganizationSelect" [(ngModel)]="selectedOrganization" [items]="organizationArray"
+                bindLabel="name" placeholder="Select Company" name="organizationSelect" class="dark-mode-select"
+                [multiple]="false" required="currentUserRole === 'SuperAdmin'"
+                (change)="onOrganizationChange(selectedOrganization?.id)"></ng-select>
+      
+            </div>
+      
+      
+            <!-- COmpany Location -->
+            <div *ngIf="selectedOrganization || currentUserRole != 'SuperAdmin'" class="col-12 col-md-6">
+              <label for="CompanyLocationSelect" class="form-label">Select Company Location</label>
+              <ng-select id="CompanyLocationSelect" (change)="onCompanyLocationChange(selectedCompanyLocation?.id)"
+                [(ngModel)]="selectedCompanyLocation" [items]="companylocationArray" required bindLabel="name"
+                placeholder="Select Company Location" name="CompanyLocationSelect" class="dark-mode-select"
+                [multiple]="false">
+              </ng-select>
+      
+      
+            </div>
+      
+      
+            <!-- Client Company -->
+            <div *ngIf="companyArray && companyArray.length &&  (selectedOrganization || orgIdFromLocalHost)"
+              class="col-12 col-md-6">
+              <label for="CompanySelect" class="form-label">Select Client Company</label>
+              <ng-select id="CompanySelect" [(ngModel)]="selectedCompany" [items]="companyArray" bindLabel="name"
+                placeholder="Select Client Company" name="CompanySelect" class="dark-mode-select" [multiple]="false"
+                (change)="onComnpanyChange(selectedOrganization?.id, selectedCompany?.id)"></ng-select>
+      
+            </div>
+      
+      
+            <!-- Client Company Location -->
+            <div *ngIf="selectedCompany" class="col-12 col-md-6">
+              <label for="ClientComLocationSelect" class="form-label">Select Client Company
+                Location</label>
+              <ng-select id="ClientComLocationSelect"
+                (change)="onClientCompanyLocationChange(selectedClientCompanyLocation?.id)"
+                [(ngModel)]="selectedClientCompanyLocation" [items]="clietnCompanyLocationArray" bindLabel="name"
+                placeholder="Select Client Company Location" name="ClientComLocationSelect" class="dark-mode-select"
+                [multiple]="false">
+              </ng-select>
+            </div>
+      
+      
+            <!-- User Id -->
+            <div class="col-12 col-md-6">
+              <label for="UserSelect" class="form-label">Select User</label>
+              <ng-select id="UserSelect" [(ngModel)]="selectedUser" (change)="onUserChange($event)" [items]="userArray"
+                bindLabel="name" placeholder="Select User" required name="UserSelect" class="dark-mode-select"
+                [multiple]="false"></ng-select>
+      
+            </div>
+      
+          </div>
+        </div>
+
+
+        <div class="mt-5">
+
+          <div class="d-flex justify-content-between align-items-center mb-3">
+          
+              <div class="ms-auto">
+                  <button class="create-btn float-end" (click)="showData()">
+                      Show Data
+                  </button>
+              </div>
+          </div>
+      </div>
+
+      </div>
+    </div>
+
+  </div>
+
+
+<div *ngIf="attendanceData && attendanceData.length" class="card rounded-3 shadow-sm mb-4">
+  <div class="card-body">
+
+    <full-calendar [options]="calendarOptions"></full-calendar>
+
+
+  </div>
+</div>

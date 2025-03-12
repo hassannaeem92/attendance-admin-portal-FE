@@ -1,0 +1,151 @@
+
+
+// ::ng-deep .mat-datepicker-content .mat-calendar {
+//     background: #2c3e50 !important; /* Slightly lighter dark background */
+//     color: white !important; /* White text */
+//   }
+  
+//   /* White color for calendar day labels (day names like Mon, Tue, etc.) */
+//   ::ng-deep .mat-calendar-body-label {
+//     color: white !important;
+//   }
+  
+//   /* Header section of the calendar */
+//   ::ng-deep .mat-calendar-table-header th {
+//     color: white !important; /* White text for header */
+//   }
+  
+//   /* Styling for the days in the calendar grid */
+//   ::ng-deep .mat-calendar-body-cell {
+//     color: white !important; /* White text for days */
+//   }
+  
+//   /* Hover effect for day cells */
+//   ::ng-deep .mat-calendar-body-cell:hover {
+//     background-color: #495057 !important; /* Darker hover background */
+//     color: white !important; /* White text on hover */
+//   }
+  
+//   /* Current date styling */
+//   ::ng-deep .mat-calendar-body-cell.mat-calendar-body-selected {
+//     background-color: #1890ff !important; /* Highlight selected date with Bootstrap's primary blue */
+//     color: white !important; /* White text for selected date */
+//   }
+  
+//   /* Today's date */
+//   ::ng-deep .mat-calendar-body-cell.mat-calendar-body-today {
+//     background-color: #34495e !important; /* Slightly lighter dark background for today */
+//     color: white !important; /* White text for today */
+//   }
+  
+//   /* Styling for the prev/next month buttons */
+//   ::ng-deep .mat-calendar-arrow {
+//     color: white !important; /* White arrows for next/prev */
+//   }
+  
+//   /* Additional styling for the month selector (e.g., dropdown) */
+//   ::ng-deep .mat-calendar-period-button {
+//     color: white !important; /* White text for the period button */
+//     background-color: #34495e !important; /* Dark background */
+//   }
+  
+//   /* Styling for the year selector */
+//   ::ng-deep .mat-calendar-year-button {
+//     color: white !important; /* White text for year button */
+//     background-color: #34495e !important; /* Dark background */
+//     border: none !important; /* Remove border */
+//   }
+  
+//   /* Focused year selector */
+//   ::ng-deep .mat-calendar-year-button:focus {
+//     background-color: #495057 !important; /* Darker background when focused */
+//   }
+  
+//   /* Styling for the month selector */
+//   ::ng-deep .mat-calendar-month-button {
+//     color: white !important; /* White text for month button */
+//     background-color: #34495e !important; /* Dark background */
+//     border: none !important; /* Remove border */
+//   }
+  
+//   /* Focused month selector */
+//   ::ng-deep .mat-calendar-month-button:focus {
+//     background-color: #495057 !important; /* Darker background when focused */
+//   }
+  
+//   ::ng-deep .mat-calendar-body-cell-content {
+//     color: white !important; /* Darker background when focused */
+//   }
+  
+//   ::ng-deep .mat-calendar-next-button {
+//     color: white !important;
+//   }
+
+//   ::ng-deep .mat-calendar-previous-button {
+//     color: white !important;
+//   }
+//   ::ng-deep .mat-calendar-arrow {
+//     color: white !important;
+//   }
+
+
+
+//   ::ng-deep .mat-dark-theme .mat-datepicker-input {
+//     color: #e2e3d9 !important;
+  
+//   }
+
+//   ::ng-deep .mat-dark-theme .mdc-icon-button {
+//     color: #a6a8ad !important;
+   
+//   }
+
+
+  
+//   ::ng-deep .mat-light-theme .mat-datepicker-input {
+//     color: #7D7376 !important;
+//   }
+
+//   ::ng-deep .mat-mdc-form-field-infix {
+//      margin: -9px !important;
+//      margin-left: 1px !important;
+//   }
+
+//   ::ng-deep .mat-mdc-form-field-flex {
+//     height: 35px !important;
+//   }
+
+//  /* Border */
+//  ::ng-deep .mat-form-field-appearance-outline .mat-form-field-outline {
+//     color: white;
+//   }
+//   /* Font color */
+//   ::ng-deep input.mat-input-element {
+//     color: white;
+//   }
+
+//   :host ::ng-deep .mdc-text-field--outlined:not(.mdc-text-field--disabled) .mat-mdc-notch-piece {
+//     border-color: #D3D4D4 !important;
+//   }
+
+//   :host ::ng-deep .mdc-text-field--outlined:not(.mdc-text-field--disabled):focus-within .mat-mdc-notch-piece {
+//     border-color: #acabeb !important; /* Red outline when field is focused */
+//   }
+
+//   :host ::ng-deep .mat-dark-theme .mdc-text-field--outlined:not(.mdc-text-field--disabled):focus-within .mat-mdc-notch-piece {
+//     border-color: #acabeb !important; /* Red outline when field is focused */
+//   }
+  
+// //   :host ::ng-deep .mdc-text-field--outlined:not(.mdc-text-field--disabled):focus-within .mat-mdc-notch-piece {
+// //     border-color: #acabeb !important; /* Outline color */
+// //     box-shadow: 0 0 12px 4px #acabeb !important; /* Glow effect outside the border */
+// //     transition: box-shadow 0.3s ease-in-out; /* Smooth transition */
+// //   }
+  
+  
+
+//   :host ::ng-deep  .mat-dark-theme .mdc-text-field--outlined:not(.mdc-text-field--disabled) .mat-mdc-notch-piece {
+//     border-color: #323a49 !important;
+//   }
+
+  

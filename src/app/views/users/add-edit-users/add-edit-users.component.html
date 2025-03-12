@@ -1,0 +1,431 @@
+<div class="employee-screen-container p-4"
+  [ngClass]="{'bcg-light': utils.themeStatus === 'light', 'bg-dark': utils.themeStatus === 'dark'}">
+  <!-- Your content here -->
+
+  <!-- Header Card -->
+  <div class="card rounded-3 shadow-sm mb-4">
+    <div class="card-body">
+      <h5 *ngIf="mode === 'create'" [ngClass]="utils.themeStatus === 'dark' ? 'text-white' : 'text-dark'"
+        class="mb-0 text-dark">Add User</h5>
+      <h5 *ngIf="mode === 'edit'" [ngClass]="utils.themeStatus === 'dark' ? 'text-white' : 'text-dark'"
+        class="mb-0 text-dark">Edit User</h5>
+    </div>
+  </div>
+
+  <!-- Form Card -->
+  <div class="card rounded-3 shadow-sm mb-4">
+    <div class="card-body">
+      <form #form="ngForm" (ngSubmit)="form.form.valid && onSubmit(form)">
+
+        <ng-container>
+          <div class="row gy-4 gx-3">
+            <!-- Organization ID -->
+            <div *ngIf="currentUserRole === 'SuperAdmin'" class="col-12 col-md-6">
+              <label for="OrganizationSelect" class="form-label">Select Company</label>
+              <ng-select id="OrganizationSelect" [(ngModel)]="selectedOrganization" [items]="organizationArray"
+                bindLabel="name" placeholder="Select Company" name="organizationSelect" class="dark-mode-select"
+                [multiple]="false" required="currentUserRole == 'SuperAdmin'"
+                (change)="onOrganizationChange(selectedOrganization.id, true)" (close)="onDropdownClose()" (open)="onDropdownOpen()"  (search)="onSearch($event, organizationArray, 'name')" (clear)="onDropdownClose()">
+              
+                <ng-template ng-option-tmp let-item="item">
+                  {{ item.name }}
+                </ng-template>
+            
+                <!-- "Add Company" Button When No Match Found  -->
+                <ng-template *ngIf="showAddButton" ng-footer-tmp>
+                  <div class="d-flex justify-content-between align-items-center p-2">
+                    <button type="button"
+                            class="btn btn-primary btn-fill w-23 text-start d-flex justify-content-between align-items-center"
+                            (click)="createOrganization(); $event.stopPropagation();">
+                      <span class="material-icons">add</span>
+                      <span>Add Company</span>
+                    </button>
+                  </div>
+                </ng-template>
+
+              </ng-select>
+              <div *ngIf="form.submitted && !selectedOrganization && currentUserRole === 'SuperAdmin'"
+                class="text-danger mt-2">
+                {{ requiredText }}
+              </div>
+            </div>
+            <!-- <div *ngIf="currentUserRole === 'SuperAdmin'" class="col-6 col-md-1">
+              <button type="button" class="btn btn-primary mt-4 btn-fill" (click)="createOrganization()">
+                Add
+              </button>
+            </div> -->
+
+
+            <!-- COmpany Location -->
+            <div *ngIf="selectedOrganization || currentUserRole != 'SuperAdmin'" class="col-12 col-md-6">
+              <label for="CompanyLocationSelect" class="form-label">Select Company Location</label>
+              <ng-select id="CompanyLocationSelect" [(ngModel)]="selectedCompanyLocation" [items]="companylocationArray"
+                bindLabel="name" placeholder="Select Company Location" required name="CompanyLocationSelect"
+                class="dark-mode-select" [closeOnSelect]="false"  [multiple]="true" (add)="onItemSelect('org')" (remove)="onItemRemove('org')" (close)="onDropdownClose()" (open)="onDropdownOpen('org')" (clear)="onDropdownClear('org')"  (search)="onSearch($event, companylocationArray, 'name')" (clear)="onDropdownClose()">
+
+              <ng-template *ngIf="!showAddButton" ng-header-tmp>
+                  <div class="d-flex align-items-center p-2">
+                    <input type="checkbox" [(ngModel)]="selectAllCheckedOrg" name="selectAll" (change)="toggleSelectAll('org'); $event.stopPropagation()" />
+                    <span>Select All</span>
+                  </div>
+                </ng-template>
+
+                <ng-template ng-option-tmp let-item="item">
+                  {{ item.name }}
+                </ng-template>
+            
+           
+                <ng-template *ngIf="showAddButton || companylocationArray.length == 0" ng-footer-tmp>
+                  <div class="d-flex justify-content-between align-items-center p-2">
+                    <button type="button"
+                            class="btn btn-primary btn-fill w-23 text-start d-flex justify-content-between align-items-center"
+                            (click)="createOrgLocation(); $event.stopPropagation();">
+                      <span class="material-icons">add</span>
+                      <span>Add Location</span>
+                    </button>
+                  </div>
+                </ng-template>
+
+              </ng-select>
+              <div *ngIf="form.submitted && !selectedCompanyLocation" class="text-danger mt-2">
+                {{ requiredText }}
+            </div>
+            </div>
+
+
+            <!-- <div *ngIf="selectedOrganization || currentUserRole != 'SuperAdmin'" class="col-12 col-md-6">
+              <label for="CompanyLocationSelect" class="form-label">Select Company Location</label>
+              <ng-select id="CompanyLocationSelect" [(ngModel)]="selectedCompanyLocation" [items]="companylocationArray"
+                bindLabel="name" placeholder="Select Company Location" required name="CompanyLocationSelect"
+                class="dark-mode-select" [multiple]="true" (close)="onDropdownClose()" (open)="onDropdownOpen()"
+                (search)="onSearch($event, companylocationArray, 'name')" (clear)="onDropdownClose()">
+            
+                <ng-template ng-header-tmp>
+                  <div class="d-flex align-items-center p-2">
+                    <input type="checkbox" [(ngModel)]="selectAllChecked" (change)="toggleSelectAll(); $event.stopPropagation()" />
+                    <span>Select All</span>
+                  </div>
+                </ng-template>
+            
+                <ng-template ng-option-tmp let-item="item">
+                  <div class="d-flex align-items-center mb-2">
+                    <input type="checkbox" [(ngModel)]="item.selected" (change)="onCheckboxChange()" (click)="$event.stopPropagation()" />
+                    <span>{{ item.name }}</span>
+                  </div>
+                </ng-template>
+            
+              </ng-select>
+              <div *ngIf="form.submitted && !selectedCompanyLocation" class="text-danger mt-2">
+                {{ requiredText }}
+              </div>
+            </div> -->
+            
+           
+           
+           
+           
+           
+           
+           
+           
+           
+           
+            <!-- <div *ngIf="selectedOrganization || currentUserRole != 'SuperAdmin'" class="col-1 col-md-1">
+              <button type="button" class="btn btn-primary mt-4 btn-fill" (click)="createOrgLocation()">
+                Add
+              </button>
+            </div> -->
+
+            <!-- Client Company -->
+            <div *ngIf="companyArray && companyArray.length &&  (selectedOrganization || orgIdFromLocalHost)" class="col-12 col-md-6">
+              <label for="CompanySelect" class="form-label">Select Client Company</label>
+              <ng-select id="CompanySelect" [(ngModel)]="selectedCompany" [items]="companyArray" bindLabel="name"
+                placeholder="Select Client Company" name="CompanySelect" class="dark-mode-select" [multiple]="false"
+                (change)="onComnpanyChange(selectedOrganization?.id, selectedCompany?.id, true)" (close)="onDropdownClose()" (open)="onDropdownOpen()"  (search)="onSearch($event, companyArray, 'name')" (clear)="onDropdownClose()">
+
+                <ng-template ng-option-tmp let-item="item">
+                  {{ item.name }}
+                </ng-template>
+            
+                <!-- "Add Client Company" Button When No Match Found -->
+                <ng-template *ngIf="showAddButton || companyArray.length == 0" ng-footer-tmp>
+                  <div class="d-flex justify-content-between align-items-center p-2">
+                    <button type="button"
+                            class="btn btn-primary btn-fill w-23 text-start d-flex justify-content-between align-items-center"
+                            (click)="createCompany(); $event.stopPropagation();">
+                      <span class="material-icons">add</span>
+                      <span>Add Client Company</span>
+                    </button>
+                  </div>
+                </ng-template>
+              
+              </ng-select>
+              <!-- <div *ngIf="form.submitted && !selectedCompany && currentUserRole === 'Admin'" class="text-danger mt-2">
+                  {{ requiredText }}
+                </div> -->
+            </div>
+            <!-- <div *ngIf="companyArray && companyArray.length &&  (selectedOrganization || orgIdFromLocalHost)" class="col-6 col-md-1">
+              <button type="button" class="btn btn-primary mt-4 btn-fill" (click)="createCompany()">
+                Add
+              </button>
+            </div> -->
+
+            <!-- Client Company Location -->
+            <div *ngIf="selectedCompany" class="col-12 col-md-6">
+              <label for="ClientComLocationSelect" class="form-label">Select Client Company Location</label>
+              <ng-select id="ClientComLocationSelect" [(ngModel)]="selectedClientCompanyLocation"
+                [items]="clietnCompanyLocationArray" bindLabel="name" placeholder="Select Client Company Location"
+                [required]="!selectedClientCompanyLocation && selectedCompany"
+                name="ClientComLocationSelect" class="dark-mode-select" [closeOnSelect]="false"  [multiple]="true" (add)="onItemSelect('com')" (remove)="onItemRemove( 'com')"   (close)="onDropdownClose()" (open)="onDropdownOpen('com')"  (search)="onSearch($event, clietnCompanyLocationArray, 'name')" (clear)="onDropdownClear('com')">
+
+
+                <ng-template *ngIf="!showAddButton" ng-header-tmp>
+                  <div class="d-flex align-items-center p-2">
+                    <input type="checkbox" [(ngModel)]="selectAllCheckedCom" name="selectAll" (change)="toggleSelectAll('com'); $event.stopPropagation()" />
+                    <span>Select All</span>
+                  </div>
+                </ng-template>
+
+                <ng-template ng-option-tmp let-item="item">
+                  {{ item.name }}
+                </ng-template>
+            
+                <!-- "Add Client Company" Button When No Match Found -->
+                <ng-template *ngIf="showAddButton || clietnCompanyLocationArray.length == 0" ng-footer-tmp>
+                  <div class="d-flex justify-content-between align-items-center p-2">
+                    <button type="button"
+                            class="btn btn-primary btn-fill w-23 text-start d-flex justify-content-between align-items-center"
+                            (click)="createCompanyLocation(); $event.stopPropagation();">
+                      <span class="material-icons">add</span>
+                      <span>Add Location</span>
+                    </button>
+                  </div>
+                </ng-template>
+
+              </ng-select>
+              <span *ngIf="form.submitted && !selectedClientCompanyLocation && selectedCompany"
+              class="text-danger mt-2">
+              {{ requiredText }}
+          </span>
+            </div>
+            <!-- <div *ngIf="selectedCompany" class="col-6 col-md-1">
+              <button type="button" class="btn btn-primary mt-4 btn-fill" (click)="createCompanyLocation()">
+                Add
+              </button>
+            </div> -->
+
+            <!-- First Name -->
+            <div class="col-12 col-md-6">
+              <label for="FirstName" class="form-label">First Name</label>
+              <input type="text" id="FirstName" class="form-control" [(ngModel)]="model.FirstName" name="FirstName"
+                required placeholder="Enter First Name" />
+              <div *ngIf="form.submitted && !model.FirstName" class="text-danger mt-2">
+                {{ requiredText }}
+              </div>
+            </div>
+
+            <!-- Middle Name -->
+            <div class="col-12 col-md-6">
+              <label for="MiddleName" class="form-label">Middle Name</label>
+              <input type="text" id="MiddleName" class="form-control" [(ngModel)]="model.MiddleName" name="MiddleName"
+                placeholder="Enter Middle Name" />
+            </div>
+
+            <!-- Last Name -->
+            <div class="col-12 col-md-6">
+              <label for="LastName" class="form-label">Last Name</label>
+              <input required type="text" id="LastName" class="form-control" [(ngModel)]="model.LastName"
+                name="LastName" placeholder="Enter Last Name" />
+              <div *ngIf="form.submitted && !model.LastName" class="text-danger mt-2">
+                {{ requiredText }}
+              </div>
+
+            </div>
+
+            <!-- Email -->
+            <div class="col-12 col-md-6">
+              <label for="Email" class="form-label">Email</label>
+              <input type="email" id="Email" class="form-control" [(ngModel)]="model.Email" name="Email" required
+                placeholder="Enter Email" />
+              <div *ngIf="form.submitted && !model.Email" class="text-danger mt-2">
+                {{ requiredText }}
+              </div>
+            </div>
+
+            <!-- Password (only for create mode) -->
+            <div class="col-12 col-md-6" *ngIf="mode === 'create'">
+              <label for="password" class="form-label">Password</label>
+              <input type="password" id="password" class="form-control" [(ngModel)]="model.password" name="password"
+                required="mode === 'create'" placeholder="Enter Password" />
+              <div *ngIf="form.submitted && !model.password && mode === 'create'" class="text-danger mt-2">
+                {{ requiredText }}
+              </div>
+            </div>
+
+             
+
+            
+
+            <!-- Date of Birth -->
+            <div class="col-12 col-md-6">
+              <label for="dob" class="form-label text-muted">Date of Birth</label>
+              <mat-form-field appearance="outline" class="w-100">
+                <input matInput [matDatepicker]="picker1" (dateChange)="onDateChange($event)"
+                  placeholder="Select a date" required name="dob" id="dob" [(ngModel)]="dob" readonly />
+                <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
+                <mat-datepicker #picker1></mat-datepicker>
+              </mat-form-field>
+              <div *ngIf="form.submitted && !dob" class="text-danger">
+                {{ requiredText }}
+              </div>
+            </div>
+
+            <!-- SSN Number -->
+            <div class="col-12 col-md-6">
+              <label for="SsnNumber" class="form-label">SSN </label>
+              <input type="text" required (keydown)="onlyDecimalNumberKey($event)" id="SsnNumber" class="form-control" [(ngModel)]="model.SsnNumber" name="SsnNumber"
+                placeholder="Enter SSN" />
+                <div *ngIf="form.submitted && !model.SsnNumber" class="text-danger mt-2">
+                  {{ requiredText }}
+                </div>
+            </div>
+
+
+            <!-- Role -->
+            <div class="col-12 col-md-6">
+              <label for="citySelect" class="form-label">Select Role</label>
+              <ng-select id="citySelect" [(ngModel)]="selectedRole" [items]="rolesArray" bindLabel="name"
+                placeholder="Select a Role" name="citySelect" class="dark-mode-select" required></ng-select>
+              <div *ngIf="form.submitted && !selectedRole" class="text-danger mt-2">
+                {{ requiredText }}
+              </div>
+            </div>
+          </div>
+        </ng-container>
+
+
+
+        <!-- <div class="form-banner">
+          <h5>Employee Fields</h5>
+        </div>
+         -->
+
+        <ng-container *ngIf="selectedRole?.id == 1 || selectedRole?.id == 3 || selectedRole?.id == 2">
+
+          <!-- Form Group -->
+          <div class="row g-3 mt-3">
+
+            <!-- Select Designation -->
+            <div class="col-12 col-md-6">
+              <label for="DesignationSelect" class="form-label">Select Designation</label>
+              <ng-select id="DesignationSelect" [(ngModel)]="selectedDesignation" [items]="designationArray"
+                bindLabel="name" placeholder="Select a Designation" name="DesignationSelect" class="dark-mode-select"
+                [multiple]="false">
+              </ng-select>
+            </div>
+
+            <!-- Select Department -->
+            <div class="col-12 col-md-6">
+              <label for="DepartmentSelect" class="form-label">Select Department</label>
+              <ng-select id="DepartmentSelect" [(ngModel)]="selectedDepartment" [items]="departmentArray"
+                bindLabel="name" placeholder="Select a Department" name="DepartmentSelect" class="dark-mode-select"
+                [multiple]="false">
+              </ng-select>
+            </div>
+
+            <!-- Blood Group -->
+            <!-- <div class="col-12 col-md-6">
+              <label for="BloodGroup" class="form-label">Blood Group</label>
+              <input type="text" id="BloodGroup" class="form-control" [(ngModel)]="model.BloodGroup" name="BloodGroup"
+                placeholder="Enter Blood Group" />
+            </div> -->
+
+            <!-- Gender -->
+            <div class="col-12 col-md-6">
+              <label for="genderSelect" class="form-label">Select Gender</label>
+              <ng-select id="genderSelect" [(ngModel)]="selectedGender" [items]="genderArray" bindLabel="name"
+                placeholder="Select Gender" name="genderSelect" class="dark-mode-select">
+              </ng-select>
+            </div>
+
+            
+
+            <!-- Phone -->
+            <div class="col-12 col-md-6">
+              <label for="Phone" class="form-label">Phone</label>
+              <input type="text" id="Phone" (keydown)="onlyDecimalNumberKey($event)" class="form-control"
+                [(ngModel)]="model.Phone" name="Phone" placeholder="Enter Phone Number" />
+            </div>
+
+            <!-- Mobile -->
+            <div class="col-12 col-md-6">
+              <label for="Mobile" class="form-label">Mobile</label>
+              <input type="text" id="Mobile" class="form-control" [(ngModel)]="model.Mobile" name="Mobile"
+                placeholder="Enter Mobile Number" />
+            </div>
+
+            <!-- Address -->
+            <div class="col-12 col-md-6">
+              <label for="Address" class="form-label">Address</label>
+              <input id="Address" type="text" class="form-control" [(ngModel)]="model.Address" name="Address"
+                placeholder="Enter Address" />
+            </div>
+
+            <!-- National ID -->
+            <div class="col-12 col-md-6">
+              <label for="NationalId" class="form-label">National ID</label>
+              <input type="text" id="NationalId" class="form-control" [(ngModel)]="model.NationalId" name="NationalId"
+                placeholder="Enter National ID" />
+            </div>
+
+            
+
+           
+
+
+              <div class="col-12 col-md-6 mt-3">
+                <label for="logo" class="form-label text-muted">Upload Profile Picture</label>
+                <input type="file" class="form-control" id="logo" (change)="onImageChange($event)" accept="image/*"
+                  name="logo">
+                <!-- <div *ngIf="form.submitted && !logoFile" class="text-danger mt-1">
+                  <small>Please upload a logo.</small>
+                </div> -->
+                <div *ngIf="logoPreview" class="mt-2">
+                  <img [src]="logoPreview" alt="Logo Preview" class="img-thumbnail" style="max-height: 100px;">
+                </div>
+              </div>
+        
+
+
+          </div>
+
+        </ng-container>
+
+
+        <div class="rounded-3 mt-5">
+          <div class="card-body d-flex">
+            <button *ngIf="mode === 'create'" type="submit" class="btn btn-primary fw-semibold px-4 py-2 me-2 btn-fill">Save</button>
+            <button *ngIf="mode === 'edit'" type="submit" class="btn btn-primary fw-semibold px-4 py-2 me-2 btn-fill">Update</button>
+          
+            <button type="button" class="btn btn-secondary fw-semibold me-3 px-4 py-2 btn-transparent"
+              routerLink="/main/user">Cancel</button>
+            <button type="button" class="btn btn-warning fw-semibold me-3 px-4 py-2 btn-transparent" (click)="onClear()">Clear</button>
+          
+          </div>
+        </div>
+      </form>
+
+    </div>
+  </div>
+
+
+
+</div>
+
+
+<app-company-location-modal (isComLocAdded)="isComLocAdded($event)"></app-company-location-modal>
+<app-organization-location-modal (isOrgLocAdded)="isComLocAdded($event, 'org')"></app-organization-location-modal>
+
+<app-organization-modal (isOrgAdded)="isOrgAdded($event)"></app-organization-modal>
+
+<app-company-modal (isComAdded)="isComAdded($event)"></app-company-modal>

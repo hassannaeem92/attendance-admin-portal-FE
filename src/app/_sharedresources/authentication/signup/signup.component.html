@@ -1,0 +1,87 @@
+<div class="signup-page d-flex flex-column flex-lg-row min-vh-100">
+    <!-- Left Section: Sign-Up Form -->
+    <div class="signup-form col-lg-6 d-flex flex-column justify-content-center align-items-center bg-white px-5 order-lg-1">
+      <div class="form-container w-100" style="max-width: 400px;">
+        <h1 class="text-primary mb-4">Sign Up</h1>
+        <form #signupForm="ngForm" (ngSubmit)="signupForm.valid && onSubmit(signupForm)">
+          <div class="mb-3">
+            <label for="fullname" class="form-label">Full Name</label>
+            <input
+              type="text"
+              class="form-control prevent-dark"
+              id="fullname"
+              placeholder="Enter your full name"
+              required
+              name="fullname"
+              [(ngModel)]="model.fullname"
+            />
+          </div>
+          <div class="mb-3">
+            <label for="email" class="form-label">Email</label>
+            <input
+              type="email"
+              class="form-control prevent-dark"
+              id="email"
+              placeholder="Enter your email"
+              required
+              name="email"
+              [(ngModel)]="model.email"
+            />
+          </div>
+          <div class="mb-3">
+            <label for="password" class="form-label">Password</label>
+            <input
+              [type]="passwordVisible ? 'text' : 'password'"
+              class="form-control prevent-dark"
+              id="password"
+              placeholder="Create a password"
+              required
+              name="password"
+              [(ngModel)]="model.password"
+            />
+          </div>
+          <div class="mb-4">
+            <label for="confirm-password" class="form-label">Confirm Password</label>
+            <input
+              [type]="passwordVisible ? 'text' : 'password'"
+              class="form-control prevent-dark"
+              id="confirm-password"
+              placeholder="Confirm your password"
+              required
+              name="confirmPassword"
+              [(ngModel)]="model.confirmPassword"
+            />
+          </div>
+          <div class="d-flex justify-content-between align-items-center mb-4">
+            <div>
+              <label>
+                <input type="checkbox" required />
+                I agree to the <a href="#" class="text-primary">Terms & Conditions</a>
+              </label>
+            </div>
+          </div>
+          <button type="submit" class="signupClass btn btn-primary w-100 py-2">Sign Up</button>
+        </form>
+        <div class="mt-4 text-center">
+            <p class="small">Already have an account? <a [routerLink]="['/auth/login']" class="text-primary">Sign In</a></p>
+        </div>
+      </div>
+    </div>
+  
+    <!-- Right Section: Image or Logo -->
+    <div class="login-image col-lg-6 d-flex flex-column justify-content-center align-items-center order-lg-2">
+      <div class="text-center px-4">
+        <img
+          src="assets/images/logo-simplelogix.svg"
+          alt="Company Logo"
+          class="logo mb-4"
+          style="max-width: 200px; background-color: white; padding: 10px; border-radius: 10px; box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);"
+        />
+        <h2 class="modern-heading">Welcome to SimpleLogix Platform</h2>
+        <p class="modern-description mt-3">
+          Simplify your workflows, enhance productivity, and scale your business with our innovative solutions.
+        </p>
+      </div>
+    </div>
+  </div>
+  

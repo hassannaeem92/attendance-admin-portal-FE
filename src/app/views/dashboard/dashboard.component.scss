@@ -1,0 +1,255 @@
+
+
+body {
+  background-color: #f5f7fa;
+  font-family: 'Poppins', sans-serif;
+  padding: 20px;
+}
+
+.card {
+  border: none;
+  border-radius: 10px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease,
+  box-shadow 0.3s ease,
+  background-color 0.3s ease; /* Added background-color transition */
+}
+
+.card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.15);
+}
+
+.stats-card {
+  background-color: #f8f9fa !important; /* Retained original background color */
+  position: relative; /* For positioning the dot */
+}
+
+.stats-card:hover {
+  background-color: #e9ecef !important; /* Darker grey on hover */
+}
+
+.stats-card .card-body {
+  padding: 15px; /* Increased padding for a more spacious feel */
+  border-radius: 10px;
+}
+
+.stats-card .card-body h6 {
+  font-size: 0.9rem; /* Slightly larger for better readability */
+  font-weight: 500; /* Lighter weight for elegance */
+  color: #6c757d; /* Lighter grey for the title, similar to the reference */
+  margin-bottom: 8px;
+  display: flex;
+  align-items: center;
+  position: relative;
+  padding-left: 20px; /* Space for the dot */
+}
+
+.stats-card .card-body h6::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background-color: #4A90E2; /* Blue dot, inspired by the reference */
+}
+
+.stats-card .card-body h2 {
+  font-size: 2rem; /* Larger for emphasis */
+  font-weight: 700;
+  color: #1a1a1a;
+  margin-bottom: 5px;
+  line-height: 1.2; /* Better spacing */
+}
+
+.stats-card .card-body .badge {
+  font-size: 0.7rem; /* Slightly larger for readability */
+  padding: 5px 10px;
+  border-radius: 20px; /* Softer, more rounded badge */
+  font-weight: 500;
+  line-height: 1.5; /* Better alignment */
+}
+
+.stats-card .badge.bg-success {
+  background-color: #28a745 !important; /* Retained original success color */
+  color: #fff;
+}
+
+.stats-card .badge.bg-danger {
+  background-color: #dc3545 !important; /* Retained original danger color */
+  color: #fff;
+}
+
+/* Rest of the styles remain unchanged */
+.chart-card {
+  background-color: #f8f9fa !important;
+  padding: 10px;
+}
+
+.chart-card .card-body {
+  padding: 10px;
+  position: relative;
+  min-height: 300px;
+}
+
+.chart-card .card-body h6 {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: #333;
+  margin-bottom: 10px;
+  display: flex;
+  align-items: center;
+}
+
+.table {
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.table thead {
+  background-color: #f8f9fa;
+  font-size: 14px;
+}
+
+.table tbody tr {
+  font-size: 14px;
+}
+
+.table tbody tr:nth-child(odd) {
+  background-color: #f9f9f9;
+}
+
+.btn-primary {
+  background-color: #1890ff;
+  border: none;
+  border-radius: 5px;
+  padding: 8px 20px;
+  font-size: 14px;
+}
+
+.btn-primary:hover {
+  background-color: #40a9ff;
+}
+
+.mat-icon {
+  width: 19px !important;
+  height: 19px !important;
+}
+
+/* Ensure charts are responsive */
+#attendanceChart {
+  width: 100% !important;
+  height: 100% !important;
+}
+
+#loanChart {
+  width: 100% !important;
+  height: 100% !important;
+  margin-left: 60px;
+}
+.stats-card .card-body {
+  padding: 15px;
+  border-radius: 10px;
+  position: relative;
+}
+
+.stats-card .card-body h6 {
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: #6c757d;
+  margin-bottom: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between; /* Icon goes to the right */
+  padding-left: 20px;
+}
+
+.stats-icon-wrapper {
+  width: 30px;
+  height: 30px;
+  background-color: #e9ecef;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.stats-icon {
+  font-size: 1.2rem; /* Slightly larger for Material Icons */
+  color: #4A90E2;
+}
+
+.stats-card .card-body h2 {
+  font-size: 2rem;
+  font-weight: 700;
+  color: #1a1a1a;
+  margin-bottom: 5px;
+  line-height: 1.2;
+}
+
+/* Rest of your existing CSS remains unchanged */
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .chart-card .card-body {
+    min-height: 250px;
+  }
+}
+
+@media (max-width: 480px) {
+  .chart-card .card-body {
+    min-height: 200px;
+  }
+}
+
+.table-container {
+  position: relative;
+  width: 100%;
+}
+
+.scroll-body {
+  height: 250px; /* Set height to enable scrolling */
+  overflow: auto !important;
+  border: 1px solid #ddd; /* Optional: Add border for better UI */
+}
+
+.search-container .input-group {
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+  border-radius: 25px;
+  border: 1px solid #ced4da; /* Apply border to the container */
+  background: white;
+  overflow: hidden; /* Keep this to ensure content doesn't overflow */
+}
+
+.search-container .input-group-text {
+  background: white;
+  border: none; /* Remove individual border */
+  padding: 0.5rem 0.75rem;
+}
+
+.search-container .form-control {
+  border: none; /* Remove individual border */
+  padding: 0.5rem 1rem;
+  transition: all 0.3s ease;
+}
+
+.search-container .form-control:focus {
+  border: none; /* No border on focus */
+  box-shadow: none; /* Remove default focus shadow */
+  outline: none; /* Remove default outline */
+}
+
+/* Add a subtle focus effect to the entire input-group */
+.search-container .input-group:focus-within {
+  border-color: #007bff; /* Blue border on focus */
+}
+
+.search-container .search-icon {
+  color: #666; /* Gray icon */
+  font-size: 1.2rem;
+}

@@ -1,0 +1,41 @@
+.footer-container {
+    display: flex !important;
+    justify-content: center !important; /* Center horizontally */
+    align-items: center !important; /* Center vertically */
+   
+    text-align: center !important; /* Ensure the text is centered */
+    margin-left: 260px !important; /* Default margin for larger screens */
+  
+  }
+  
+  .footer-txt {
+    margin: 0 !important;
+    font-size: 14px !important; /* Adjust font size for better responsiveness */
+    max-width: 100% !important; /* Ensure it doesn’t overflow */
+    word-wrap: break-word !important; /* Wrap long text to the next line */
+  }
+  
+  /* Responsive adjustments for medium and smaller screens */
+  @media (max-width: 768px) {
+    .footer-container {
+      margin-left: 20px !important; /* Reduced margin for medium screens */
+      margin-right: 20px !important; /* Reduced margin for medium screens */
+    }
+  
+    .footer-txt {
+      font-size: 12px !important; /* Smaller font size for mobile screens */
+    }
+  }
+  
+  @media (max-width: 480px) {
+    .footer-container {
+      margin-left: 10px !important; /* Smaller margin for small screens */
+      margin-right: 10px !important; /* Smaller margin for small screens */
+    }
+  
+    .footer-txt {
+      font-size: 10px !important; /* Even smaller font size for very small screens */
+      padding: 0 10px !important; /* Ensure padding on smaller screens */
+    }
+  }
+  

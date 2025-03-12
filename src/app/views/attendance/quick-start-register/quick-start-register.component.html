@@ -1,0 +1,131 @@
+<div class="employee-screen-container p-4"
+    [ngClass]="{'bcg-light': utils.themeStatus === 'light', 'bg-dark': utils.themeStatus === 'dark'}">
+    <!-- Your content here -->
+
+    <!-- Header Card -->
+    <div class="card rounded-3 shadow-sm mb-4">
+        <div class="card-body">
+            <h5 [ngClass]="utils.themeStatus === 'dark' ? 'text-white' : 'text-dark'" class="mb-0 text-dark">Register
+                Company</h5>
+            <!-- <h5 *ngIf="mode === 'edit'" [ngClass]="utils.themeStatus === 'dark' ? 'text-white' : 'text-dark'"
+                class="mb-0 text-dark">Edit Designation</h5> -->
+        </div>
+    </div>
+
+    <!-- Form Card -->
+    <div class="card rounded-3 shadow-sm mb-4">
+        <div class="card-body">
+            <form #form="ngForm" (ngSubmit)="form.form.valid && onSubmit(form)">
+                <div class="row gy-4 gx-3">
+
+                    <!-- Name -->
+                    <div class="col-12 col-md-6">
+                        <label for="name" class="form-label text-muted">Company Name</label>
+                        <input type="text" class="form-control" id="name" [(ngModel)]="model.Name" name="Name"
+                            #name="ngModel" required placeholder="Enter name" />
+                        <div *ngIf="form.submitted && name.invalid" class="text-danger mt-1">
+                            <small *ngIf="name.errors?.['required']">{{requiredText}}</small>
+                        </div>
+                    </div>
+
+
+
+
+                    <!-- Email -->
+                    <div class="col-12 col-md-6">
+                        <label for="email" class="form-label text-muted">Email</label>
+                        <input type="email" class="form-control" id="email" [(ngModel)]="model.Email" name="email" #email="ngModel"
+                        required email placeholder="Enter email">
+                        <div *ngIf="form.submitted && email.invalid" class="text-danger mt-1">
+                        <small *ngIf="email.errors?.['required']">{{requiredText}}</small>
+                        <small *ngIf="email.errors?.['email']">Please enter a valid email.</small>
+                        </div>
+                    </div>
+
+                    <!-- Password (only for create mode) -->
+                    <div class="col-12 col-md-6" *ngIf="mode === 'create'">
+                        <label for="password" class="form-label">Password</label>
+                        <input type="password" id="password" class="form-control" [(ngModel)]="model.Password"
+                            name="password" required placeholder="Enter Password" />
+                        <div *ngIf="form.submitted && !model.Password " class="text-danger mt-2">
+                            {{ requiredText }}
+                        </div>
+                    </div>
+
+
+    
+                </div>
+                <!-- 
+                <div class="row mb-4">
+                    <div class="col-12 col-md-6 d-flex align-items-end">
+                      <div class="w-100">
+                        <label for="OrganizationSelect" class="form-label">Select Company</label>
+                        <ng-select id="OrganizationSelect" (change)="onOrganizationChange(selectedOrganization.id)" [(ngModel)]="selectedOrganization" [items]="organizationArray"
+                          bindLabel="name" placeholder="Select an Organization" name="organizationSelect" class="dark-mode-select"
+                          [multiple]="false" required>
+                        </ng-select>
+                        <div *ngIf="form.submitted && !selectedOrganization" class="text-danger mt-2">
+                            {{requiredText}}
+                        </div>
+                      </div>
+                      <div class="ms-3">
+                        <button type="button" class="btn btn-primary" (click)="createOrganization()">
+                          Add
+                        </button>
+                      </div>
+                    </div>
+          
+          
+                    <div class="col-12 col-md-6 d-flex align-items-end">
+                      <div class="w-100">
+                        <label for="CompanySelect" class="form-label">Select Client Company</label>
+                        <ng-select id="CompanySelect" [(ngModel)]="selectedCompany" [items]="companyArray"
+                          bindLabel="name" placeholder="Select an Company" name="CompanySelect" class="dark-mode-select"
+                          [multiple]="false" required>
+                        </ng-select>
+                        <div *ngIf="form.submitted && !selectedCompany" class="text-danger mt-2">
+                            {{requiredText}}
+                        </div>
+                      </div>
+                      <div class="ms-3">
+                        <button type="button" class="btn btn-primary" (click)="createCompany()">
+                          Add
+                        </button>
+                      </div>
+                    </div>
+          
+                  </div> -->
+
+                <div class="row mb-4">
+
+                </div>
+
+
+
+                <div class="rounded-3 mt-5">
+                    <div class="card-body d-flex">
+                        <button *ngIf="mode === 'create'" type="submit" class="btn-fill btn btn-primary me-3 fw-semibold px-4 py-2 me-2 btn-fill">
+                            Save
+                        </button>
+                        <button *ngIf="mode === 'edit'" type="submit" class="btn-fill btn btn-primary me-3 fw-semibold px-4 py-2">
+                            Update
+                        </button>
+                        <button type="button" class="btn-transparent btn btn-outline-secondary fw-semibold me-3 px-4 py-2"
+                            routerLink="/main/attendance/organization/all-organization">
+                            Cancel
+                        </button>
+                        <button type="button" class="btn-transparent  btn btn-outline-warning fw-semibold me-3 px-4 py-2" (click)="onClear()">
+                            Clear
+                        </button>
+
+                    </div>
+                </div>
+            </form>
+
+        </div>
+    </div>
+
+</div>
+
+<app-organization-modal></app-organization-modal>
+<app-company-modal></app-company-modal>

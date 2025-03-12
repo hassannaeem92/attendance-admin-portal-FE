@@ -1,0 +1,371 @@
+<div class="employee-screen-container" [ngClass]="{
+    'bg-light': utils.themeStatus === 'light',
+    'bg-dark': utils.themeStatus === 'dark'
+  }">
+
+    <h5 [ngClass]="utils.themeStatus === 'dark' ? 'text-white' : 'text-dark'" class="mb-1">
+        Raw Attendance
+    </h5>
+
+    <form #form="ngForm">
+        <div class="card rounded-3 shadow-sm mb-4">
+            <div class="card-body">
+                <div class="row gy-4 gx-3">
+
+
+                    <div class="row gy-4 gx-3">
+                        <!-- Organization ID -->
+                        <div *ngIf="currentUserRole === 'SuperAdmin'" class="col-12 col-md-6">
+                            <label for="OrganizationSelect" class="form-label">Select Company</label>
+                            <ng-select id="OrganizationSelect" [(ngModel)]="selectedOrganization"
+                                [items]="organizationArray" bindLabel="name" placeholder="Select Company"
+                                name="organizationSelect" class="dark-mode-select" [multiple]="false"
+                                required="currentUserRole === 'SuperAdmin'"
+                                (change)="onOrganizationChange(selectedOrganization?.id)"></ng-select>
+                            <!-- <div *ngIf="form.submitted && !selectedOrganization && currentUserRole === 'SuperAdmin'"
+                            class="text-danger mt-2">
+                            {{ requiredText }}
+                        </div> -->
+                        </div>
+                        <!-- <div *ngIf="currentUserRole === 'SuperAdmin'" class="col-6 col-md-1">
+                        <button type="button" class="btn btn-primary mt-4 btn-fill" (click)="createOrganization()">
+                            Add
+                        </button>
+                    </div> -->
+
+                        <!-- COmpany Location -->
+                        <div *ngIf="selectedOrganization || currentUserRole != 'SuperAdmin'" class="col-12 col-md-6">
+                            <label for="CompanyLocationSelect" class="form-label">Select Company Location</label>
+                            <ng-select id="CompanyLocationSelect"
+                                (change)="onCompanyLocationChange(selectedCompanyLocation?.id)"
+                                [(ngModel)]="selectedCompanyLocation" [items]="companylocationArray" required
+                                bindLabel="name" placeholder="Select Company Location" name="CompanyLocationSelect"
+                                class="dark-mode-select" [multiple]="false">
+                            </ng-select>
+
+
+                        </div>
+                        <!-- <div class="col-6 col-md-1">
+                        <button type="button" class="btn btn-primary mt-4 btn-fill" (click)="createLocation()">
+                            Add
+                        </button>
+                    </div> -->
+
+                        <!-- Client Company -->
+                        <div *ngIf="companyArray && companyArray.length &&  (selectedOrganization || orgIdFromLocalHost)"
+                            class="col-12 col-md-6">
+                            <label for="CompanySelect" class="form-label">Select Client Company</label>
+                            <ng-select id="CompanySelect" [(ngModel)]="selectedCompany" [items]="companyArray"
+                                bindLabel="name" placeholder="Select Client Company" name="CompanySelect"
+                                class="dark-mode-select" [multiple]="false"
+                                (change)="onComnpanyChange(selectedOrganization?.id, selectedCompany?.id)"></ng-select>
+                            <!-- <div *ngIf="form.submitted && !selectedCompany && currentUserRole === 'Admin'" class="text-danger mt-2">
+                    {{ requiredText }}
+                  </div> -->
+                        </div>
+                        <!-- <div *ngIf="companyArray && companyArray.length" class="col-6 col-md-1">
+                        <button type="button" class="btn btn-primary mt-4 btn-fill" (click)="createCompany()">
+                            Add
+                        </button>
+                    </div> -->
+
+                        <!-- Client Company Location -->
+                        <div *ngIf="selectedCompany" class="col-12 col-md-6">
+                            <label for="ClientComLocationSelect" class="form-label">Select Client Company
+                                Location</label>
+                            <ng-select id="ClientComLocationSelect"
+                                (change)="onClientCompanyLocationChange(selectedClientCompanyLocation?.id)"
+                                [(ngModel)]="selectedClientCompanyLocation" [items]="clietnCompanyLocationArray"
+                                bindLabel="name" placeholder="Select Client Company Location"
+                                name="ClientComLocationSelect" class="dark-mode-select" [multiple]="false">
+                            </ng-select>
+                        </div>
+                        <!-- <div *ngIf="companyArray && companyArray.length" class="col-6 col-md-1">
+                        <button type="button" class="btn btn-primary mt-4 btn-fill" (click)="createLocation()">
+                            Add
+                        </button>
+                    </div> -->
+
+
+                        <div class="col-12 col-md-6">
+                            <label for="DeviceSelect" class="form-label">Select Device</label>
+                            <ng-select id="DeviceSelect" (change)="onDeviceChange($event)" [(ngModel)]="selectedDevice" [items]="DeviceArray"
+                                bindLabel="name" placeholder="Select Device" name="DeviceSelect"
+                                class="dark-mode-select" [multiple]="false"
+                                required="currentUserRole === 'SuperAdmin'"></ng-select>
+
+                        </div>
+
+                          <!-- Shift SElect -->
+                          <div class="col-12 col-md-6">
+                            <label for="ShiftSelect" class="form-label">Select Shift</label>
+                            <ng-select id="ShiftSelect" [(ngModel)]="selectedShift"
+                                [items]="shiftArray" bindLabel="name" placeholder="Select Shift"
+                                name="ShiftSelect" class="dark-mode-select" [multiple]="false" required
+                                ></ng-select>
+                          
+                        </div>
+
+
+                        <!-- User Id -->
+                        <div class="col-12 col-md-6">
+                            <label for="UserSelect" class="form-label">Select User</label>
+                            <ng-select id="UserSelect" (change)="onUserChange($event)" [(ngModel)]="selectedUser" [items]="userArray" bindLabel="name"
+                                placeholder="Select User" required name="UserSelect" class="dark-mode-select"
+                                [multiple]="true"></ng-select>
+
+                        </div>
+
+                        <div class="col-12 col-md-6">
+                            <label for="UserSelect" class="form-label">Select Pay Period</label>
+                                <ng-select id="CompanySelect" [(ngModel)]="selectedPayPeriod" [items]="payPeriodArray" bindLabel="name"
+                                    placeholder="Select Pay Period" name="payPeriodSelect" class="dark-mode-select"
+                                    [multiple]="false"></ng-select>
+                        </div>
+
+
+                        <!-- From Date -->
+                        <!-- <div class="col-12 col-md-6">
+                            <label for="fromDate" class="form-label text-muted">From Date</label>
+                            <mat-form-field appearance="outline" class="w-100">
+                                <input matInput [matDatepicker]="fromPicker" (dateChange)="onDateChange($event, 'from')"
+                                    placeholder="Select a date" [max]="maxFromDate" name="fromDate" id="fromDate"
+                                    [(ngModel)]="fromDate" readonly />
+                                    <button *ngIf="fromDate" matSuffix mat-icon-button aria-label="Clear date"
+                                    (click)="clearDate()">
+                                    <mat-icon>close</mat-icon>
+                                </button>
+                                    <mat-datepicker-toggle matSuffix [for]="fromPicker"></mat-datepicker-toggle>
+                                
+                                <mat-datepicker #fromPicker></mat-datepicker>
+                            </mat-form-field>
+
+                        </div>
+
+                        <div class="col-12 col-md-6">
+                            <label for="toDate" class="form-label text-muted">To Date</label>
+                            <mat-form-field appearance="outline" class="w-100">
+                                <input matInput [matDatepicker]="toPicker" (dateChange)="onDateChange($event, 'to')"
+                                    placeholder="Select a date" [min]="minToDate" name="toDate" id="toDate"
+                                    [(ngModel)]="toDate" readonly />
+                                    <button *ngIf="toDate" matSuffix mat-icon-button aria-label="Clear date"
+                                    (click)="clearToDate()">
+                                    <mat-icon>close</mat-icon>
+                                </button>
+                                <mat-datepicker-toggle matSuffix [for]="toPicker"></mat-datepicker-toggle>
+                                <mat-datepicker #toPicker></mat-datepicker>
+                            </mat-form-field>
+
+                        </div> -->
+
+                        <div class="col-12 col-md-6">
+                            <label for="fromDate" class="form-label text-muted">From Date</label>
+                            <mat-form-field appearance="outline" class="w-100">
+                                <input matInput [matDatepicker]="fromPicker" (dateChange)="onDateChange($event, 'from')"
+                                    placeholder="Select a date" [max]="today" name="fromDate" id="fromDate" 
+                                    [(ngModel)]="fromDate" readonly />
+                                <button *ngIf="fromDate" matSuffix mat-icon-button aria-label="Clear date"
+                                    (click)="clearDate()">
+                                    <mat-icon>close</mat-icon>
+                                </button>
+                                <mat-datepicker-toggle matSuffix [for]="fromPicker"></mat-datepicker-toggle>
+                                <mat-datepicker #fromPicker></mat-datepicker>
+                            </mat-form-field>
+                        </div>
+                        
+                        <div class="col-12 col-md-6">
+                            <label for="toDate" class="form-label text-muted">To Date</label>
+                            <mat-form-field appearance="outline" class="w-100">
+                                <input matInput [matDatepicker]="toPicker" (dateChange)="onDateChange($event, 'to')"
+                                    placeholder="Select a date" [min]="minToDate" [max]="today" name="toDate" id="toDate" 
+                                    [(ngModel)]="toDate" readonly />
+                                <button *ngIf="toDate" matSuffix mat-icon-button aria-label="Clear date"
+                                    (click)="clearToDate()">
+                                    <mat-icon>close</mat-icon>
+                                </button>
+                                <mat-datepicker-toggle matSuffix [for]="toPicker"></mat-datepicker-toggle>
+                                <mat-datepicker #toPicker></mat-datepicker>
+                            </mat-form-field>
+                        </div>
+
+                    </div>
+                </div>
+
+
+                <div class="mt-5">
+
+                    <div class="d-flex justify-content-between align-items-center mb-3">
+                        <!-- Search Input -->
+                        <!-- <div *ngIf="rows && rows.length" class="search-bar">
+                            <input type="text" class="form-control" placeholder="Search..." (input)="onSearch($event)" />
+                        </div> -->
+
+                        <!-- Get Users Button -->
+                        <div class="ms-auto">
+                            <button class="create-btn btn-fill float-end" (click)="setPage({ offset: 0 })">
+                                Get Attendance
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </form>
+
+    <!-- <div class="card rounded-3 shadow-sm mb-4 mt-3">
+        <div class="card-body d-flex justify-content-between align-items-center">
+            <input hidden type="text" placeholder="Search..." class="form-control search-field"
+                (input)="onSearch($event)" /> -->
+
+    <!-- <div class="d-flex align-items-end"> -->
+    <!-- <div class="btn-group me-2">
+                    <button type="button" class="btn dropdown-toggle" style="background-color: #0d6efd; color: white;"
+                        data-bs-toggle="dropdown" aria-expanded="false">
+                        Status
+                    </button>
+                    <ul class="dropdown-menu">
+                        <li><a class="dropdown-item" [ngClass]="{'active': isActive === null || isActive === undefined}"
+                                href="javascript:void(0)" (click)="setStatus(null)">All</a></li>
+                        <li><a class="dropdown-item" [ngClass]="{'active': isActive === true}" href="javascript:void(0)"
+                                (click)="setStatus(true)">Active</a></li>
+                        <li><a class="dropdown-item" [ngClass]="{'active': isActive === false}"
+                                href="javascript:void(0)" (click)="setStatus(false)">In Active</a></li>
+
+                    </ul>
+                </div> -->
+    <!-- <div class="btn-group me-2">
+                    <button type="button" class="btn dropdown-toggle" style="background-color: #0d6efd; color: white;"
+                        data-bs-toggle="dropdown" aria-expanded="false">
+                        Filter
+                    </button>
+                    <ul class="dropdown-menu">
+                        <li><a class="dropdown-item"
+                                [ngClass]="{'active': isOrganization === null || isOrganization === undefined}"
+                                href="javascript:void(0)" (click)="getIsCompanies(null)">All</a></li>
+                        <li><a class="dropdown-item" [ngClass]="{'active': isOrganization === true}"
+                                href="javascript:void(0)" (click)="getIsCompanies(true)">Companies</a></li>
+                        <li><a class="dropdown-item" [ngClass]="{'active': isOrganization === false}"
+                                href="javascript:void(0)" (click)="getIsCompanies(false)">Client Companies</a></li>
+                    </ul>
+                </div> -->
+    <!-- <button class="create-btn float-end" (click)="setPage({ offset: 0 })">
+                    Get Attendance
+                </button>
+            </div> -->
+    <!-- 
+        </div>
+    </div> -->
+
+
+    <!-- AG Grid Section -->
+
+    <div *ngIf="rows && rows.length" class="d-flex justify-content-end mb-3">
+        <div class="btn-group">
+          <button type="button" class="btn btn-transparent dropdown-toggle no-arrow d-flex align-items-center gap-2" data-bs-toggle="dropdown" aria-expanded="false">
+            Download <i class="bi bi-download"></i>
+          </button>
+          <ul class="dropdown-menu">
+            <li><a class="dropdown-item" href="javascript:void(0)" (click)="downloadReport('csv')">CSV</a></li>
+            <li><a class="dropdown-item" href="javascript:void(0)" (click)="downloadReport('pdf')">PDF</a></li>
+          </ul>
+        </div>
+      </div>
+
+    <div *ngIf="rows && rows.length" class="ag-grid-container" [ngClass]="{
+    'bg-light': utils.themeStatus === 'light',
+    'bg-dark': utils.themeStatus === 'dark'
+    }">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="table-responsive styled-table">
+                    <!-- <ngx-datatable class="bootstrap" [rows]="rows" [columnMode]="'force'" [headerHeight]="50"
+                        [footerHeight]="50" [rowHeight]="45" [externalPaging]="true" [messages]="messages"
+                        [count]="page.totalElements" 
+                        (page)='setPage($event)' [selected]="selected" 
+                        (select)='onSelect($event)'> -->
+                    <ngx-datatable style="height: 500px;" class="material" [rows]="rows" [columnMode]="'force'"
+                        [headerHeight]="50" [footerHeight]="0" [rowHeight]="50" [scrollbarV]="true" [scrollbarH]="true"
+                        [messages]="messages" [selected]="selected" [selectionType]="SelectionType.checkbox"
+                        (select)="onSelect($event)">
+
+
+                        
+                        <!-- <ngx-datatable-column [sortable]="false" [canAutoResize]="false" [draggable]="true"
+                            [resizeable]="true" [headerCheckboxable]="true" [checkboxable]="false">
+                        </ngx-datatable-column> -->
+
+                        <ngx-datatable-column [sortable]="false" [canAutoResize]="false" [draggable]="false"
+                        [resizeable]="false" [width]="50">
+                         </ngx-datatable-column>
+
+                        <ngx-datatable-column name="Name" prop="Employee.FullName" [width]="80"></ngx-datatable-column>
+
+                        <ngx-datatable-column name="In time" prop="ClockInTime"></ngx-datatable-column>
+                        <ngx-datatable-column name="Out Time" prop="ClockOutTime"></ngx-datatable-column>
+
+                        <ngx-datatable-column name="Department" prop="Employee.Department.Name"></ngx-datatable-column>
+                        <ngx-datatable-column name="Designation" prop="Employee.Designation.Name"></ngx-datatable-column>
+                        <!-- <ngx-datatable-column name="Department" prop="ClockOutTime"></ngx-datatable-column>
+                        <ngx-datatable-column name="Designation" prop="ClockOutTime"></ngx-datatable-column> -->
+                        <!-- <ngx-datatable-column name="Location" prop="Location.Country"></ngx-datatable-column> -->
+                        <!-- <ngx-datatable-column name="Actions">
+                            <ng-template let-row="row" ngx-datatable-cell-template>
+                                <button class="btn btn-sm" style="background-color: #0d6efd; color: white;"
+                                    (click)="openModalQR(row, $event)">
+                                    QR
+                                </button>
+                            </ng-template>
+                        </ngx-datatable-column> -->
+                        <!-- <ngx-datatable-column name="Status">
+                            <ng-template let-row="row" class="text-center" ngx-datatable-cell-template>
+                                <label class="switch" (click)="$event.stopPropagation()">
+                                    <input type="checkbox" [checked]="row.IsActive" (change)="toggleStatus(row)">
+                                    <span class="slider round"></span>
+                                </label>
+                            </ng-template>
+                        </ngx-datatable-column> -->
+                        <!-- Button Column -->
+
+
+                    </ngx-datatable>
+                </div>
+
+                <!-- (changePageSizeEvent)="changePageSize($event)" -->
+            </div>
+        </div>
+        <!-- <app-table-footer class="footerBottom" [isDeleteShow]="false" (deleteEvent)="toDelete()"
+            (changePageSizeEvent)="changePageSize($event)" [selected]="selected" [page]="page">
+        </app-table-footer> -->
+    </div>
+</div>
+
+<div class="modal fade" id="qrModal" tabindex="-1" aria-labelledby="qrModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="qrModalLabel">QR Code</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body text-center">
+                <!-- QR Code Display -->
+                <qrcode [qrdata]="qrData" [elementType]="'canvas'" #qrCodeCanvas [allowEmptyString]="true"
+                    [width]="340"></qrcode>
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button class="btn btn-primary" (click)="downloadQRCode(qrCodeCanvas)">Download QR Code</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- <div class="card rounded-3 shadow-sm mb-2">
+  <div class="card-body d-flex justify-content-start">
+    <button class="delete-btn btn btn-danger text-white me-3 px-4 py-2">Delete</button>
+  </div>
+  </div> -->
+
+
+<!-- Delete Button Section -->

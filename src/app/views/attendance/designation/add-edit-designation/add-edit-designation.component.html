@@ -1,0 +1,139 @@
+<div class="employee-screen-container p-4"
+  [ngClass]="{'bcg-light': utils.themeStatus === 'light', 'bg-dark': utils.themeStatus === 'dark'}">
+  <!-- Your content here -->
+
+  <!-- Header Card -->
+  <div class="card rounded-3 shadow-sm mb-4">
+    <div class="card-body">
+      <h5 *ngIf="mode === 'create'" [ngClass]="utils.themeStatus === 'dark' ? 'text-white' : 'text-dark'"
+        class="mb-0 text-dark">Add Designation</h5>
+      <h5 *ngIf="mode === 'edit'" [ngClass]="utils.themeStatus === 'dark' ? 'text-white' : 'text-dark'"
+        class="mb-0 text-dark">Edit Designation</h5>
+    </div>
+  </div>
+
+  <!-- Form Card -->
+  <div class="card rounded-3 shadow-sm mb-4">
+    <div class="card-body">
+      <form #form="ngForm" (ngSubmit)="form.form.valid && onSubmit(form)">
+        <div class="row gy-4 gx-3">
+
+           <!-- Organization ID -->
+           <div *ngIf="currentUserRole === 'SuperAdmin'" class="col-12 col-md-6">
+            <label for="OrganizationSelect" class="form-label">Select Company</label>
+            <ng-select id="OrganizationSelect" [(ngModel)]="selectedOrganization" [items]="organizationArray"
+              bindLabel="name" placeholder="Select Company" name="organizationSelect" class="dark-mode-select"
+              [multiple]="false" required="currentUserRole === 'SuperAdmin'" (change)="onOrganizationChange(selectedOrganization.id)" (close)="onDropdownClose()" (open)="onDropdownOpen()"  (search)="onSearch($event, organizationArray, 'name')" (clear)="onDropdownClose()">
+            
+              <ng-template ng-option-tmp let-item="item">
+                {{ item.name }}
+              </ng-template>
+
+              <ng-template *ngIf="showAddButton" ng-footer-tmp>
+                <div class="d-flex justify-content-between align-items-center p-2">
+                  <button type="button"
+                          class="btn btn-primary btn-fill w-23 text-start d-flex justify-content-between align-items-center"
+                          (click)="createOrganization(); $event.stopPropagation();">
+                    <span class="material-icons">add</span>
+                    <span>Add Company</span>
+                  </button>
+                </div>
+              </ng-template>
+            
+            </ng-select>
+            <div *ngIf="form.submitted && !selectedOrganization && currentUserRole === 'SuperAdmin'" class="text-danger mt-2">
+              {{ requiredText }}
+            </div>
+          </div>
+          <!-- <div *ngIf="currentUserRole === 'SuperAdmin'" class="col-6 col-md-1">
+            <button type="button" class="btn btn-primary mt-4 btn-fill" (click)="createOrganization()">
+              Add
+            </button>
+          </div> -->
+
+          <!-- Client Company -->
+          <div *ngIf="companyArray && companyArray.length &&  (selectedOrganization || orgIdFromLocalHost)" class="col-12 col-md-6">
+            <label for="CompanySelect" class="form-label">Select Client Company</label>
+            <ng-select id="CompanySelect" [(ngModel)]="selectedCompany" [items]="companyArray" bindLabel="name"
+              placeholder="Select Client Company" name="CompanySelect"  class="dark-mode-select"
+              [multiple]="false" (close)="onDropdownClose()" (open)="onDropdownOpen()"  (search)="onSearch($event, companyArray, 'name')" (clear)="onDropdownClose()">
+            
+              <ng-template ng-option-tmp let-item="item">
+                {{ item.name }}
+              </ng-template>
+          
+
+              <ng-template *ngIf="showAddButton || companyArray.length == 0" ng-footer-tmp>
+                <div class="d-flex justify-content-between align-items-center p-2">
+                  <button type="button"
+                          class="btn btn-primary btn-fill w-23 text-start d-flex justify-content-between align-items-center"
+                          (click)="createCompany(); $event.stopPropagation();">
+                    <span class="material-icons">add</span>
+                    <span>Add Client Company</span>
+                  </button>
+                </div>
+              </ng-template>
+            
+            </ng-select>
+              <!-- <div *ngIf="form.submitted && !selectedCompany" class="text-danger mt-2">
+                {{ requiredText }}
+              </div> -->
+          </div>
+          <!-- <div *ngIf="companyArray && companyArray.length &&  (selectedOrganization || orgIdFromLocalHost)" class="col-6 col-md-1">
+            <button type="button" class="btn btn-primary mt-4 btn-fill" (click)="createCompany()">
+              Add
+            </button>
+          </div> -->
+          
+          <!-- Name -->
+          <div class="col-12 col-md-6">
+            <label for="name" class="form-label text-muted">Name</label>
+            <input type="text" class="form-control" id="name" [(ngModel)]="model.Name" name="Name" #name="ngModel"
+              required placeholder="Enter name" />
+            <div *ngIf="form.submitted && name.invalid" class="text-danger mt-1">
+              <small *ngIf="name.errors?.['required']">{{requiredText}}</small>
+            </div>
+          </div>
+
+          <!-- Address -->
+          <div class="col-12 col-md-6">
+            <label for="description" class="form-label text-muted">Description</label>
+            <input type="text" class="form-control" id="address" #description="ngModel" [(ngModel)]="model.description"
+              name="description" placeholder="Enter description" />
+            <!-- <div *ngIf="form.submitted && description.invalid" class="text-danger mt-1">
+                    <small *ngIf="description.errors?.['required']">{{requiredText}}</small>
+                </div> -->
+          </div>
+
+
+        </div>
+
+
+        <div class="rounded-3 mt-5">
+          <div class="card-body d-flex">
+            <button *ngIf="mode === 'create'" type="submit" class="btn btn-primary fw-semibold px-4 py-2 me-2 btn-fill">
+              Save
+            </button>
+            <button *ngIf="mode === 'edit'" type="submit" class="btn btn-primary fw-semibold px-4 py-2 me-2 btn-fill">
+              Update
+            </button>
+            <button type="button" class="btn btn-secondary fw-semibold me-3 px-4 py-2 btn-transparent"
+              routerLink="/main/attendance/designation">
+              Cancel
+            </button>
+            <button type="button" class="btn btn-warning fw-semibold me-3 px-4 py-2 btn-transparent " (click)="onClear()">
+              Clear
+            </button>
+           
+          </div>
+        </div>
+      </form>
+
+    </div>
+  </div>
+
+</div>
+
+<app-organization-modal (isOrgAdded)="isOrgAdded($event)"></app-organization-modal>
+
+<app-company-modal (isComAdded)="isComAdded($event)"></app-company-modal>

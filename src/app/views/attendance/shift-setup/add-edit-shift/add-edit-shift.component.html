@@ -1,0 +1,383 @@
+<div class="employee-screen-container p-4"
+    [ngClass]="{'bcg-light': utils.themeStatus === 'light', 'bg-dark': utils.themeStatus === 'dark'}">
+    <!-- Your content here -->
+
+    <!-- Header Card -->
+    <div class="card rounded-3 shadow-sm mb-4">
+        <div class="card-body">
+            <h5 *ngIf="mode === 'create'" [ngClass]="utils.themeStatus === 'dark' ? 'text-white' : 'text-dark'"
+                class="mb-0 text-dark">Add Shift</h5>
+            <h5 *ngIf="mode === 'edit'" [ngClass]="utils.themeStatus === 'dark' ? 'text-white' : 'text-dark'"
+                class="mb-0 text-dark">Edit Shift</h5>
+        </div>
+    </div>
+
+    <!-- Form Card -->
+    <div class="card rounded-3 shadow-sm mb-4">
+        <div class="card-body">
+            <form #form="ngForm" (ngSubmit)="form.form.valid && onSubmit(form)">
+
+
+                <div class="row gy-4 gx-3">
+                    <!-- <div *ngIf="currentUserRole === 'SuperAdmin'" class="col-12 col-md-5">
+                        <label for="OrganizationSelect" class="form-label">Select Company</label>
+                        <ng-select id="OrganizationSelect" [(ngModel)]="selectedOrganization"
+                            [items]="organizationArray" bindLabel="name" placeholder="Select Company"
+                            name="organizationSelect" class="dark-mode-select" [multiple]="false" required
+                            (change)="onOrganizationChange(selectedOrganization?.id)"></ng-select>
+                        <div *ngIf="form.submitted && !selectedOrganization && currentUserRole === 'SuperAdmin'"
+                            class="text-danger mt-2">
+                            {{ requiredText }}
+                        </div>
+                    </div>
+                    <div *ngIf="currentUserRole === 'SuperAdmin'" class="col-6 col-md-1">
+                        <button type="button" class="btn btn-primary mt-4 btn-fill" (click)="createOrganization()">
+                            Add
+                        </button>
+                    </div>
+
+                    <div *ngIf="selectedOrganization || currentUserRole != 'SuperAdmin'" class="col-12 col-md-5">
+                        <label for="CompanyLocationSelect" class="form-label">Select Company Location</label>
+                        <ng-select id="CompanyLocationSelect" [(ngModel)]="selectedCompanyLocation"
+                            [items]="companylocationArray" bindLabel="name" placeholder="Select Company Location"
+                            name="CompanyLocationSelect" required class="dark-mode-select" [multiple]="false">
+                        </ng-select>
+
+                        <div *ngIf="form.submitted && !selectedCompanyLocation" class="text-danger mt-2">
+                            {{ requiredText }}
+                        </div>
+
+                    </div>
+                    <div *ngIf="selectedOrganization || currentUserRole != 'SuperAdmin'" class="col-6 col-md-1">
+                        <button type="button" class="btn btn-primary mt-4 btn-fill" (click)="createOrgLocation()">
+                            Add
+                        </button>
+                    </div>
+
+                    <div *ngIf="companyArray && companyArray.length &&  (selectedOrganization || orgIdFromLocalHost)" class="col-12 col-md-5">
+                        <label for="CompanySelect" class="form-label">Select Client Company</label>
+                        <ng-select id="CompanySelect" [(ngModel)]="selectedCompany" [items]="companyArray"
+                            bindLabel="name" placeholder="Select Client Company" name="CompanySelect"
+                            class="dark-mode-select" [multiple]="false"
+                            (change)="onComnpanyChange(selectedOrganization?.id, selectedCompany?.id)"></ng-select>
+                   
+                    </div>
+                    <div *ngIf="companyArray && companyArray.length &&  (selectedOrganization || orgIdFromLocalHost)" class="col-6 col-md-1">
+                        <button type="button" class="btn btn-primary mt-4 btn-fill" (click)="createCompany()">
+                            Add
+                        </button>
+                    </div>
+
+
+                    <div *ngIf="selectedCompany" class="col-12 col-md-5">
+                        <label for="ClientComLocationSelect" class="form-label">Select Client Company
+                            Location</label>
+                        <ng-select id="ClientComLocationSelect" [(ngModel)]="selectedClientCompanyLocation"
+                            [items]="clietnCompanyLocationArray" bindLabel="name" [required]="!selectedClientCompanyLocation && selectedCompany"
+                            placeholder="Select Client Company Location" name="ClientComLocationSelect"
+                            class="dark-mode-select" [multiple]="false">
+                        </ng-select>
+                        <span *ngIf="form.submitted && !selectedClientCompanyLocation && selectedCompany" class="text-danger mt-2">
+                            {{ requiredText }}
+                        </span>
+                    
+                    </div>
+                    <div *ngIf="selectedCompany" class="col-6 col-md-1">
+                        <button type="button" class="btn btn-primary mt-4 btn-fill" (click)="createCompanyLocation()">
+                            Add
+                        </button>
+                    </div> -->
+
+                    <!-- Organization ID -->
+                    <div *ngIf="currentUserRole === 'SuperAdmin'" class="col-12 col-md-6">
+                        <label for="OrganizationSelect" class="form-label">Select Company</label>
+                        <ng-select id="OrganizationSelect" [(ngModel)]="selectedOrganization" [items]="organizationArray"
+                        bindLabel="name" placeholder="Select Company" name="organizationSelect" class="dark-mode-select"
+                        [multiple]="false" required="currentUserRole == 'SuperAdmin'"
+                        (change)="onOrganizationChange(selectedOrganization.id)" (close)="onDropdownClose()" (open)="onDropdownOpen()"  (search)="onSearch($event, organizationArray, 'name')" (clear)="onDropdownClose()">
+                        
+                        <ng-template ng-option-tmp let-item="item">
+                            {{ item.name }}
+                        </ng-template>
+                    
+                        <!-- "Add Company" Button When No Match Found  -->
+                        <ng-template *ngIf="showAddButton" ng-footer-tmp>
+                            <div class="d-flex justify-content-between align-items-center p-2">
+                            <button type="button"
+                                    class="btn btn-primary btn-fill w-23 text-start d-flex justify-content-between align-items-center"
+                                    (click)="createOrganization(); $event.stopPropagation();">
+                                <span class="material-icons">add</span>
+                                <span>Add Company</span>
+                            </button>
+                            </div>
+                        </ng-template>
+        
+                        </ng-select>
+                        <div *ngIf="form.submitted && !selectedOrganization && currentUserRole === 'SuperAdmin'"
+                        class="text-danger mt-2">
+                        {{ requiredText }}
+                        </div>
+                    </div>
+                    <!-- <div *ngIf="currentUserRole === 'SuperAdmin'" class="col-6 col-md-1">
+                        <button type="button" class="btn btn-primary mt-4 btn-fill" (click)="createOrganization()">
+                        Add
+                        </button>
+                    </div> -->
+        
+        
+                    <!-- COmpany Location -->
+                    <div *ngIf="selectedOrganization || currentUserRole != 'SuperAdmin'" class="col-12 col-md-6">
+                        <label for="CompanyLocationSelect" class="form-label">Select Company Location</label>
+                        <ng-select id="CompanyLocationSelect" [(ngModel)]="selectedCompanyLocation" [items]="companylocationArray"
+                        bindLabel="name" placeholder="Select Company Location" required name="CompanyLocationSelect"
+                        class="dark-mode-select" [multiple]="false" (close)="onDropdownClose()" (open)="onDropdownOpen()"  (search)="onSearch($event, companylocationArray, 'name')" (clear)="onDropdownClose()">
+        
+                        <ng-template ng-option-tmp let-item="item">
+                            {{ item.name }}
+                        </ng-template>
+                    
+                        <!-- "Add Client Company" Button When No Match Found -->
+                        <ng-template *ngIf="showAddButton || companylocationArray.length == 0" ng-footer-tmp>
+                            <div class="d-flex justify-content-between align-items-center p-2">
+                            <button type="button"
+                                    class="btn btn-primary btn-fill w-23 text-start d-flex justify-content-between align-items-center"
+                                    (click)="createOrgLocation(); $event.stopPropagation();">
+                                <span class="material-icons">add</span>
+                                <span>Add Location</span>
+                            </button>
+                            </div>
+                        </ng-template>
+        
+                        </ng-select>
+                        <div *ngIf="form.submitted && !selectedCompanyLocation" class="text-danger mt-2">
+                        {{ requiredText }}
+                    </div>
+                    </div>
+                    <!-- <div *ngIf="selectedOrganization || currentUserRole != 'SuperAdmin'" class="col-1 col-md-1">
+                        <button type="button" class="btn btn-primary mt-4 btn-fill" (click)="createOrgLocation()">
+                        Add
+                        </button>
+                    </div> -->
+        
+                    <!-- Client Company -->
+                    <div *ngIf="companyArray && companyArray.length &&  (selectedOrganization || orgIdFromLocalHost)" class="col-12 col-md-6">
+                        <label for="CompanySelect" class="form-label">Select Client Company</label>
+                        <ng-select id="CompanySelect" [(ngModel)]="selectedCompany" [items]="companyArray" bindLabel="name"
+                        placeholder="Select Client Company" name="CompanySelect" class="dark-mode-select" [multiple]="false"
+                        (change)="onComnpanyChange(selectedOrganization?.id, selectedCompany?.id)" (close)="onDropdownClose()" (open)="onDropdownOpen()"  (search)="onSearch($event, companyArray, 'name')" (clear)="onDropdownClose()">
+        
+                        <ng-template ng-option-tmp let-item="item">
+                            {{ item.name }}
+                        </ng-template>
+                    
+                        <!-- "Add Client Company" Button When No Match Found -->
+                        <ng-template *ngIf="showAddButton || companyArray.length == 0" ng-footer-tmp>
+                            <div class="d-flex justify-content-between align-items-center p-2">
+                            <button type="button"
+                                    class="btn btn-primary btn-fill w-23 text-start d-flex justify-content-between align-items-center"
+                                    (click)="createCompany(); $event.stopPropagation();">
+                                <span class="material-icons">add</span>
+                                <span>Add Client Company</span>
+                            </button>
+                            </div>
+                        </ng-template>
+                        
+                        </ng-select>
+                        <!-- <div *ngIf="form.submitted && !selectedCompany && currentUserRole === 'Admin'" class="text-danger mt-2">
+                            {{ requiredText }}
+                        </div> -->
+                    </div>
+                    <!-- <div *ngIf="companyArray && companyArray.length &&  (selectedOrganization || orgIdFromLocalHost)" class="col-6 col-md-1">
+                        <button type="button" class="btn btn-primary mt-4 btn-fill" (click)="createCompany()">
+                        Add
+                        </button>
+                    </div> -->
+        
+                    <!-- Client Company Location -->
+                    <div *ngIf="selectedCompany" class="col-12 col-md-6">
+                        <label for="ClientComLocationSelect" class="form-label">Select Client Company Location</label>
+                        <ng-select id="ClientComLocationSelect" [(ngModel)]="selectedClientCompanyLocation"
+                        [items]="clietnCompanyLocationArray" bindLabel="name" placeholder="Select Client Company Location"
+                        [required]="!selectedClientCompanyLocation && selectedCompany"
+                        name="ClientComLocationSelect" class="dark-mode-select" [multiple]="false"  (close)="onDropdownClose()" (open)="onDropdownOpen()"  (search)="onSearch($event, clietnCompanyLocationArray, 'name')" (clear)="onDropdownClose()">
+        
+                        <ng-template ng-option-tmp let-item="item">
+                            {{ item.name }}
+                        </ng-template>
+                    
+                        <!-- "Add Client Company" Button When No Match Found -->
+                        <ng-template *ngIf="showAddButton || clietnCompanyLocationArray.length == 0" ng-footer-tmp>
+                            <div class="d-flex justify-content-between align-items-center p-2">
+                            <button type="button"
+                                    class="btn btn-primary btn-fill w-23 text-start d-flex justify-content-between align-items-center"
+                                    (click)="createCompanyLocation(); $event.stopPropagation();">
+                                <span class="material-icons">add</span>
+                                <span>Add Location</span>
+                            </button>
+                            </div>
+                        </ng-template>
+        
+                        </ng-select>
+                        <span *ngIf="form.submitted && !selectedClientCompanyLocation && selectedCompany"
+                        class="text-danger mt-2">
+                        {{ requiredText }}
+                    </span>
+                    </div>
+                    <!-- <div *ngIf="selectedCompany" class="col-6 col-md-1">
+                        <button type="button" class="btn btn-primary mt-4 btn-fill" (click)="createCompanyLocation()">
+                        Add
+                        </button>
+                    </div> -->
+  
+
+
+                    <!-- Name -->
+                    <div class="col-12 col-md-6">
+                        <label for="name" class="form-label text-muted">Name</label>
+                        <input type="text" class="form-control" id="name" [(ngModel)]="model.name" name="Name"
+                            #name="ngModel" required placeholder="Enter name" />
+                        <div *ngIf="form.submitted && name.invalid" class="text-danger mt-1">
+                            <small *ngIf="name.errors?.['required']">{{requiredText}}</small>
+                        </div>
+                    </div>
+
+
+                    <div class="col-12 col-md-6">
+                        <label for="SalaryTypeSelect" class="form-label">Select Salary Type</label>
+                        <ng-select id="SalaryTypeSelect" [(ngModel)]="selectedSalaryType" [items]="salaryTypeArray"
+                            [ngModelOptions]="{standalone: true}" bindLabel="name" placeholder="Select Salary Type"
+                            name="SalaryTypeSelect" class="dark-mode-select" [multiple]="false" required></ng-select>
+                        <div *ngIf="form.submitted && !selectedSalaryType" class="text-danger mt-2">
+                            {{ requiredText }}
+                        </div>
+                    </div>
+
+                    <!-- Date  -->
+                    <div class="col-12 col-md-6">
+                        <label for="cutOfDate" class="form-label text-muted">Cut Off Date</label>
+                        <mat-form-field appearance="outline" class="w-100">
+                            <input matInput [matDatepicker]="picker1" (dateChange)="onDateChange($event)"
+                                placeholder="Select a date" name="dob" id="dob" [(ngModel)]="cutOffDate" readonly />
+                            <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
+                            <mat-datepicker #picker1></mat-datepicker>
+                        </mat-form-field>
+                    </div>
+
+                    <div class="col-12 col-md-6">
+                        <label for="breakTypeSelect" class="form-label">Select Break Type</label>
+                        <ng-select id="breakTypeSelect" [(ngModel)]="selectedbreakType" [items]="breakTypeArray"
+                            [ngModelOptions]="{standalone: true}" bindLabel="name" placeholder="Select Break Type"
+                            name="breakTypeSelect" class="dark-mode-select" [multiple]="false" required></ng-select>
+                        <div *ngIf="form.submitted && !selectedbreakType" class="text-danger mt-2">
+                            {{ requiredText }}
+                        </div>
+                    </div>
+                    <!-- <div class="col-12 col-md-6">
+                        <label for="cutOff" class="form-label text-muted">Cut off</label>
+                        <input type="text" class="form-control" id="cutOff" [(ngModel)]="model.cutOff" name="cutOff"
+                            #cutOff="ngModel" placeholder="Enter Cut Off" />
+                        <div *ngIf="form.submitted && cutOff.invalid" class="text-danger mt-1">
+                            <small *ngIf="cutOff.errors?.['required']">{{requiredText}}</small>
+                        </div>
+                    </div> -->
+
+                    <div class="col-12 col-md-6">
+                        <label for="gracePeriod" class="form-label text-muted">
+                            Grace Period <small>(minutes)</small>
+                        </label>
+                        <input type="number" class="form-control" id="gracePeriod" [(ngModel)]="model.gracePeriod"
+                            name="gracePeriod" #gracePeriod="ngModel" placeholder="Enter Grace period" />
+                        <!-- <div *ngIf="form.submitted && gracePeriod.invalid" class="text-danger mt-1">
+                            <small *ngIf="gracePeriod.errors?.['required']">{{requiredText}}</small>
+                        </div> -->
+                    </div>
+                    
+
+                    <div class="col-12 col-md-6">
+                        <label for="startTime" class="form-label text-muted">Start Time</label>
+                        <mat-form-field appearance="outline" class="w-100">
+                            <input matInput name="startTime" [ngxMatTimepicker]="startPicker" required [(ngModel)]="startTime"
+                                placeholder="Start Time" readonly />
+                            <ngx-mat-timepicker #startPicker></ngx-mat-timepicker>
+                        </mat-form-field>
+                        <div *ngIf="form.submitted && !startTime" class="text-danger">
+                            {{ requiredText }}
+                        </div>
+                    </div>
+
+                    <div class="col-12 col-md-6">
+                        <label for="endTime" class="form-label text-muted">End Time</label>
+                        <mat-form-field appearance="outline" class="w-100">
+                            <input name="endTime" matInput [ngxMatTimepicker]="endPicker" required [(ngModel)]="endTime"
+                                placeholder="End time" readonly />
+                            <ngx-mat-timepicker #endPicker></ngx-mat-timepicker>
+                        </mat-form-field>
+                        <div *ngIf="form.submitted && !endTime" class="text-danger">
+                            {{ requiredText }}
+                        </div>
+                    </div>
+
+
+                    <div class="col-12 col-md-6">
+                        <!-- <label for="duration" class="form-label text-muted">Duration</label> -->
+                        <label for="gracePeriod" class="form-label text-muted">
+                            Duration <small>(hours)</small>
+                        </label>
+                        <input type="number" class="form-control" id="duration" [(ngModel)]="model.duration"
+                            name="Duration" #duration="ngModel" required placeholder="Enter Duration" />
+                        <div *ngIf="form.submitted && duration.invalid" class="text-danger mt-1">
+                            <small *ngIf="duration.errors?.['required']">{{requiredText}}</small>
+                        </div>
+                    </div>
+
+                    
+
+                    <!-- Description -->
+                    <div class="col-12 col-md-6">
+                        <label for="description" class="form-label text-muted">Description</label>
+                        <input type="text" class="form-control" #description="ngModel" id="description"
+                            [(ngModel)]="model.description" name="description" placeholder="Enter description" />
+                        <!-- <div *ngIf="form.submitted && description.invalid" class="text-danger mt-1">
+                            <small *ngIf="description.errors?.['required']">{{requiredText}}</small>
+                        </div> -->
+                    </div>
+
+
+                  
+
+
+                </div>
+
+
+                <div class="rounded-3 mt-5">
+                    <div class="card-body d-flex">
+                        <button *ngIf="mode === 'create'" type="submit" class="btn btn-primary fw-semibold px-4 py-2 me-2 btn-fill">
+                            Save
+                        </button>
+                        <button *ngIf="mode === 'edit'" type="submit" class="btn btn-primary fw-semibold px-4 py-2 me-2 btn-fill">
+                            Update
+                        </button>
+                        <button type="button" class="btn btn-secondary fw-semibold me-3 px-4 py-2 btn-transparent"
+                            routerLink="/main/attendance/shift">
+                            Cancel
+                        </button>
+                        <button type="button" class="btn btn-warning fw-semibold me-3 px-4 py-2 btn-transparent" (click)="onClear()">
+                            Clear
+                        </button>
+                       
+                    </div>
+                </div>
+            </form>
+
+
+        </div>
+    </div>
+
+</div>
+
+<app-company-location-modal (isComLocAdded)="isComLocAdded($event)"></app-company-location-modal>
+<app-organization-location-modal (isOrgLocAdded)="isComLocAdded($event, 'org')"></app-organization-location-modal>
+
+<app-organization-modal (isOrgAdded)="isOrgAdded($event)"></app-organization-modal>
+
+<app-company-modal (isComAdded)="isComAdded($event)"></app-company-modal>

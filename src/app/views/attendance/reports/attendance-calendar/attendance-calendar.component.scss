@@ -1,0 +1,123 @@
+// .calendar-container {
+//     max-width: 600px;  // Adjust the width as needed
+//     margin: auto;      // Center the calendar
+//   }
+  
+//   ::ng-deep .fc {  
+//     font-size: 14px;  // Reduce text size
+//   }
+  
+//   ::ng-deep .fc-daygrid-day-frame {
+//     padding: 4px;  // Reduce cell padding
+//   }
+  
+//   ::ng-deep .fc-toolbar-title {
+//     font-size: 16px;  // Smaller title
+//   }
+  
+
+.card-body {
+    // padding: 10px; // Reduce padding inside the card
+  }
+  
+  .calendar-container {
+    max-width: 600px;  // Adjust width if needed
+    margin: auto;
+  }
+  
+  ::ng-deep .fc {
+    font-size: 14px;  // Reduce text size
+  }
+  
+  ::ng-deep .fc-daygrid-day-frame {
+    padding: 2px; // Reduce cell padding
+  }
+  
+  ::ng-deep .fc-toolbar-title {
+    font-size: 16px; // Smaller title
+  }
+  
+  /* Reduce calendar height */
+  ::ng-deep .fc-view-harness {
+    max-height: 500px; /* Adjust height as needed */
+    overflow-y: auto;
+  }
+  
+
+
+//   Btn Related chages start
+
+/* Reduce padding inside the card */
+.card-body {
+    // padding: 10px;
+  }
+  
+  .calendar-container {
+    max-width: 600px;  // Adjust width if needed
+    margin: auto;
+  }
+  
+  /* Reduce font size for a compact look */
+  ::ng-deep .fc {
+    font-size: 14px;
+  }
+  
+  /* Reduce day cell padding */
+  ::ng-deep .fc-daygrid-day-frame {
+    padding: 2px;
+  }
+  
+  /* Smaller title */
+  ::ng-deep .fc-toolbar-title {
+    font-size: 16px;
+  }
+  
+  /* Set Today button color */
+  ::ng-deep .fc-today-button {
+    background-color: #1890ff !important;
+    border-color: #1890ff !important;
+    color: white !important;
+  }
+  
+  /* Set navigation arrow button background color */
+  ::ng-deep .fc-prev-button, 
+  ::ng-deep .fc-next-button {
+    background-color: #1890ff !important;
+    border-color: #1890ff !important;
+    color: white !important;
+  }
+  
+  /* Change hover effect for buttons */
+  ::ng-deep .fc-today-button:hover,
+  ::ng-deep .fc-prev-button:hover,
+  ::ng-deep .fc-next-button:hover {
+    background-color: #0056b3 !important; /* Darker shade of blue */
+  }
+  
+  /* Change text color of weekday labels (Mon, Tue, Wed, etc.) */
+  ::ng-deep .fc-col-header-cell .fc-scrollgrid-sync-inner {
+    color: #1890ff !important;
+    font-weight: bold;
+  }
+  
+  /* Change the text color of the date numbers */
+  ::ng-deep .fc-daygrid-day-number {
+    color: #1890ff !important;
+  }
+  
+  /* Change the text color of today's date */
+  ::ng-deep .fc-daygrid-day.fc-day-today .fc-daygrid-day-number {
+    color: #1890ff !important;
+    font-weight: bold;
+  }
+
+
+
+  ::ng-deep .fc-daygrid-day-frame[data-off-day="true"]{
+    background-color: #d3d3d3 !important;
+  }
+
+  // ::ng-deep .fc-daygrid-day[data-off-day="true"] {
+  //   background-color: #d3d3d3 !important; /* Light Grey */
+  // }
+  

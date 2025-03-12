@@ -1,0 +1,55 @@
+<div id="usersLocation-modal" class="modal fade" tabindex="-1" aria-labelledby="companyModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-scrollable modal-xl modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="companyModalLabel">User Locations</h5>
+                <button type="button" class="btn-close custom-close" data-bs-dismiss="modal"
+                    aria-label="Close"></button>
+
+            </div>
+            <div class="modal-body">
+
+                <div class="employee-screen-container" [ngClass]="{
+                    'bg-light': utils.themeStatus === 'light',
+                    'bg-dark': utils.themeStatus === 'dark'
+                  }">
+
+
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="table-responsive styled-table">
+
+                                <ngx-datatable style="height: 400px;" class="bootstrap" [rows]="rows"
+                                    [columnMode]="'force'" [headerHeight]="50" [footerHeight]="0" [rowHeight]="50"
+                                    [scrollbarV]="true" [scrollbarH]="true" [messages]="messages" [selected]="selected"
+                                    [selectionType]="SelectionType.checkbox">
+
+                                    <ngx-datatable-column [sortable]="false" [canAutoResize]="false" [draggable]="true"
+                                        [resizeable]="true" [headerCheckboxable]="false" [checkboxable]="false"
+                                        [width]="50">
+                                    </ngx-datatable-column>
+
+                                    <ngx-datatable-column name="Name" prop="name"
+                                        [width]="80"></ngx-datatable-column>
+
+                                    <ngx-datatable-column name="Role" prop="role" [width]="80"></ngx-datatable-column>
+
+                                    <ngx-datatable-column name="Company Location"
+                                        prop="orgLocation"></ngx-datatable-column>
+                                    <ngx-datatable-column name="Client Company Location"
+                                        prop="comLocation"></ngx-datatable-column>
+                                   
+                                </ngx-datatable>
+                            </div>
+
+
+                        </div>
+
+                    </div>
+                </div>
+
+
+            </div>
+        </div>
+    </div>
+</div>

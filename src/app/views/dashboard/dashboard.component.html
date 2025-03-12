@@ -1,0 +1,212 @@
+
+
+<div class="container-fluid mt-3">
+  
+  <div class="row">
+    <div class="col-md-3">
+      <div class="card stats-card" [routerLink]="['/main/user']" style="cursor: pointer;">
+        <div class="card-body">
+          <h6>
+            Employees
+            <span class="stats-icon-wrapper">
+              <mat-icon class="stats-icon">group</mat-icon>
+            </span>
+          </h6>
+          <h2>{{totalEmployees}}</h2>
+          <span class="badge bg-success">+15% Employee Hiring</span>
+        </div>
+      </div>
+    </div>
+  
+    <div class="col-md-3">
+      <div class="card stats-card" [routerLink]="['/main/attendance/company']" style="cursor: pointer;">
+        <div class="card-body">
+          <h6>
+            Client Companies
+            <span class="stats-icon-wrapper">
+              <mat-icon class="stats-icon">person</mat-icon>
+            </span>
+          </h6>
+          <h2> {{totalClientCompanies}} </h2>
+          <span class="badge bg-danger">-64% Daily Attendance</span>
+        </div>
+      </div>
+    </div>
+  
+    <div class="col-md-3">
+      <div class="card stats-card" [routerLink]="['/main/attendance/client-company-location']" style="cursor: pointer;">
+        <div class="card-body">
+          <h6>
+            Client Com. Locations
+            <span class="stats-icon-wrapper">
+              <mat-icon class="stats-icon">location_on</mat-icon>
+            </span>
+          </h6>
+          <h2> {{totalClientCompanyLocations}}  </h2>
+          <span class="badge bg-danger">-11% New Employee</span>
+        </div>
+      </div>
+    </div>
+  
+    <div class="col-md-3">
+      <div class="card stats-card" [routerLink]="['/main/attendance/device']" style="cursor: pointer;">
+        <div class="card-body">
+          <h6>
+            Devices
+            <span class="stats-icon-wrapper">
+              <mat-icon class="stats-icon">laptop</mat-icon>
+            </span>
+          </h6>
+          <h2> {{totalDevices}} </h2>
+          <span class="badge bg-danger">-54% New Recruitment</span>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <!-- Middle Row: Daily Attendance Statistic, Recruitment, Loan Pay, Leave Application -->
+  <div class="row mt-4">
+
+    <!-- <div class="col-md-6">
+      <div class="card chart-card">
+        <div class="card-body">
+          <h6>Attendance Percentage</h6>
+          <div id="loanChart">
+            <apx-chart
+            [series]="loanChartOptions.series"
+            [chart]="loanChartOptions.chart"
+            [labels]="loanChartOptions.labels"
+            [fill]="loanChartOptions.fill"
+            [dataLabels]="loanChartOptions.dataLabels"
+            [responsive]="loanChartOptions.responsive"
+            [colors]="loanChartOptions.colors"
+            ></apx-chart>
+          </div>
+        </div>
+      </div>
+    </div> -->
+    <div class="col-md-6">
+      <div class="card chart-card">
+        <div class="card-body">
+          <h6>Attendance Percentage <span style="font-size: 0.6em; margin-left: 4px;">(monthly)</span></h6>
+          <div id="loanChart">
+            <apx-chart
+              [series]="loanChartOptions?.series"
+              [chart]="loanChartOptions.chart"
+              [labels]="loanChartOptions.labels"
+              [fill]="loanChartOptions.fill"
+              [dataLabels]="loanChartOptions.dataLabels"
+              [responsive]="loanChartOptions.responsive"
+              [colors]="loanChartOptions.colors"
+            ></apx-chart>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <div class="col-md-6">
+      <div class="card chart-card">
+        <div class="card-body">
+          <h6>Daily Attendance Statistic</h6>
+          <div id="attendanceChart">
+            <apx-chart
+            [series]="chartOptions.series"
+            [chart]="chartOptions.chart"
+            [dataLabels]="chartOptions.dataLabels"
+            [plotOptions]="chartOptions.plotOptions"
+            [responsive]="chartOptions.responsive"
+            [xaxis]="chartOptions.xaxis"
+            [legend]="chartOptions.legend"
+            [fill]="chartOptions.fill"
+            [colors]="chartOptions.colors"
+
+            ></apx-chart>
+          </div>
+        </div>
+      </div>
+    </div>
+   
+
+  </div>
+
+
+  <!-- Bottom Row: Employee List Table -->
+ <div class="row mt-4 mb-4">
+  <div class="col-12">
+    <div class="card">
+      <div class="card-body">
+        <div class="d-flex justify-content-between align-items-center mb-3">
+          <h6 class="mb-0">Employee List</h6>
+          <div class="search-container" style="width: 300px;">
+            <div class="input-group">
+              <span class="input-group-text bg-white border-end-0">
+                <mat-icon class="search-icon">search</mat-icon>
+              </span>
+              <input 
+                type="text" 
+                class="form-control" 
+                placeholder="Search employees..." 
+                style="border-left: none;"
+                (keyup)="onSearch($event)"
+              >
+            </div>
+          </div>
+        </div>
+        <div class="table-container">
+          <!-- Header Table -->
+          <table class="table table-bordered" style="width: 100%; table-layout: fixed;">
+            <thead>
+              <tr>
+                <th style="width: 17%;">Name</th>
+                <th style="width: 13%;">Role</th>
+                <th style="width: 15%;">Designation</th>
+                <th style="width: 15%;">Company</th>
+                <th style="width: 15%;">Client Company</th>
+                <th style="width: 9%;">Status</th>
+               <!-- <th style="width: 20%;">Action</th> -->
+
+              </tr>
+            </thead>
+          </table>
+
+          <!-- Virtual Scroll Section -->
+          <cdk-virtual-scroll-viewport
+            itemSize="50"
+            class="scroll-body"
+            (scrolled)="onScroll()"
+            #scrollViewport
+          >
+            <table class="table table-bordered" style="width: 100%; table-layout: fixed;">
+              <tbody>
+                <tr *cdkVirtualFor="let employee of employeesData; let i = index">
+                  <td style="width: 17%;">{{ employee?.FullName }}</td>
+                  <td style="width: 13%;">{{ employee?.Role }}</td>
+                  <td style="width: 15%;">{{ employee?.Designation?.Name }}</td>
+                  <td style="width: 15%;">{{ employee?.Organization?.Name }}</td>
+                  <td style="width: 15%;">{{ employee?.Company?.Name }}</td>
+                  <td style="width: 9%;">
+                    <span
+                      class="badge"
+                      [ngClass]="{'bg-success': employee.IsActive === true, 'bg-danger': employee.IsActive == false}"
+                    >
+                      {{ employee.IsActive ? 'Active' : 'Inactive' }}
+                    </span>
+                  </td>
+                         <!-- <td style="width: 20%;">
+                      <button class="btn btn-sm btn-warning me-3">Edit</button>
+                      <button class="btn btn-sm btn-danger">Delete</button>
+                    </td> -->
+                </tr>
+              </tbody>
+            </table>
+          </cdk-virtual-scroll-viewport>
+        </div>
+
+        <!-- <button class="btn btn-primary mt-2" (click)="addEmployee()">Add New Employee</button> -->
+      </div>
+    </div>
+  </div>
+</div>
+  
+  
+</div>

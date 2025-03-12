@@ -1,0 +1,53 @@
+/* Ensure the container allows for flexible width */
+.dropdown-container {
+    width: 100%; /* Full width for parent container */
+    max-width: 100%; /* Prevent limiting the width */
+    display: flex; /* Flex layout for alignment, if needed */
+}
+
+/* Ensure the mat-form-field takes up full width */
+.dropdown-field {
+    width: 100%; /* Make mat-form-field occupy the full container width */
+    margin: 0; /* Remove extra margin */
+    padding: 0; /* Remove unnecessary padding */
+}
+
+/* Mat-form-field customization */
+.mat-form-field {
+    background-color: #fff; /* Match background */
+    border-radius: 4px; /* Add smooth corners */
+    padding: 0 8px; /* Padding for inner spacing */
+    font-size: 14px; /* Adjust font size */
+    width: 100%; /* Full-width adjustment for mat-form-field */
+}
+
+/* Optional hover effect for the dropdown trigger */
+.mat-form-field .mat-select-trigger {
+    background: #f5f5f5; /* Add a subtle hover effect */
+    border-radius: 4px;
+    transition: background 0.3s ease;
+}
+
+/* Ensure the container has proper alignment */
+.d-flex {
+    display: flex;
+    justify-content: space-between; /* Space between button and dropdown */
+    align-items: center; /* Vertically align elements */
+}
+
+/* Ensure the mat-form-field is aligned and styled properly */
+.dropdown-field {
+    max-width: 170px; /* Restrict width of the dropdown */
+    margin: 0; /* Remove unnecessary margin */
+}
+
+.dropdown-container {
+    max-width: 127px; /* Restrict the dropdown width */
+}
+
+/* Mat-form-field styling */
+.dropdown-field {
+    width: 100%; /* Ensure it takes full width within its container */
+    margin: 0;
+    height: 67px;
+}

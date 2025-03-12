@@ -1,0 +1,159 @@
+/* General container styling */
+.employee-screen-container {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    padding: 16px;
+    background-color: #ffffff !important;
+  }
+
+  .employee-screen-footer {
+    display: flex;
+    flex-direction: column;
+    
+    padding: 0 16px 16px 16px;
+    background-color: #f9f9f9;
+  }
+  
+  
+  /* Title styling */
+  .screen-title {
+    font-size: 24px;
+    font-weight: bold !important;
+    margin: 0;
+    font-family: 'Roboto', sans-serif !important;
+    color: #333333;
+  }
+  
+  /* Create Button styling */
+  .create-btn {
+    padding: 8px 16px;
+    font-size: 16px;
+    // font-weight: bold;
+    color: #ffffff;
+    background-color: #28a745;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    font-family: 'Roboto', sans-serif;
+  }
+  
+  .create-btn:hover {
+    background-color: #218838;
+  }
+  
+  /* AG Grid Container */
+  .ag-grid-container {
+    flex-grow: 1;
+    background-color: #ffffff;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+    margin-bottom: 16px;
+  }
+  
+  /* Footer styling */
+  .footer {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    padding: 8px 16px;
+    background-color: #ffffff;
+    border-radius: 8px;
+    // box-shadow: 0 -2px 4px rgba(0, 0, 0, 0.1);
+  }
+
+  
+  .delete-btn:hover {
+    background-color: #a71d2a !important;
+  }
+  
+  // New Code For ngx Data Table 
+
+  
+  
+  datatable-header-cell{
+    width: 0px !important;
+  }
+
+
+  :host ::ng-deep .ngx-datatable.material .datatable-body .datatable-body-row .datatable-body-cell {
+    width: 150px !important;
+
+  }
+
+  :host ::ng-deep .ngx-datatable.material .datatable-header .datatable-header-cell {
+    width: 155px !important;
+
+  }
+
+  .table-responsive {
+    overflow-x: hidden !important; /* Enables horizontal scrolling */
+  }
+
+  :host ::ng-deep ngx-datatable {
+    min-width: 383px !important; /* Ensures table doesn't shrink too much */
+    border: 1px solid #b9b7b7;
+    min-height: 400px !important;
+  }
+
+
+:host ::ng-deep .ngx-datatable.material .datatable-header .datatable-header-cell:last-child {
+    width: 70px !important;  /* Adjust width as needed */
+}
+
+:host ::ng-deep .ngx-datatable.material .datatable-body .datatable-body-row .datatable-body-cell:last-child {
+    width: 40px !important;  /* Ensure body cells match header */
+}
+  
+.icon-btn {
+  background: transparent !important; /* Remove button background */
+  border: none !important; /* Remove border */
+  padding: 0px !important; /* Remove padding */
+  min-width: auto !important; /* Let the icon control the size */
+  min-height: auto !important;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.white-icon {
+  color: #f44336 !important; /* Make delete icon white */
+}
+
+.search-container {
+  width: 250px !important; /* Adjust width */
+}
+
+.search-container .input-group {
+  border-radius: 20px; /* Rounded corners */
+  background: #f5f5f5; /* Light gray background */
+  box-shadow: none !important; /* Remove shadow */
+  border: none !important; /* Remove border */
+  padding: 2px 8px; /* Reduce padding */
+}
+
+.search-container .form-control {
+  background: transparent !important; /* No background */
+  border: none !important; /* Remove border */
+  padding: 0.4rem 0.8rem !important; /* Adjust padding */
+  font-size: 0.85rem !important; /* Slightly smaller font */
+}
+
+.search-container .form-control:focus {
+  box-shadow: none !important; /* Remove focus outline */
+  outline: none !important;
+}
+
+.search-container .input-group-text {
+  background: transparent !important; /* No background */
+  border: none !important;
+  padding: 0; /* Remove padding */
+}
+
+.search-container .search-icon {
+  font-size: 1rem !important; /* Adjust icon size */
+  color: #666; /* Soft gray color */
+  padding: 5px !important;
+}

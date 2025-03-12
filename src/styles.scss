@@ -1,0 +1,920 @@
+/* You can add global styles to this file, and also import other style files */
+@use '@angular/material' as mat;
+@font-face {
+  font-family: 'icomoon';
+  src: url('/assets/fonts/icomoon.woff') format('woff'),
+       url('/assets/fonts/icomoon.ttf') format('truetype'),
+       url('/assets/fonts/icomoon.eot') format('embedded-opentype');
+  font-weight: normal;
+  font-style: normal;
+}
+
+.icon-quick-start:before {
+  font-family: 'icomoon';
+  content: '\e900'; /* Replace with the correct Unicode from IcoMoon */
+}
+
+
+
+// @import '~@angular/material/prebuilt-themes/indigo-pink.css';
+// @import '~@swimlane/ngx-datatable/index.css';
+// @import '~@swimlane/ngx-datatable/themes/material.css';
+// @import '~@swimlane/ngx-datatable/assets/icons.css';
+
+
+
+// right Side bar styles
+
+.dashboard-wrapper {
+  display: flex;
+  height: 100vh;
+}
+
+
+
+/* Settings Panel */
+.settings-panel {
+  position: fixed;
+  top: 50%;
+  right: -350px;
+  /* Hidden by default */
+  width: 300px;
+  transform: translateY(-50%);
+  background: #fff;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  /* Slightly stronger shadow for depth */
+  border-radius: 12px;
+  /* More rounded corners */
+  transition: right 0.3s ease, box-shadow 0.3s ease;
+  /* Smooth transition for right and shadow */
+  z-index: 1050;
+}
+
+.settings-panel.open {
+  right: 20px;
+  /* Slide into view */
+}
+
+.settings-toggle {
+  position: fixed;
+  top: 45%;
+  /* Center the button vertically */
+  right: 0px;
+  /* Distance from the right edge */
+  width: 40px;
+  /* Larger button width for better accessibility */
+  height: 40px;
+  /* Larger button height */
+  display: flex;
+  align-items: center;
+  /* Vertically center the icon */
+  justify-content: center;
+  /* Horizontally center the icon */
+  background-color: #1890ff !important;
+  border-radius: 50%;
+  /* Circular shape */
+  border: none;
+  z-index: 1100;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
+}
+
+.settings-toggle:hover {
+  background-color: #0056b3 !important;
+  /* Darker blue on hover */
+  transform: scale(1.1);
+  /* Slight zoom effect */
+  box-shadow: 0 0 10px rgba(0, 123, 255, 0.4);
+  /* Glow effect on hover */
+}
+
+.settings-toggle c-icon {
+  font-size: 24px;
+  /* Slightly larger icon for better visibility */
+  color: #fff !important;
+  /* Icon color */
+}
+
+/* Card Styling */
+.card {
+  border: none;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  /* Deeper shadow for the card */
+  border-radius: 10px;
+  /* Rounded corners for card */
+}
+
+/* Backdrop Styling */
+.settings-popup-backdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.5);
+  /* Semi-transparent backdrop */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1100;
+  /* Ensure the popup is on top */
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.3s ease, visibility 0s 0.3s;
+  /* Smooth transition for backdrop */
+}
+
+.settings-popup-backdrop.show {
+  opacity: 1;
+  visibility: visible;
+}
+
+/* Mobile Responsiveness */
+@media (max-width: 576px) {
+  .settings-panel {
+    width: 250px;
+    /* Reduce width on small screens */
+    right: -250px;
+    /* Hidden by default */
+  }
+
+  .settings-toggle {
+    width: 45px;
+    /* Adjust the size of the toggle button */
+    height: 45px;
+  }
+
+  .settings-toggle c-icon {
+    font-size: 18px;
+    /* Slightly smaller icon on mobile */
+  }
+}
+
+// Mat DAte Picker style
+
+/* Datepicker Toggle Button */
+.mat-datepicker-toggle {
+  margin-right: 8px;
+  /* Space between button and input */
+  color: inherit;
+  /* Inherit text color */
+}
+
+
+/* Hover Effect */
+.custom-date-field:hover {
+  background-color: #e9ecef;
+  /* Light hover effect */
+}
+
+/* Focus Effect */
+.custom-date-field:focus-within {
+  border-color: #1890ff;
+  /* Focus border color */
+}
+
+/* Label Styling */
+label.form-label {
+  margin-bottom: 4px;
+  /* Space between label and field */
+  font-size: 14px;
+  /* Consistent font size */
+  color: #6c757d;
+  /* Muted text color */
+}
+
+
+
+body.darkTheme {
+
+  .mat-datepicker-content .mat-calendar {
+    background: #2c3e50 !important;
+    /* Slightly lighter dark background */
+    color: white !important;
+    /* White text */
+  }
+
+  /* White color for calendar day labels (day names like Mon, Tue, etc.) */
+  .mat-calendar-body-label {
+    color: white !important;
+  }
+
+  /* Header section of the calendar */
+  .mat-calendar-table-header th {
+    color: white !important;
+    /* White text for header */
+  }
+
+  /* Styling for the days in the calendar grid */
+  .mat-calendar-body-cell {
+    color: white !important;
+    /* White text for days */
+  }
+
+  /* Hover effect for day cells */
+  .mat-calendar-body-cell:hover {
+    background-color: #495057 !important;
+    /* Darker hover background */
+    color: white !important;
+    /* White text on hover */
+  }
+
+  /* Current date styling */
+  .mat-calendar-body-cell.mat-calendar-body-selected {
+    background-color: #1890ff !important;
+    /* Highlight selected date with Bootstrap's primary blue */
+    color: white !important;
+    /* White text for selected date */
+  }
+
+  /* Today's date */
+  .mat-calendar-body-cell.mat-calendar-body-today {
+    background-color: #34495e !important;
+    /* Slightly lighter dark background for today */
+    color: white !important;
+    /* White text for today */
+  }
+
+  /* Styling for the prev/next month buttons */
+  .mat-calendar-arrow {
+    color: white !important;
+    /* White arrows for next/prev */
+  }
+
+  /* Additional styling for the month selector (e.g., dropdown) */
+  .mat-calendar-period-button {
+    color: white !important;
+    /* White text for the period button */
+    background-color: #34495e !important;
+    /* Dark background */
+  }
+
+  /* Styling for the year selector */
+  .mat-calendar-year-button {
+    color: white !important;
+    /* White text for year button */
+    background-color: #34495e !important;
+    /* Dark background */
+    border: none !important;
+    /* Remove border */
+  }
+
+  /* Focused year selector */
+  .mat-calendar-year-button:focus {
+    background-color: #495057 !important;
+    /* Darker background when focused */
+  }
+
+  /* Styling for the month selector */
+  .mat-calendar-month-button {
+    color: white !important;
+    /* White text for month button */
+    background-color: #34495e !important;
+    /* Dark background */
+    border: none !important;
+    /* Remove border */
+  }
+
+  /* Focused month selector */
+  .mat-calendar-month-button:focus {
+    background-color: #495057 !important;
+    /* Darker background when focused */
+  }
+
+  .mat-calendar-body-cell-content {
+    color: white !important;
+    /* Darker background when focused */
+  }
+
+  .mat-calendar-next-button {
+    color: white !important;
+  }
+
+  .mat-calendar-previous-button {
+    color: white !important;
+  }
+
+  .mat-calendar-arrow {
+    color: white !important;
+  }
+
+// ng-Select Changes 
+
+  .ng-select-container {
+    background-color: #212631 !important;
+    color: #e2e3e4 !important;
+    border-color: #323a49 !important;
+  }
+
+  .ng-dropdown-panel-items .ng-option {
+    color: #e2e3e4 !important;
+    background-color: #212631 !important;
+  }
+
+  .ng-dropdown-panel{
+    border-color: #323a49 !important;
+  }
+
+
+  p {
+    background-color: #212631 !important;
+    color: #e2e3e4 !important;
+    border-color: #323a49 !important;
+
+  }
+    
+  .datatable-checkbox input[type=checkbox]:checked:before {
+    transform: rotate(-45deg);
+    height: 0.5rem;
+    border-color: black-hover;
+    border-top-style: none;
+    border-right-style: none;
+  }
+
+  .datatable-checkbox input[type=checkbox]:before {
+    transition: all 0.3s ease-in-out;
+    content: "";
+    position: absolute;
+    right: 0;
+    z-index: 1;
+    width: 1rem;
+    height: 1rem;
+    border: 2px solid black;
+  }
+  .datatable-checkbox input[type=checkbox]:after {
+    content: "";
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 1rem;
+    height: 1rem;
+    background: white;
+    cursor: pointer;
+    border: 2px solid black !important;
+  } 
+
+  .ngx-datatable .datatable-body {
+    background-color: #212631 !important;
+  }
+
+  .ngx-datatable.material .datatable-body .datatable-body-row .datatable-body-cell {
+    color: white ;
+  }
+
+  .datatable-footer-inner{
+    background-color: #212631;
+
+  }
+
+  .ngx-datatable.material .datatable-footer .page-count{
+    color: white !important;
+  }
+
+  .datatable-pager li a {
+    color: white !important;
+  }
+
+  // .ngx-datatable {
+  //   &.fixed-header .datatable-header .datatable-header-inner .datatable-header-cell {
+  //     background-color: #212631 !important;
+  //   }
+  // }
+
+  .ng-select div, .ng-select input, .ng-select span{
+    line-height: normal; /* Resets line height */
+    padding: 0; /* Avoid extra spacing */
+
+  }
+
+  .ngx-datatable.bootstrap:not(.cell-selection) .datatable-body-row:hover,
+  .ngx-datatable.material:not(.cell-selection) .datatable-body-row:hover .datatable-row-group
+{ 
+   background: #1e1e1e  !important;
+   cursor: pointer !important;
+}
+
+
+.btn-transparent {
+  font-weight: 500 !important;
+  border: 1px solid #003e73 !important; /* Outline color */
+    color: #1890ff !important; /* Text color */
+    background-color: transparent !important; /* Keep transparent background */  
+  &:hover {
+    // background-color: #1890ff !important;
+    // border-color: #003e73 !important;
+    // color: #fff !important;
+
+    background-color: #f8f9fa !important;  /* Very Light Grey */
+border-color: #e0e0e0 !important;  /* Soft Grey Border */
+color: #000 !important;  /* Black Text for Contrast */
+
+  }
+}
+
+}
+
+// End Dark theme 
+
+.mat-dark-theme .mat-datepicker-input {
+  color: #e2e3d9 !important;
+
+}
+
+.mat-dark-theme .mdc-icon-button {
+  color: #a6a8ad !important;
+
+}
+
+.mat-light-theme .mat-datepicker-input {
+  color: #7D7376 !important;
+}
+
+.mat-mdc-form-field-infix {
+  margin: -9px !important;
+  margin-left: 1px !important;
+}
+
+.mat-mdc-form-field-flex {
+  height: 35px !important;
+}
+
+/* Border */
+.mat-form-field-appearance-outline .mat-form-field-outline {
+  color: white;
+}
+
+/* Font color */
+input.mat-input-element {
+  color: white;
+}
+
+.mdc-text-field--outlined:not(.mdc-text-field--disabled) .mat-mdc-notch-piece {
+  border-color: #D3D4D4 !important;
+}
+
+.mdc-text-field--outlined:not(.mdc-text-field--disabled):focus-within .mat-mdc-notch-piece {
+  border-color: #acabeb !important;
+  /* Red outline when field is focused */
+}
+
+.mat-dark-theme .mdc-text-field--outlined:not(.mdc-text-field--disabled):focus-within .mat-mdc-notch-piece {
+  border-color: #acabeb !important;
+  /* Red outline when field is focused */
+}
+
+
+
+.mat-dark-theme .mdc-text-field--outlined:not(.mdc-text-field--disabled) .mat-mdc-notch-piece {
+  border-color: #323a49 !important;
+}
+
+
+// sidebar white them changes
+
+body.lightTheme{
+  .datatable-pager li a {
+    color: black !important;
+    background-color: white !important;
+  }
+  .sidebar-color {
+    background-color: #f5f5f5 !important;
+  }
+  // c-sidebar-header{
+  //   background-color: #fff !important;
+  //   // background-color: #004494 !important;
+  // }
+  
+  .sidebar-nav .nav-link.active{
+    // background-color: #1890ff !important;
+    //  color: #fff !important;
+
+  
+    color: #1890ff !important;
+  }
+
+  .sidebar-nav .nav-link.active .nav-icon {
+    color: #1890ff !important;
+    // color: #fff !important;
+}
+
+  
+  
+  // .sidebar-nav .nav-link.active .nav-icon {
+  //   // color: #000000 !important; /* Set active icon color to black */
+  // }
+  
+  // .sidebar-nav .nav-link{
+  //   color: white !important;
+  // }
+  
+  // .sidebar-nav .nav-link:hover{
+  //   background-color: #e7eaee !important;
+  // }
+  
+  .sidebar-nav .nav-link:not(.active):hover {
+    background-color: #e7eaee !important;
+  }
+  
+  
+  // .c-sidebar-nav .nav-item .nav-icon {
+  //   color: #ffffff !important;  /* Set icon color to white */
+  // }
+  
+  
+  .sidebar-nav .nav-icon {
+    color: #1e1e1e !important;  /* Set active icon color to white */
+  }
+  
+  // .sidebar-nav .nav-group-toggle::after {
+  //   background-color: white !important;
+  // }
+
+
+  // // ng-select changes
+  .ng-select-container {
+    color: #303640 !important;
+    font-weight: 400 !important;
+  }
+  
+  //  .ng-dropdown-panel-items .ng-option {
+  //   color: #303640 !important;
+  // }
+  // .ng-select div, .ng-select input, .ng-select span{
+  //   color: #303640 !important;
+  //   font-weight: 400 !important;
+  //   line-height: normal; /* Resets line height */
+  //   padding: 0; /* Avoid extra spacing */
+
+  // }
+  
+
+
+
+  
+  .btn-transparent {
+    font-weight: 500 !important;
+    border: 1px solid #d6d6d6 !important; /* Outline color */
+      color: black !important; /* Text color */
+      background-color: transparent !important; /* Keep transparent background */  
+    &:hover {
+      // background-color: #1890ff !important;
+      // border-color: #003e73 !important;
+      // color: #fff !important;
+
+      background-color: #f8f9fa !important;  /* Very Light Grey */
+      border-color: #e0e0e0 !important;  /* Soft Grey Border */
+      color: #000 !important;  /* Black Text for Contrast */
+
+    }
+  }
+  
+  
+  
+  
+  
+  .datatable-checkbox input[type=checkbox]:checked:before {
+    transform: rotate(-45deg);
+    height: 0.5rem;
+    border-color: black-hover;
+    border-top-style: none;
+    border-right-style: none;
+  }
+  
+  .datatable-checkbox input[type=checkbox]:before {
+    transition: all 0.3s ease-in-out;
+    content: "";
+    position: absolute;
+    right: 0;
+    z-index: 1;
+    width: 1rem;
+    height: 1rem;
+    border: 2px solid black;
+  }
+  .datatable-checkbox input[type=checkbox]:after {
+    content: "";
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 1rem;
+    height: 1rem;
+    background: white;
+    cursor: pointer;
+    border: 2px solid black !important;
+  } 
+
+  
+  .ngx-datatable.bootstrap:not(.cell-selection) .datatable-body-row:hover,
+  .ngx-datatable.material:not(.cell-selection) .datatable-body-row:hover .datatable-row-group
+{ 
+   background: #d6d6d6  !important;
+   color: black !important;
+   cursor: pointer !important;
+}
+  
+}
+
+.datatable-checkbox {
+  position: relative;
+  margin: 0;
+  cursor: pointer;
+  vertical-align: middle;
+  display: inline-block;
+  box-sizing: border-box;
+  padding: 10px 0;
+  padding: 0px !important;
+  margin-top: 11px !important;
+  input[type="checkbox"] {
+      position: relative;
+      margin: 0 1.2rem 0 0;
+      cursor: pointer;
+      outline: none;
+      padding: 0px !important;
+      line-height: normal;
+      display: block;
+      font-size: 14px;
+      transition: all 0.3s;
+      left: 13px;
+      &:after {
+          content: "";
+          position: absolute;
+          top: 0;
+          left: 0;
+          width: 1rem;
+          height: 1rem;
+          background: white;
+          cursor: pointer;
+      }
+  }
+}
+.ngx-datatable.material .datatable-body .datatable-body-row .datatable-body-cell {
+  font-size: 16px !important;
+  padding: 10px 8px !important; /* Add padding */
+}
+
+
+.ng-select .ng-select-container {
+  min-height: 55px;
+  font-size: 16px; /* Increase font size */
+  
+}
+
+.ng-select.ng-select-single .ng-select-container {
+  height: 55px;
+  font-weight: lighter;
+  
+}
+
+/* Center the search input horizontally within the ng-select field */
+.ng-select.ng-select-single .ng-select-container .ng-input input {
+  margin-top: 10px;
+}
+
+.ngx-datatable.material .datatable-header .datatable-header-cell {
+  font-weight: 600; /* Bold header text */
+  text-align: center; /* Center header text */
+  // padding: 10px 8px;
+  padding: .8rem 0.5rem !important
+}
+
+
+
+.ngx-datatable.material .datatable-header .datatable-header-inner .datatable-header-cell {
+  height: 50px !important; /* Set consistent header height */
+  font-size: 16px !important; /* Increase header font size */
+}
+
+.datatable-checkbox input[type="checkbox"] {
+  width: 16px; /* Ensure consistent size */
+
+  height: 16px;
+  margin: 0;
+  position: relative;
+  top: 50%;
+  transform: translateY(-50%);
+  cursor: pointer;
+}
+
+.datatable-footer-inner {
+    .datatable-icon-left:before {
+        content: '\70';
+    }
+    .datatable-icon-right:before {
+        content: '\6f';
+    }
+}
+
+
+.hidden-footer .datatable-footer-inner {
+  height: 0 !important;
+}
+
+
+.datatable-footer-inner{
+  line-height: 1.5;
+  text-align: left;
+  font-family: Roboto, "Helvetica Neue", sans-serif !important;
+  word-wrap: break-word;
+  visibility: visible!important;
+  font-size: 15.5px !important;
+  font-weight: 400;
+  color:black;
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  width: 100%;
+  height: 50px;
+
+}
+
+.table-responsive {
+  min-height: 135px!important;
+}
+.table-responsive {
+    overflow-x: auto !important;
+}
+
+.ngx-datatable.material .datatable-body {
+  flex: 1; /* Allow the body to grow and shrink as needed */
+  overflow: auto; /* Enable scrolling for large data sets */
+}
+
+
+
+  
+.ngx-datatable.material .datatable-footer .page-count {
+  color: #2d2d2c;
+}
+
+.ngx-datatable {
+&.fixed-header .datatable-header .datatable-header-inner .datatable-header-cell {
+    background: white;
+    color: black;
+    font-weight: 500;
+    font-size: 16px;
+    
+}
+&.fixed-header .datatable-header .datatable-header-inner .datatable-header-cell input[type="checkbox"] {
+    display: block;
+}
+}
+
+.datatable-header-inner,
+.datatable-body-row,
+.datatable-row-center,
+.datatable-scroll {
+  width: 100% !important;
+}
+
+
+#colOne {
+  .datatable-header .datatable-header-inner .datatable-header-cell:first-child {
+      width: 200px !important;
+  }
+}
+.colBox {
+  .ngx-datatable.material {
+      width: 1600px !important;
+  }
+}
+
+
+// Grid Search Css
+
+.search-field {
+  width: 250px !important;
+  padding: 0.5rem;
+  border: 1px solid rgba(0, 0, 0, 0.2);
+  border-radius: 5px;
+  box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.1);
+  transition: box-shadow 0.3s ease-in-out;
+}
+
+.search-field:focus {
+  outline: none;
+  box-shadow: 0 0 6px rgba(0, 123, 255, 0.5) !important;
+  border-color: rgba(0, 123, 255, 0.5) !important;
+}
+
+
+// Mat date picker z index
+// @supports (scrollbar-width: thin) {
+//   .mat-datepicker-content-container {
+//     z-index: 12 !important; /* Or any value you need */
+//   }
+// }
+
+
+
+.cdk-overlay-pane {
+  z-index: 1050 !important; /* Higher than your header */
+}
+
+.header-sticky{
+  z-index: 900 !important;
+}
+
+// Grid Css Changes 
+.cdk-overlay-pane {
+  z-index: 1050 !important;
+}
+
+.mat-datepicker-popup {
+  z-index: 1100 !important;
+}
+.cdk-overlay-pane {
+  position: fixed !important;
+}
+
+.dropdown-item:active {
+  background-color:  #1890ff!important;
+  color: inherit !important;
+}
+
+
+
+.btn-fill {
+  font-weight: 500 !important;
+  background-color: #1890ff !important;
+  border-color: #0056b3 !important;
+  &:hover {
+    background-color: #0056b3 !important;
+    border-color: #003e73 !important;
+    
+  }
+}
+
+
+
+
+
+ /* Create Button styling */
+ .create-btn {
+  padding: 8px 16px !important;
+  font-size: 16px !important;
+  color: #ffffff !important;
+  background-color: #1890ff !important;
+  border: none !important;
+  border-radius: 4px !important;
+  cursor: pointer !important;
+  transition: background-color 0.3s !important;
+  font-family: 'Roboto', sans-serif !important;
+  &:hover{
+    background-color: #0056b3 !important;
+    border-color: #003e73 !important;
+  }
+}
+
+.table-responsive {
+  width: 100% !important;
+  overflow-x: auto !important; /* Enables horizontal scrolling */
+}
+
+ngx-datatable {
+  min-width: 800px !important; /* Ensures table doesn't shrink too much */
+
+  border: 1px solid #e4e4e4;
+}
+
+.form-label{
+  font-weight: 500 !important;
+}
+
+.form-control {
+  border-width: 2px !important;
+  transition: box-shadow 0.3s ease;
+}
+
+.form-control:focus {
+  border-color: #b3d7ff !important; /* Lighter blue shade */
+  box-shadow: 0 0 3px 1px #b3d7ff !important; /* Much more subtle glow */
+  outline: none;
+}
+
+.datatable-footer-inner {
+  background-color: #fafafa !important; /* Very light gray background */
+  color: #666; /* Lighter text color for subtle contrast */
+}
+
+
+.employee-screen-container{
+  background-color: #ffffff !important;
+}
+
+.mdc-text-field--filled{
+  background-color: #f1f2f6 !important;
+}
+
+.bcg-light {
+  background-color: white !important; /* Light Blue */
+}
+
+
+
+.ng-select .ng-select-container .ng-value-container .ng-input>input {
+
+  margin-top: 1px !important;
+}
+
+.ngx-datatable.fixed-row .datatable-scroll .datatable-body-row .datatable-body-cell{
+  font-size: 15px !important;
+}

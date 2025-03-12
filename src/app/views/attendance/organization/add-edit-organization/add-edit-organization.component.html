@@ -1,0 +1,233 @@
+<div class="employee-screen-container p-4"
+  [ngClass]="{'bcg-light': utils.themeStatus === 'light', 'bg-dark': utils.themeStatus === 'dark'}">
+  <!-- Your content here -->
+
+  <!-- Header Card -->
+  <div class="card rounded-3 shadow-sm mb-4">
+    <div class="card-body">
+      <h5 *ngIf="mode === 'create'" [ngClass]="utils.themeStatus === 'dark' ? 'text-white' : 'text-dark'"
+        class="mb-0 text-dark">Add Company</h5>
+      <h5 *ngIf="mode === 'edit'" [ngClass]="utils.themeStatus === 'dark' ? 'text-white' : 'text-dark'"
+        class="mb-0 text-dark">Edit Company</h5>
+    </div>
+  </div>
+
+  <!-- Form Card -->
+  <div class="card rounded-3 shadow-sm mb-4">
+    <div class="card-body">
+      <form #form="ngForm" (ngSubmit)="form.form.valid && onSubmit(form)">
+
+        <div class="row gy-4 gx-3">
+          <!-- Employee Name -->
+          <div class="col-12 col-md-6">
+            <label for="employeeName" class="form-label text-muted">Name</label>
+            <input type="text" class="form-control" id="employeeName" [(ngModel)]="model.name" name="name"
+              #name="ngModel" required placeholder="Enter name">
+            <div *ngIf="form.submitted && name.invalid" class="text-danger mt-1">
+              <small *ngIf="name.errors?.['required']">Name is required.</small>
+            </div>
+          </div>
+
+          
+          <!-- Email -->
+          <div class="col-12 col-md-6">
+            <label for="email" class="form-label text-muted">Email</label>
+            <input type="email" class="form-control" id="email" [(ngModel)]="model.email" name="email" #email="ngModel"
+              required email placeholder="Enter email">
+            <div *ngIf="form.submitted && email.invalid" class="text-danger mt-1">
+              <small *ngIf="email.errors?.['required']">{{requiredText}}</small>
+              <small *ngIf="email.errors?.['email']">Please enter a valid email.</small>
+            </div>
+          </div>
+
+
+
+          <div class="col-12 col-md-6">
+            <label for="companyRegNo" class="form-label text-muted">Company Registration Number</label>
+            <input type="text" class="form-control" #compnayRegNumber="ngModel" required id="companyRegNo"
+              [(ngModel)]="model.companyRegNo" name="companyRegNo" placeholder="Enter company registration number">
+            <div *ngIf="form.submitted && compnayRegNumber.invalid" class="text-danger mt-1">
+              <small *ngIf="compnayRegNumber.errors?.['required']">Field is required.</small>
+            </div>
+          </div>
+
+
+
+          <!-- VAT Registration Number -->
+          <div class="col-12 col-md-6">
+            <label for="vatRegNo" class="form-label text-muted">VAT Registration Number</label>
+            <input type="text" class="form-control" required #vatRegNumber="ngModel" id="vatRegNo"
+              [(ngModel)]="model.vatRegNo" name="vatRegNo" placeholder="Enter VAT registration number">
+            <div *ngIf="form.submitted && vatRegNumber.invalid" class="text-danger mt-1">
+              <small *ngIf="vatRegNumber.errors?.['required']">Field is required.</small>
+            </div>
+          </div>
+
+          <!-- Phone Number -->
+          <div class="col-12 col-md-6">
+            <label for="phone" class="form-label text-muted">Phone Number</label>
+            <input type="tel" class="form-control" id="phone" [(ngModel)]="model.phone" name="phone" #phone="ngModel"
+              required placeholder="Enter phone Number" (keydown)="onlyDecimalNumberKey($event)">
+            <div *ngIf="form.submitted && phone.invalid" class="text-danger mt-1">
+              <small *ngIf="phone.errors?.['required']">Phone Number is required.</small>
+            </div>
+          </div>
+
+
+          <div class="col-12 col-md-6">
+            <label for="address" class="form-label text-muted">Address</label>
+            <input type="text" class="form-control" #Address="ngModel" id="address" [(ngModel)]="model.address"
+              name="address" placeholder="Enter address">
+            <!-- <div *ngIf="form.submitted && Address.invalid" class="text-danger mt-1">
+              <small *ngIf="Address.errors?.['required']">{{requiredText}}</small>
+            </div> -->
+          </div>
+
+
+          <!-- country -->
+
+
+          <div class="col-12 col-md-6">
+            <label for="countrySelect" class="form-label">Select Country</label>
+            <ng-select id="countrySelect" [(ngModel)]="selectedCountry" [items]="countryArray"
+              (change)="onCountryChange()" bindLabel="name" placeholder="Select a country" name="countrySelect"
+              class="dark-mode-select" [multiple]="false" >
+            </ng-select>
+            <div *ngIf="form.submitted && !selectedCountry" class="text-danger mt-2">
+              {{requiredText}}
+            </div>
+          </div>
+
+
+          <!-- State -->
+          <div class="col-12 col-md-6">
+            <label for="stateSelect" class="form-label">Select State</label>
+            <ng-select id="stateSelect" [(ngModel)]="selectedState" [items]="stateArray" (change)="onStateChange()"
+              bindLabel="name" placeholder="Select a State" name="stateSelect" class="dark-mode-select"
+              [multiple]="false">
+            </ng-select>
+            <!-- <div *ngIf="form.submitted && !selectedState" class="text-danger mt-2">
+              {{requiredText}}
+            </div> -->
+          </div>
+
+
+          <!-- City -->
+
+          <div class="col-12 col-md-6">
+            <label for="citySelect" class="form-label">Select City</label>
+            <ng-select id="citySelect" [(ngModel)]="selectedCity" [items]="cityArray" bindLabel="name"
+              placeholder="Select a city" name="citySelect" class="dark-mode-select" [multiple]="false">
+            </ng-select>
+            <!-- <div *ngIf="form.submitted && !selectedCity" class="text-danger mt-2">
+              {{requiredText}}
+            </div> -->
+          </div>
+
+
+          <!-- Town -->
+          <div class="col-12 col-md-6">
+            <label for="town" class="form-label text-muted">Town</label>
+            <input type="text" class="form-control" #town="ngModel" id="town" [(ngModel)]="model.town"
+              name="town" placeholder="Enter town">
+            <!-- <div *ngIf="form.submitted && town.invalid" class="text-danger mt-1">
+              <small *ngIf="town.errors?.['required']">{{requiredText}}.</small>
+            </div> -->
+          </div>
+          <!-- Postcode -->
+          <div class="col-12 col-md-6">
+            <label for="postcode" class="form-label text-muted">Zip Code</label>
+            <input type="text" class="form-control"  #Postcode="ngModel" id="postcode"
+              [(ngModel)]="model.postcode" name="postcode" placeholder="Enter Zip Code">
+            <!-- <div *ngIf="form.submitted && Postcode.invalid" class="text-danger mt-1">
+              <small *ngIf="Postcode.errors?.['required']">{{requiredText}}</small>
+            </div> -->
+          </div>
+
+          <!-- Landline -->
+          <div class="col-12 col-md-6">
+            <label for="landline" class="form-label text-muted">Landline</label>
+            <input type="tel" class="form-control" (keydown)="onlyDecimalNumberKey($event)" #Landline="ngModel"  id="landline"
+              [(ngModel)]="model.landline" name="landline" placeholder="Enter landline number">
+            <!-- <div *ngIf="form.submitted && Landline.invalid" class="text-danger mt-1">
+              <small *ngIf="Landline.errors?.['required']">F{{requiredText}}</small>
+            </div> -->
+          </div>
+
+          <div class="col-12 col-md-6">
+            <label for="website" class="form-label text-muted">Website</label>
+            <input type="text" class="form-control" re #website="ngModel" id="website" [(ngModel)]="model.website"
+              name="website" placeholder="Enter website">
+            <!-- <div *ngIf="form.submitted && website.invalid" class="text-danger mt-1">
+              <small *ngIf="website.errors?.['required']">{{requiredText}}</small>
+            </div> -->
+          </div>
+
+          <div class="col-12 col-md-6">
+            <label for="logo" class="form-label text-muted">Upload Logo</label>
+            <input type="file" class="form-control" id="logo" (change)="onImageChange($event)" accept="image/*"
+              name="logo">
+            <!-- <div *ngIf="form.submitted && !logoFile" class="text-danger mt-1">
+              <small>Please upload a logo.</small>
+            </div> -->
+            <div *ngIf="logoPreview" class="mt-2">
+              <img [src]="logoPreview" alt="Logo Preview" class="img-thumbnail" style="max-height: 100px;">
+            </div>
+          </div>
+
+
+
+        </div>
+
+
+
+
+
+
+        <div class="row mb-4">
+          <!-- Website -->
+          <!-- <div class="col-12 col-md-6">
+                <label for="website" class="form-label text-muted">Website</label>
+                <input type="url" class="form-control" id="website" [(ngModel)]="model.website" name="website" placeholder="Enter website URL">
+              </div> -->
+
+          <!-- Password -->
+          <!-- <div class="col-12 col-md-6">
+                <label for="password" class="form-label text-muted">Password</label>
+                <input type="password" class="form-control" id="password" [(ngModel)]="model.password" name="password" required placeholder="Enter password">
+                <div *ngIf="password.touched && password.invalid" class="text-danger mt-1">
+                  <small *ngIf="password.errors?.['required']">Password is required.</small>
+                </div>
+              </div> -->
+        </div>
+
+        <!-- <div class="row mb-4">
+              <div class="col-12 col-md-6">
+                <label for="startingDate" class="form-label text-muted">Starting Date</label>
+                <mat-form-field appearance="outline" class="w-100">
+                  <input matInput [matDatepicker]="picker1" placeholder="Select a date" name="startingDate" id="startingDate" [(ngModel)]="model.startingDate" required readonly #startingDateField="ngModel">
+                  <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
+                  <mat-datepicker #picker1></mat-datepicker>
+                </mat-form-field>
+                <div *ngIf="startingDateField.touched && startingDateField.invalid" class="text-danger mt-1">
+                  <small *ngIf="startingDateField.errors?.['required']">Starting Date is required.</small>
+                </div>
+              </div>
+            </div> -->
+
+        <div class="rounded-3 mt-5">
+          <div class="card-body d-flex">
+            <button *ngIf="mode === 'create'" type="submit" class="btn-fill btn btn-primary fw-semibold me-3 px-4 py-2">Save</button>
+            <button *ngIf="mode === 'edit'" type="submit" class="btn-fill btn btn-primary fw-semibold me-3 px-4 py-2">Update</button>
+            <button type="button" class="btn-transparent btn btn-secondary fw-semibold me-3 px-4 py-2"
+              routerLink="/main/attendance/organization/all-organization">Cancel</button>
+            <button type="button" class="btn-transparent btn btn-warning fw-semibold me-3 px-4 py-2" (click)="onClear()">Clear</button>
+            
+          </div>
+        </div>
+      </form>
+
+    </div>
+  </div>
+
+</div>
